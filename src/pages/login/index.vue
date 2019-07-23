@@ -1,0 +1,148 @@
+<template>
+  <div id="login">
+    <div class="desc">{{ desc }}</div>
+    <div class="login-form">
+      <div class="login-input">
+        <div class="label">用户名</div>
+        <div class="span">
+          <input
+            class="input username"
+            type="text"
+            v-model="formData.username"
+            autocomplete="off"
+            autofocus
+            placeholder="请输入用户名" />
+        </div>
+      </div>
+      <div class="login-input">
+        <div class="label">密码</div>
+        <div class="span">
+          <input
+            class="input password"
+            type="password"
+            v-model="formData.password"
+            autocomplete="off"
+            placeholder="请输入密码" />
+        </div>
+      </div>
+
+      <div class="login-input">
+        <div class="label">验证码</div>
+        <div class="span code">
+          <input
+            class="input"
+            @focus="() => codeFocus = true"
+            @blur="() => codeFocus = false"
+            type="text"
+            v-model="formData.code"
+            autocomplete="off"
+            placeholder="请输入验证码"
+            maxlength="4" />
+          <img slot="button" :src="code.src" class="login-code-img" @click="refreshCode" />
+        </div>
+      </div>
+    </div>
+    <div class="login-btn" @click="submit">登&nbsp;&nbsp;陆</div>
+    <div class="change-login-register">
+      <div class="router-link" @click="toRegister">没有账号？<span>立即注册</span></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { randomLenNum } from '@/utils/index'
+
+import './index.scss'
+
+export default {
+  data () {
+    return {
+      title: '用户登录',
+      desc: '欢迎使用人群健康签约系统',
+      codeFocus: false,
+      formData: {
+        username: '',
+        password: '',
+        code: '',
+        randomStr: ''
+      },
+      code: {
+        src: `/api/code`,
+        len: 17
+      }
+    }
+  },
+  methods: {
+    refreshCode () {
+      this.formData.code = ''
+      // this.formData.randomStr = randomLenNum(this.code.len, true)
+      this.$set(this.formData, 'randomStr', randomLenNum(this.code.len, true))
+      this.code.type === 'text'
+        ? (this.code.value = randomLenNum(this.code.len))
+        : (this.code.src = `/api/code?randomStr=${this.formData.randomStr}`)
+    },
+    submit () {
+      if (this.formData.username === '' || this.formData.password === '') {
+        this.$notify({
+          message: '请输入用户名密码',
+          background: '#ff4444'
+        })
+      } else if (this.formData.code === '' || this.formData.code.length < 4) {
+        this.$notify({
+          message: '请输入正确的验证码',
+          background: '#ff4444'
+        })
+      } else {
+        this.$store.dispatch('LoginByUsername', this.formData).then(() => {
+          this.formData = {
+            username: '',
+            password: '',
+            code: ''
+          }
+          this.$notify({
+            message: '登录成功',
+            background: '#00cc33'
+          })
+          this.$store.dispatch('getUserInfo').then(() => {
+            this.$store.dispatch('GetDictAll').then(() => {
+              this.$router.push({ name: 'archives' })
+            })
+          }).catch(() => {
+            this.$notify({
+              message: '获取用户信息失败！',
+              background: '#ff4444'
+            })
+          })
+        }).catch(() => {
+          this.$notify({
+            message: '登录失败',
+            background: '#ff4444'
+          })
+          this.refreshCode()
+        })
+      }
+    },
+    toRegister () {
+      this.$router.push({ name: 'register' })
+    }
+  },
+  created () {
+    let { username, password } = this.$route.params
+    if (username && password) {
+      this.$set(this.formData, 'username', username)
+      this.$set(this.formData, 'password', password)
+    }
+  },
+  mounted () {
+    this.refreshCode()
+  },
+  activated () {
+    let { username, password } = this.$route.params
+    if (username && password) {
+      this.$set(this.formData, 'username', username)
+      this.$set(this.formData, 'password', password)
+    }
+    this.refreshCode()
+  }
+}
+</script>

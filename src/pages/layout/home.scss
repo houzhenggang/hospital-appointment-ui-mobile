@@ -1,0 +1,25 @@
+#home-layout {
+  .van-nav-bar + .content {
+    margin-top: 44px;
+    height: calc(100vh - 94px);
+  }
+  > .content {
+    width: 100%;
+    overflow-x: hidden;
+    height: calc(100vh - 50px);
+    overflow-y: scroll;
+    background: #F8F9FA;
+  }
+  > .van-nav-bar {
+    height: 44px;
+    > .van-nav-bar__title {
+      // font-family: 'PingFang SC', Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, Arial, sans-serif;
+      line-height: 44px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+  }
+  > .van-hairline--bottom::after {
+    border: 0;
+  }
+}

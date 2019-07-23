@@ -1,0 +1,113 @@
+#personsigning {
+  min-height: calc(100vh - 56px);
+  background-color: #fcfcfc;
+  padding: 10px 0 0 0;
+  > .content {
+    margin-top: 10px;
+    .servicepackageInput {
+      position: relative;
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: #323233;
+      font-size: 14px;
+      line-height: 24px;
+      background-color: #fff;
+      padding: 10px 15px;
+      .servicepackageInput__label {
+        max-width: 90px;
+      }
+    }
+    .servicepackageList {
+      margin-top: 20px;
+    }
+  }
+  > .van-nav-bar {
+    height: 35px;
+    background: #4090ff;
+    box-shadow: 0px 0px 10px #CCCCCC;
+    > .van-nav-bar__title {
+      font-family: 'PingFang SC', Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, Arial, sans-serif;
+      line-height: 35px;
+      color: #FFFFFF;
+      font-size: 16px;
+    }
+  }
+  .footer-botton {
+    background-color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .servicepackage-list {
+    height: calc(100% - 46px);
+    width: 80vw;
+    background-color: #fcfcfc;
+    > .button-list {
+      position: fixed;
+      top: 0
+    }
+    > .content {
+      margin-top: 46px;
+      overflow-y: scroll;
+      .servicepackage-item {
+        padding:  10px 0 15px 20px;
+        border-bottom: 1px solid #ddd;
+        .head {
+          margin-bottom: 10px;
+          display: flex;
+          .title {
+            flex: 1;
+            div {
+              font-size: 14px;
+              font-weight: 100;
+              margin-bottom: 5px;
+              color: #000;
+            }
+          }
+          .success {
+            color: #f44;
+            width: 30px;
+            display: none;
+          }
+          .show {
+            display: block;
+          }
+        }
+        .attention {
+          font-size: 14px;
+          color: #999;
+        }
+      }
+    }
+    > div {
+      height: 100%;
+    }
+    .button-list {
+      display: flex;
+      position: fixed;
+      top: 0;
+      border-bottom: 1px solid #ddd;
+      width: 100%;
+      height: 46px;
+      .back {
+        width: 100px;
+        font-size: 16px;
+        line-height: 45px;
+        padding-left: 15px;
+      }
+      .title {
+        flex: 1;
+      }
+      .confirm {
+        width: 35px;
+        font-size: 16px;
+        line-height: 45px;
+        padding-right: 15px;
+      }
+    }
+    
+  }
+}

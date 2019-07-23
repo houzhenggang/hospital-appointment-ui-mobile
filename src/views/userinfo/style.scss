@@ -1,0 +1,72 @@
+.user-info {
+  .head {
+    background-color: #fff;
+    display: flex;
+    padding: 20px 16px 20px;
+    .avatar {
+      img {
+        height: 59px;
+        width: 59px;
+        border-radius: 50%;
+      }
+    }
+    .info {
+      flex: 1;
+      padding: 10px 16px;
+      .name {
+        margin-bottom: 12px;
+        color: #282828;
+        font-size: 16px;
+        height: 16px;
+        line-height: 16px;
+      }
+      .phone {
+        height: 12px;
+        line-height: 12px;
+        font-size: 12px;
+        color: #989898;
+      }
+    }
+  }
+  .list {
+    margin-top: 15px;
+    .user-list {
+      margin-bottom: 15px;
+      background-color: #fff;
+      display: flex;
+      padding: 15px;
+      .avatar {
+        width: 30px;
+        margin-top: 4px;
+      }
+      .item {
+        padding-left: 10px;
+        flex: 1;
+        .title {
+          margin-bottom: 8px;
+          font-weight: 700;
+        }
+        .doc {
+          color: #989898;
+          font-size: 12px;
+        }
+      }
+      .icon {
+        width: 15px;
+        i {
+          margin-top: 15px;
+          color: #989898;
+        }
+      }
+    }
+    .logout {
+      font-size: 16px;
+      color: #282828;
+      background-color: #fff;
+      margin-top: 30px;
+      height: 49px;
+      line-height: 49px;
+      text-align: center;
+    }
+  }
+}
