@@ -7,7 +7,11 @@
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
-        <div class="phone">我的账号：{{user_info.phone}}</div>
+        <div class="phone">{{user_info.phone}}</div>
+      </div>
+      <div class="userMessage">
+        <span>个人信息</span>
+        <van-icon name="arrow" class="u-icon" />
       </div>
     </div>
     <div class="list">
@@ -15,7 +19,6 @@
         <div class="avatar"><img :src="item.icon" alt=""></div>
         <div class="item">
           <div class="title">{{item.name}}</div>
-          <div class="doc">{{item.doc}}</div>
         </div>
         <div class="icon"><van-icon name="arrow" /></div>
       </div>
@@ -36,30 +39,17 @@ export default {
     return {
       list: [
         {
-          name: '我的档案',
+          name: '手机号认证',
           icon: '../img/archives-min.png',
-          pathName: 'archives',
-          doc: '查看您的健康档案'
+          pathName: 'archives'
         }, {
-          name: '我的签约',
+          name: '身份证认证',
           icon: '../img/signing-min.png',
-          pathName: 'signing',
-          doc: '查看你的医生签约和自主签约'
+          pathName: 'signing'
         }, {
-          name: '个人自助建档签约',
-          icon: '../img/self-min.png',
-          pathName: '自助签约',
-          doc: '编辑您的个人签约信息'
-        }, {
-          name: '我的随访',
-          icon: '../img/follow-min.png',
-          pathName: '随访',
-          doc: '查看您的个人随访信息'
-        }, {
-          name: '服务计划',
-          icon: '../img/plan-min.png',
-          pathName: '服务计划',
-          doc: '查看您的个人服务计划'
+          name: '医保卡认证',
+          icon: '../img/signing-min.png',
+          pathName: 'signing'
         }
       ]
     }

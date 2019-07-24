@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <div class="desc">{{ desc }}</div>
+    <!-- <div class="desc">{{ desc }}</div> -->
     <div class="login-form">
       <div class="login-input">
         <div class="label">用户名</div>
@@ -11,7 +11,7 @@
             v-model="formData.username"
             autocomplete="off"
             autofocus
-            placeholder="请输入用户名" />
+            placeholder="请输入您的用户名" />
         </div>
       </div>
       <div class="login-input">
@@ -22,12 +22,12 @@
             type="password"
             v-model="formData.password"
             autocomplete="off"
-            placeholder="请输入密码" />
+            placeholder="请输入您的登录密码" />
         </div>
       </div>
 
       <div class="login-input">
-        <div class="label">验证码</div>
+        <div class="label">图形验证码</div>
         <div class="span code">
           <input
             class="input"
@@ -36,13 +36,13 @@
             type="text"
             v-model="formData.code"
             autocomplete="off"
-            placeholder="请输入验证码"
+            placeholder="请输入右侧图形验证码"
             maxlength="4" />
           <img slot="button" :src="code.src" class="login-code-img" @click="refreshCode" />
         </div>
       </div>
     </div>
-    <div class="login-btn" @click="submit">登&nbsp;&nbsp;陆</div>
+    <div class="login-btn" @click="submit">登录</div>
     <div class="change-login-register">
       <div class="router-link" @click="toRegister">没有账号？<span>立即注册</span></div>
     </div>
@@ -105,7 +105,7 @@ export default {
           })
           this.$store.dispatch('getUserInfo').then(() => {
             this.$store.dispatch('GetDictAll').then(() => {
-              this.$router.push({ name: 'archives' })
+              this.$router.push({ name: 'userinfo' })
             })
           }).catch(() => {
             this.$notify({

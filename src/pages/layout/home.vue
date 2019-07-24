@@ -7,7 +7,7 @@
       </keep-alive>
       <router-view v-if="!$route.meta.$keepAlive" />
     </div>
-    <van-tabbar v-model="activeIndex" route active-color="#2458FF" inactive-color="#CACACA">
+    <!-- <van-tabbar v-model="activeIndex" route active-color="#2458FF" inactive-color="#CACACA">
       <van-tabbar-item
         replace
         :icon="item.icon"
@@ -21,7 +21,7 @@
             :src="props.active ? item.imgAvtive : item.img"
           >
       </van-tabbar-item>
-    </van-tabbar>
+    </van-tabbar> -->
   </div>
 </template>
 

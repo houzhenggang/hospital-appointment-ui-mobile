@@ -57,7 +57,7 @@ export default {
         })
         this.$store.dispatch('getUserInfo').then(() => {
           this.$store.dispatch('GetDictAll').then(() => {
-            this.$router.push({ name: 'archives' })
+            this.$router.push({ name: 'userinfo' })
           })
         }).catch(() => {
           this.$notify({

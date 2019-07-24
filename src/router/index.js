@@ -10,7 +10,7 @@ let OLDPEPLE_ROUTER = new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'signing' }
+      redirect: { name: 'userinfo' }
     }, {
       path: '/login',
       name: 'login',
@@ -27,86 +27,17 @@ let OLDPEPLE_ROUTER = new Router({
       path: '/home',
       name: 'layout',
       component: () => import('@/pages/layout/home'),
+      redirect: { name: 'userinfo' },
       children: [
         {
           path: 'userinfo',
           name: 'userinfo',
           component: () => import('@/views/userinfo/index')
-        }, {
-          path: 'archives',
-          name: 'archives',
-          component: () => import('@/views/archives/index')
-        }, {
-          path: 'signing',
-          name: 'signing',
-          meta: {
-            $keepAlive: true
-          },
-          component: () => import('@/views/signing/index/index')
-        }, {
-          path: 'information',
-          name: 'information',
-          meta: {
-            $keepAlive: true
-          },
-          component: () => import('@/views/information/index')
-        }
-      ]
-    }, {
-      path: '/main',
-      name: 'main',
-      component: () => import('@/pages/main/index'),
-      children: [
-        {
-          path: 'ordinarySigning/:id',
-          name: '签约详情',
-          component: () => import('@/views/signing/detail/')
-        }, {
-          path: 'selfHelpSigning/:id',
-          name: '签约详情',
-          component: () => import('@/views/signing/detail/')
-        }, {
-          path: 'personsigning',
-          name: '自助签约',
-          component: () => import('@/views/signing/forms/')
-        }, {
-          path: 'followUp',
-          name: '随访',
-          component: () => import('@/views/followUp/index')
-        }, {
-          path: 'service',
-          name: '服务计划',
-          component: () => import('@/views/service/index')
-        }, {
-          path: '/hypertensionFollowUp/:id',
-          name: 'followUpHypertension',
-          component: () => import('@/views/followUp/views/hypertensionDetail'),
-          meta: {
-            title: '高血压随访详情'
-          }
-        }, {
-          path: '/diabetesFollowUp/:id',
-          name: 'diabetesFollowUp',
-          component: () => import('@/views/followUp/views/diabetesDetail'),
-          meta: {
-            title: '糖尿病随访详情'
-          }
-        }, {
-          path: '/commonFollowUp/:id',
-          name: 'commonFollowUp',
-          component: () => import('@/views/followUp/views/commonDetail'),
-          meta: {
-            title: '健康服务详情'
-          }
-        }, {
-          path: '/information/:id',
-          name: 'informationDetail',
-          component: () => import('@/views/information/detail')
         }
       ]
     }, {
       path: '*',
-      redirect: { name: 'archives' }
+      redirect: { name: 'userinfo' }
     }
   ]
 })
