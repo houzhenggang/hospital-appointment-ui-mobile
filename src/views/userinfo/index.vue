@@ -9,7 +9,7 @@
         <div class="name">{{user_info.username}}</div>
         <div class="phone">{{user_info.phone}}</div>
       </div>
-      <div class="userMessage">
+      <div class="userMessage" @click="toUserMessage()">
         <span>个人信息</span>
         <van-icon name="arrow" class="u-icon" />
       </div>
@@ -68,6 +68,9 @@ export default {
           this.$router.push({ name: 'login' })
         })
       }).catch(() => {})
+    },
+    toUserMessage () {
+      this.$router.push({ name: '个人信息' })
     }
   }
 }

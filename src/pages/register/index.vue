@@ -1,15 +1,64 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div id="register">
     <div class="title">{{ title }}</div>
-    <div class="uploader">
+    <!-- 设计稿没有上传照片，先隐藏 -->
+    <!-- <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
         <img :src="'../img/register-photo-min.png'" alt="" v-if="!formData.avatar">
         <img class="img-2" v-else :src="`/api/admin/file/${formData.avatar}`">
       </van-uploader>
-    </div>
+    </div> -->
     <div class="login-form">
       <div class="login-input">
-        <div class="label">用户名</div>
+        <div class="label">姓名</div>
+        <div class="span">
+          <input
+            ref="name"
+            class="input username"
+            type="text"
+            v-model="formData.name"
+            autocomplete="off"
+            placeholder="请填写您的真实姓名" />
+        </div>
+      </div>
+
+      <div class="login-input">
+        <div class="label">性别</div>
+        <div class="span">
+          <van-field
+            readonly
+            clickable
+            :value="formData.sexValue"
+            placeholder="请选择您的性别"
+            @click="showPicker = true"
+            class="sexField"
+          />
+          <van-popup v-model="showPicker" position="bottom">
+            <van-picker
+              show-toolbar
+              :columns="sexColumns"
+              @cancel="showPicker = false"
+              @confirm="onConfirm"
+            />
+          </van-popup>
+        </div>
+      </div>
+
+      <div class="login-input">
+        <div class="label">手机号</div>
+        <div class="span">
+          <input
+            class="input phone"
+            type="text"
+            v-model="formData.phone"
+            autocomplete="off"
+            placeholder="请填写您的手机号" />
+        </div>
+      </div>
+
+      <div class="login-input">
+        <div class="label">用户名<span class="tag">(仅支持英文、数字)</span></div>
         <div class="span">
           <input
             ref="username"
@@ -19,43 +68,31 @@
             autocomplete="off"
             autofocus
             @blur="hasUserName()"
-            placeholder="请输入用户名" />
+            placeholder="请设置您的用户名" />
         </div>
       </div>
 
       <div class="login-input">
-        <div class="label">联系电话</div>
-        <div class="span">
-          <input
-            class="input phone"
-            type="text"
-            v-model="formData.phone"
-            autocomplete="off"
-            placeholder="请输入联系电话" />
-        </div>
-      </div>
-
-      <div class="login-input">
-        <div class="label">密码</div>
+        <div class="label">密码<span class="tag">（仅支持英文，数字，特殊符号）</span></div>
         <div class="span">
           <input
             class="input password"
             type="password"
             v-model="formData.password"
             autocomplete="off"
-            placeholder="请输入密码" />
+            placeholder="请设置您的登录密码" />
         </div>
       </div>
 
       <div class="login-input">
-        <div class="label">密码</div>
+        <div class="label">确认密码<span class="tag">（仅支持英文，数字，特殊符号）</span></div>
         <div class="span">
           <input
             class="input password"
             type="password"
             v-model="formData.qrPassword"
             autocomplete="off"
-            placeholder="请确认密码" />
+            placeholder="请再次输入您的登录密码" />
         </div>
       </div>
 
@@ -63,7 +100,7 @@
     <div class="login-btn" @click="submit">注&nbsp;&nbsp;册</div>
     <div class="change-login-register">
       <!-- <router-link :to='{name: "login"}'>已有账号？<span>立即登陆</span></router-link> -->
-      <div class="router-link" @click="toLogin">已有账号？<span>立即登陆</span></div>
+      <div class="router-link" @click="toLogin">已有账号？<span>立即登录</span></div>
     </div>
   </div>
 </template>
@@ -83,16 +120,20 @@ export default {
   mixins: [ mixin ],
   data () {
     return {
-      title: '新用户注册',
-      desc: '人群健康签约系统',
+      title: '注册',
       validateName: true,
       formData: {
-        avatar: '',
+        // avatar: '',
         username: '',
+        name: '',
+        sex: '',
         password: '',
         qrPassword: '',
-        phone: ''
-      }
+        phone: '',
+        sexValue: ''
+      },
+      showPicker: false,
+      sexColumns: ['男', '女']
     }
   },
   methods: {
@@ -138,6 +179,8 @@ export default {
       let formData = this.formData
       if (!formData.username) {
         cb(false, '用户名不能为空')
+      } else if (!(/^[A-Za-z0-9]+$/.exec(formData.username))) {
+        cb(false, '用户名不符合规范，仅支持英文、数字')
       } else if (formData.username.length < 5) {
         cb(false, '用户名长度不能少于5位')
       } else if (!formData.password) {
@@ -171,11 +214,13 @@ export default {
                 })
               } else {
                 this.formData = {
-                  avatar: '',
+                  // avatar: '',
                   username: '',
                   password: '',
                   qrPassword: '',
-                  phone: ''
+                  phone: '',
+                  name: '',
+                  sexValue: ''
                 }
                 this.$toast.loading({
                   mask: true,
@@ -209,7 +254,28 @@ export default {
     },
     toLogin () {
       this.$router.push({ name: 'login' })
+    },
+    onConfirm(value) {
+      this.formData.sexValue = value;
+      this.showPicker = false;
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.label {
+  font-size: 15px;
+  color: #333;
+  .tag {
+    font-size: 9px;
+    color: #9B9B9B;
+    margin-left: 8px;
+  }
+}
+.sexField {
+  margin-left: -15px;
+  margin-top: -10px;
+  margin-bottom: -5px;
+}
+</style>

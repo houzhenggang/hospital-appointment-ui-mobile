@@ -36,6 +36,17 @@ let OLDPEPLE_ROUTER = new Router({
         }
       ]
     }, {
+      path: '/main',
+      name: 'main',
+      component: () => import('@/pages/main/index'),
+      children: [
+        {
+          path: 'userMessage',
+          name: '个人信息',
+          component: () => import('@/views/userMessage/index')
+        }
+      ]
+    }, {
       path: '*',
       redirect: { name: 'userinfo' }
     }

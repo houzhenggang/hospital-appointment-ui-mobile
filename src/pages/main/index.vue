@@ -42,6 +42,7 @@ export default {
     }
     .van-nav-bar__title {
       color: #282828;
+      padding-right: 64px;
     }
   }
   .content {
