@@ -50,6 +50,10 @@ export default {
           name: '医保卡认证',
           icon: '../img/signing-min.png',
           pathName: 'signing'
+        }, {
+          name: '我的预约',
+          icon: '../img/signing-min.png',
+          pathName: '我的预约'
         }
       ]
     }

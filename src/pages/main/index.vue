@@ -37,12 +37,13 @@ export default {
 #main-layout {
   > .van-nav-bar {
     background-color: #fff;
+    height: 60px;
+    line-height: 60px;
     .van-nav-bar__left i:before {
       color: #282828;
     }
     .van-nav-bar__title {
       color: #282828;
-      padding-right: 64px;
     }
   }
   .content {

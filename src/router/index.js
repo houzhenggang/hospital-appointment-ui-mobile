@@ -33,6 +33,11 @@ let OLDPEPLE_ROUTER = new Router({
           path: 'userinfo',
           name: 'userinfo',
           component: () => import('@/views/userinfo/index')
+        },
+        {
+          path: 'orderInspect',
+          name: 'orderInspect',
+          component: () => import('@/views/orderInspect/index')
         }
       ]
     }, {
@@ -44,6 +49,20 @@ let OLDPEPLE_ROUTER = new Router({
           path: 'userMessage',
           name: '个人信息',
           component: () => import('@/views/userMessage/index')
+        },
+        {
+          path: 'orderSearch',
+          component: () => import('@/views/orderSearch/index')
+        },
+        {
+          path: 'orderApplyFor',
+          name: '预约申请',
+          component: () => import('@/views/orderApplyFor/index')
+        },
+        {
+          path: 'orderRecord',
+          name: '我的预约',
+          component: () => import('@/views/orderRecord/index')
         }
       ]
     }, {
