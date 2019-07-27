@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 <template>
-  <div id="register">
+  <div id="userMessage">
     <div @click="sumbit" class="saveBtn">保存</div>
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
@@ -92,7 +92,6 @@
         </div>
       </div>
 
-
       <div class="login-input">
         <div class="label">紧急联系人</div>
         <div class="span">
@@ -123,7 +122,7 @@
 </template>
 
 <script>
-import '../../pages/login/index.scss'
+/* eslint-disable */
 import mixin from '@/mixin/image'
 
 import { setTimeout } from 'timers'
@@ -200,9 +199,88 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#userMessage {
+  margin-bottom: 30px;
+  .title {
+    margin: 60px 30px 0;
+    font-size: 26px;
+  }
+  .uploader {
+    text-align: center;
+    margin-top: 80px;
+    .img-2 {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+    }
+  }
+  .login-form {
+    margin-top: 30px;
+  }
+}
+.login-form {
+  margin-top: 60px;
+  .login-input {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-bottom: 1px solid #eaeaea;
+    .label {
+      font-size: 15px;
+      padding-top: 14px;
+      color: #333;
+      .tag {
+        font-size: 9px;
+        color: #9B9B9B;
+        margin-left: 8px;
+      }
+    }
+    .sexField {
+        margin-left: 15px;
+        margin-top: -10px;
+        margin-bottom: -5px;
+    }
+    .input {
+      text-align: right;
+    }
+    .span {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #666;
+      input {
+        border: 0;
+        background: none;
+        width: 100%;
+        font-size: 14px;
+      }
+      ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color: #989898
+      }
+      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #989898
+      }
+      ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #989898
+      }
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #989898
+      }
+    }
+    .span-sex {
+      width: 44px;
+    }
+    .span-city {
+      width: 90px;
+    }
+  }
+}
+
 .saveBtn {
     position: absolute;
-    top: 14px;
+    top: 20px;
     z-index: 2;
     right: 24px;
     font-family: PingFangSC-Medium;
@@ -211,50 +289,4 @@ export default {
     letter-spacing: 0.94px;
     text-align: center;
 }
-.uploader {
-    margin-top: 80px!important;
-}
-.login-input {
-    display: flex;
-    justify-content: space-between;
-    .label {
-        font-size: 15px;
-        padding-top: 14px;
-        color: #333;
-        .tag {
-            font-size: 9px;
-            color: #9B9B9B;
-            margin-left: 8px;
-        }
-    }
-    .sexField {
-        margin-left: -15px;
-        margin-top: -10px;
-        margin-bottom: -5px;
-    }
-    .span {
-        margin-right: -100px;
-        padding-right: 100px;
-        .input {
-            text-align: right;
-        }
-    }
-    .span-sex {
-        width: 55px;
-        margin-right: -100px;
-        padding-right: 70px;
-    }
-    .span-city {
-        width: 90px;
-        margin-right: -100px;
-        padding-right: 70px;
-    }
-    .cityPicker {
-        margin-right: 0;
-        padding-right: 0;
-        width: calc(100% - 70px);
-    }
-
-}
-
 </style>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div id="orderInspect">
         <img src="./../../../public/image/order/bitmap@2x.png" alt="" class="bitmap">
@@ -15,6 +16,7 @@
 
 
 <script>
+/* eslint-disable */
 export default {
     data() {
         return {

@@ -1,9 +1,9 @@
 #login {
   margin-bottom: 30px;
-  .desc {
-    font-size: 26px;
-    margin-top: 60px;
-    text-align: center;
+  .banner {
+    img {
+      width: 100%;
+    }
   }
 }
 #register {
@@ -26,7 +26,7 @@
   }
 }
 .login-form {
-  margin: 60px 30px 0px;
+  margin: 20px 30px 0px;
   .login-input {
     padding-bottom: 10px;
     margin-bottom: 20px;

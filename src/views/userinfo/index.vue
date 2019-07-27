@@ -1,9 +1,11 @@
+/* eslint-disable */
 <template>
   <div class="user-info">
     <div class="head">
       <div class="avatar">
-        <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
-        <img v-else src="./img/avatar.jpg">
+        <!-- <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
+        <img v-else src="./../../../public/image/me/defaultAvatar@2x.png"> -->
+        <img src="./../../../public/image/me/defaultAvatar@2x.png">
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
@@ -16,7 +18,7 @@
     </div>
     <div class="list">
       <div class="user-list" v-for="(item, index) in list" :key="index"  @click="jumpPage(item.pathName)">
-        <div class="avatar"><img :src="item.icon" alt=""></div>
+        <div class="leftIcon"><img :src="item.icon" alt=""></div>
         <div class="item">
           <div class="title">{{item.name}}</div>
         </div>
@@ -28,6 +30,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapGetters } from 'vuex'
 import './style.scss'
 
@@ -40,19 +43,19 @@ export default {
       list: [
         {
           name: '手机号认证',
-          icon: '../img/archives-min.png',
+          icon: require('./../../../public/image/me/phone@2x.png'),
           pathName: 'archives'
         }, {
           name: '身份证认证',
-          icon: '../img/signing-min.png',
+          icon: require('./../../../public/image/me/credentials_icon@2x.png'),
           pathName: 'signing'
         }, {
           name: '医保卡认证',
-          icon: '../img/signing-min.png',
+          icon: require('./../../../public/image/me/medicare_card@2x.png'),
           pathName: 'signing'
         }, {
           name: '我的预约',
-          icon: '../img/signing-min.png',
+          icon: require('./../../../public/image/me/medicare_card@2x.png'),
           pathName: '我的预约'
         }
       ]

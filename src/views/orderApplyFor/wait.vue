@@ -1,5 +1,7 @@
+/* eslint-disable */
 <template>
     <div id="orderApplyForWait">
+        <div class="TopTitle">南京市第一人民医院</div>
         <img src="./../../../public/image/order/waitBg.png" alt="" class="bitmap">
         <div class="title">您的预约检查申请已提交，</div>
         <div class="title">您可以在【我的预约】里查看详情</div>
@@ -8,8 +10,8 @@
     </div>
 </template>
 
-
 <script>
+/* eslint-disable */
 export default {
     data() {
         return {
@@ -28,6 +30,18 @@ export default {
 #orderApplyForWait {
     background: #F3F3F3;
     height: 100%;
+    .TopTitle {
+        position: absolute;
+        top: 20px;
+        z-index: 3;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: PingFangSC-Medium;
+        font-size: 15px;
+        color: #072E48;
+        letter-spacing: 0.83px;
+        text-align: center;
+    }
     .bitmap {
         width: 51.7vw;
         height: 24vw;

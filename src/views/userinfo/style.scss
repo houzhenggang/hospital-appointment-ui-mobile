@@ -1,6 +1,6 @@
 .user-info {
   .head {
-    background-color: #4c86e6;
+    background: url('./../../../public/image/me/meBg@2x.png') no-repeat;
     display: flex;
     flex-direction: column;
     padding: 20px 16px 20px;
@@ -52,9 +52,14 @@
       background-color: #fff;
       display: flex;
       padding: 15px;
-      .avatar {
-        width: 30px;
-        margin-top: 4px;
+      .leftIcon {
+        width: 20px;
+        height: 20px;
+        padding-top: 9px;
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
       }
       .item {
         padding-left: 10px;

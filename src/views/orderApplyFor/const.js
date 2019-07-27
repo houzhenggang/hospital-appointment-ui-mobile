@@ -1,4 +1,5 @@
 // 个人信息
+/* eslint-disable */
 const cardList = [
     {
       name: '预约机构',

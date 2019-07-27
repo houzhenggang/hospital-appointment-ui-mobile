@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
     <div id="hospitalDetails">
         <div class="TopTitle">南京市第一人民医院</div>
@@ -39,7 +40,7 @@
                 </div>
             </div>
 
-            <van-tabs @click="onClick" color='#245EE5' line-width='24'>
+            <van-tabs @click="onClick" color='#245EE5' :line-width=24>
                 <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
                     <van-collapse v-model="activeNames">
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
@@ -63,8 +64,8 @@
     </div>
 </template>
 
-
 <script>
+/* eslint-disable */
 export default {
     data() {
         return {
@@ -105,6 +106,11 @@ export default {
         }
     },
     methods: {
+        onClick(name, title) {
+            console.log(name)
+            console.log(title)
+            // 更改条件，显示不同的列表
+        },
         order() {
             console.log('预约')
             this.$router.push({ path: '/main/orderApplyFor' })

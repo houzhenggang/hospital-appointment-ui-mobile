@@ -1,6 +1,8 @@
 <template>
   <div id="login">
-    <!-- <div class="desc">{{ desc }}</div> -->
+    <div class="banner">
+      <img src="./../../../public/image/me/loginbg@2x.png" alt="">
+    </div>
     <div class="login-form">
       <div class="login-input">
         <div class="label">用户名</div>
@@ -58,7 +60,6 @@ export default {
   data () {
     return {
       title: '用户登录',
-      desc: '欢迎使用人群健康签约系统',
       codeFocus: false,
       formData: {
         username: '',

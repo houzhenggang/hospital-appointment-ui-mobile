@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 <template>
 <div id="orderApplyFor">
     <div>
@@ -15,8 +15,9 @@
 </template>
 
 <script>
+/* eslint-disable */
 import {
-  cardList,
+  cardList
 } from './const'
 
 export default {
@@ -27,8 +28,7 @@ export default {
   },
   methods: {
     sumbit () {
-        console.log('提交')
-        this.$router.push({ path: '/main/orderApplyForWait' })
+      this.$router.push({ path: '/main/orderApplyForWait' })
     }
   },
   created () {
