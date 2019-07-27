@@ -10,7 +10,7 @@ let OLDPEPLE_ROUTER = new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'userinfo' }
+      redirect: { name: 'orderInspect' }
     }, {
       path: '/login',
       name: 'login',
@@ -27,7 +27,7 @@ let OLDPEPLE_ROUTER = new Router({
       path: '/home',
       name: 'layout',
       component: () => import('@/pages/layout/home'),
-      redirect: { name: 'userinfo' },
+      redirect: { name: 'orderInspect' },
       children: [
         {
           path: 'userinfo',
@@ -55,9 +55,18 @@ let OLDPEPLE_ROUTER = new Router({
           component: () => import('@/views/orderSearch/index')
         },
         {
+          path: 'hospitalDetails',
+          component: () => import('@/views/hospitalDetails/index')
+        },
+        {
           path: 'orderApplyFor',
           name: '预约申请',
           component: () => import('@/views/orderApplyFor/index')
+        },
+        {
+          path: 'orderApplyForWait',
+          name: '预约申请',
+          component: () => import('@/views/orderApplyFor/wait')
         },
         {
           path: 'orderRecord',
