@@ -28,7 +28,7 @@
           <van-field
             readonly
             clickable
-            :value="formData.sexValue"
+            :value="formData.sex === 1 ? '男' : '女'"
             placeholder="请选择您的性别"
             @click="showPicker = true"
             class="sexField"
@@ -56,7 +56,7 @@
         </div>
       </div>
 
-       <div class="login-input">
+       <!-- <div class="login-input">
         <div class="label">所在地</div>
         <div class="span span-city">
           <van-field
@@ -77,20 +77,20 @@
             />
           </van-popup>
         </div>
-      </div>
+      </div> -->
 
-      <div class="login-input">
+      <!-- <div class="login-input">
         <div class="label">详细地址</div>
         <div class="span">
           <input
             ref="name"
             class="input username"
             type="text"
-            v-model="formData.name"
+            v-model="formData.area"
             autocomplete="off"
             placeholder="请填写您的详细地址" />
         </div>
-      </div>
+      </div> -->
 
       <div class="login-input">
         <div class="label">紧急联系人</div>
@@ -124,6 +124,10 @@
 <script>
 /* eslint-disable */
 import mixin from '@/mixin/image'
+import {
+  getUserInfo, userMessageUpdate
+} from '@/api/doctorpeopleinfo/index'
+import { mapGetters } from 'vuex'
 
 import { setTimeout } from 'timers'
 const citys = {
@@ -137,12 +141,13 @@ export default {
     return {
       formData: {
         avatar: '',
-        name: '张芳芳',
-        phone: '15812344321',
-        sexValue: '女',
-        cityValue: '',
-        linkName: '张小林',
-        linkPhone: '13843215678'
+        name: '',
+        phone: '',
+        sex: 1,
+        // cityValue: '',
+        // area: '',
+        linkName: '',
+        linkPhone: ''
       },
       showPicker: false,
       sexColumns: ['男', '女'],
@@ -160,11 +165,45 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['user_info'])
+  },
+  created() {
+    console.log(this.user_info)
+    this.getInfo()
+  },
   methods: {
+    getInfo() {
+      getUserInfo(this.user_info.userId).then(res => {
+        this.formData = res.data.data
+        console.log(this.formData)
+      })
+    },
     sumbit () {
-        console.log('保存')
+      userMessageUpdate(this.formData).then(({ data }) => {
+        if (data.code === 0) {
+          if (!data.data) {
+            this.$notify({
+              message: '未知异常，修改失败',
+              background: '#FF4444'
+            })
+          } else {
+            this.$toast.loading({
+              mask: true,
+              message: '修改成功',
+              duration: 2000
+            })
+          }
+        } else {
+          this.$notify({
+            message: '未知异常，注册失败',
+            background: '#FF4444'
+          })
+        }
+      })
     },
     onRead (file) {
+      debugger
       // let formData = new FormData()
       // formData.append('file', file.file, file.file.name)
       // 在上传前需要将图片进行压缩处理
@@ -187,7 +226,11 @@ export default {
       })
     },
     onConfirm (value) {
-      this.formData.sexValue = value
+      if (value === '男'){
+        this.formData.sex = 1;
+      } else if (value === '女') {
+        this.formData.sex = 2;
+      }
       this.showPicker = false
     },
     onCityConfirm (picker, values) {

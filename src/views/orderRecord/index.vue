@@ -15,11 +15,11 @@
                         </div>
                         <div class="part">
                             <div class="left">预约机构</div>
-                            <div class="right">{{lItem.text1}}</div>
+                            <div class="right">{{lItem.hospitalPhone}}</div>
                         </div>
                         <div class="part">
                             <div class="left">预约人</div>
-                            <div class="right">{{lItem.text1}}</div>
+                            <div class="right"></div>
                         </div>
                     </div>
                     <div class="bottom">
@@ -29,24 +29,35 @@
                     </div>
                 </div>
             </van-tab>
-        </van-tabs> /* eslint-disable */
+        </van-tabs>
     </div>
 </template>
 
 <script>
 /* eslint-disable */
 import { Dialog, Toast } from 'vant';
+import {
+  getOrders, updateOrder
+} from '@/api/doctorapplyorder/index'
+import {
+  getUserInfo
+} from '@/api/doctorpeopleinfo/index'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
             tabList: [{
-                title: '已预约'
+                title: '已预约',
+                orderState: 10,
             }, {
-                title: '已检查'
+                title: '已检查',
+                orderState: 20,
             }, {
-                title: '已过期'
+                title: '已过期',
+                orderState: 30,
             }, {
-                title: '已取消'
+                title: '已取消',
+                orderState: 40
             }],
             list: [{
                 text1: '心电检测',
@@ -56,21 +67,53 @@ export default {
                 text1: '心电检测',
                 time: '2019-05-08 10:10:54',
                 price: 246,
-            }]
+            }],
+            peopleId: ''
         }
     },
+    async created() {
+        await this.getInfo()
+        await this.getOrdersList(this.peopleId, 10)
+    },
+    computed: {
+        ...mapGetters(['user_info'])
+    },
     methods: {
+        async getOrdersList(peopleId, id) {
+            let res = await getOrders(this.peopleId, id)
+            // console.log(res.da)
+            this.list = res.data.data.records
+        },
+        async getInfo() {
+            let value = await getUserInfo(this.user_info.userId)
+            this.peopleId = value.data.data.peopleId
+            console.log(this.peopleId)
+            // .then(res => {
+            //     this.formData = res.data.data
+            // })
+        },
         onClick(name, title) {
             console.log(name)
             console.log(title)
+            this.getOrdersList(this.peopleId, (name +1) * 10)
             // 更改条件，显示不同的列表
         },
         cancelOrder(value) {
+            // applyOrderId 和 orderState
+            const data = {
+                applyOrderId: value.applyOrderId,
+                orderState: 40
+            }
             Dialog.confirm({
                 message: '是否要取消预约'
             }).then(() => {
             // on confirm
-                Toast('取消成功');
+                updateOrder(data).then(res => {
+                    Toast('取消成功');
+                }).catch(err => {
+                    Toast('取消失败');
+                })
+                
             }).catch(() => {
             // on cancel
             });

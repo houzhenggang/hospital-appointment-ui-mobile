@@ -4,8 +4,32 @@
     <div>
         <div class="card-list">
             <van-list class="list">
-                <van-cell v-for="(item, index) in cardList" :key="index" :title="item.name" title-class="leftTitle">
-                    <span class="value">{{item.value}}</span>
+                <van-cell title="预约机构" title-class="leftTitle">
+                    <span class="value">{{hospitalName}}</span>
+                </van-cell>
+                <van-cell title="机构电话" title-class="leftTitle">
+                    <span class="value">{{hospitalPhone}}</span>
+                </van-cell>
+                <van-cell title="机构地址" title-class="leftTitle">
+                    <span class="value">{{addressStreet}}</span>
+                </van-cell>
+                <van-cell title="检查项目" title-class="leftTitle">
+                    <span class="value">{{inspItemName}}</span>
+                </van-cell>
+                <van-cell title="检查费用" title-class="leftTitle">
+                    <span class="value">{{unitPrice}}</span>
+                </van-cell>
+                <van-cell title="预约人" title-class="leftTitle">
+                    <span class="value">{{user_info.username}}</span>
+                </van-cell>
+                <van-cell title="手机号" title-class="leftTitle">
+                    <span class="value">{{user_info.phone}}</span>
+                </van-cell>
+                <van-cell title="身份证号" title-class="leftTitle">
+                    <span class="value">{{user_info.peopleId}}</span>
+                </van-cell>
+                <van-cell title="预约时间" title-class="leftTitle">
+                    <span class="value">{{apply_time}}</span>
                 </van-cell>
             </van-list>
             <div @click="sumbit" class="btn">提交申请</div>
@@ -16,23 +40,81 @@
 
 <script>
 /* eslint-disable */
+// import {
+//   cardList
+// } from './const'
 import {
-  cardList
-} from './const'
+  addOrder
+} from '@/api/doctorapplyorder/index'
+import { mapGetters } from 'vuex'
+import { setTimeout } from 'timers'
 
 export default {
   data () {
     return {
-      cardList: cardList
+    //   cardList: cardList,
+        hospitalName: '南京第一人民医院',
+        hospitalPhone: '13000001111',
+        addressStreet: 'addressStreet',
+        inspItemName: '血常规',
+        unitPrice: '0',
+        name: '张三',
+        iphone: '13000001111',
+        idCard: '',
+        apply_time: '2019年8月21日 8:00-9:00'
     }
+  },
+  computed: {
+    ...mapGetters(['user_info'])
+  },
+  created() {
+    const formData = this.$route.params.formData
+
+    this.hospitalName =  formData.hospitalName
+    this.hospitalPhone =  formData.hospitalPhone
+    // this.addressStreet =  formData.addressStreet
+    this.inspItemName =  formData.inspItemName
+    this.unitPrice =  formData.unitPrice
   },
   methods: {
     sumbit () {
-      this.$router.push({ path: '/main/orderApplyForWait' })
-    }
-  },
-  created () {
+        const data = {
+            hospitalName: this.hospitalName,
+            hospitalPhone: this.hospitalPhone,
+            inspItemName: this.inspItemName,
+            unitPrice: this.unitPrice,
+            apply_time: this.apply_time,
+            userName: this.user_info.username,
+            peopleId: this.user_info.peopleId,
+            orderState: 10
+        }
+        addOrder(data).then((res) => {
+            if (res.data.code === 0) {
+                if (!res.data.data) {
+                    this.$notify({
+                    message: '未知异常，提交申请失败',
+                    background: '#FF4444'
+                    })
+                } else {
+                    this.$toast.loading({
+                        mask: true,
+                        message: '提交申请成功',
+                        duration: 2000
+                    })
+                    setTimeout(() => {
+                        this.$router.push({ path: '/main/orderApplyForWait' })
+                    })
 
+                    }
+                } else {
+                this.$notify({
+                    message: '未知异常，提交申请失败',
+                    background: '#FF4444'
+                })
+            }
+        })
+    //   this.$router.push({ path: '/main/orderApplyForWait' })
+    }
   }
 }
 </script>

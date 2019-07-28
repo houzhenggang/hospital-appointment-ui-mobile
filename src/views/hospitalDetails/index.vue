@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
     <div id="hospitalDetails">
-        <div class="TopTitle">南京市第一人民医院</div>
+        <div class="TopTitle">{{formData.hospitalName}}</div>
         <div class="banner">
             <img src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
         </div>
@@ -11,7 +11,7 @@
         </div>
         <div class="message">
             <img src="./../../../public/image/order/phone.png" alt=""  class="left">
-            <span class="right">400-928-1199（8:00 — 20:00）</span>
+            <span class="right">{{formData.hospitalPhone}}</span>
         </div>
         <div class="project">
             <div class="left">
@@ -19,11 +19,11 @@
                     <div class="flag"></div>
                     <span class="title-t">检查项目及费用</span>
                 </div>
-                <span class="p-name">心电图检测</span>
+                <span class="p-name">{{formData.inspItemName}}</span>
             </div>
             <div class="right">
                 <span class="r-text">项目费用</span>
-                <span class="r-price">¥98</span>
+                <span class="r-price">¥{{formData.unitPrice}}</span>
                 <img src="./../../../public/image/order/rightArrow.png" alt="" class="r-arrow">
             </div>
         </div>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <span class="r-text">今天是2019年8月20日 星期二</span>
+                    <span class="r-text">{{this.currentTime}}</span>
                 </div>
             </div>
 
@@ -66,9 +66,14 @@
 
 <script>
 /* eslint-disable */
+import {
+  hospitalDetail
+} from '@/api/doctorinspectresource/index'
 export default {
     data() {
         return {
+            formData: {},
+            currentTime: '',
             value: '',
             activeNames: ['0'],
             tabList: [{
@@ -105,7 +110,21 @@ export default {
             }]
         }
     },
+    created() {
+        let value = new Date()
+        this.currentTime = '今天是' + `${value.getFullYear() + '年' + (value.getMonth() + 1) + '月' + value.getDate() + '日'}` + ' 星期'+'日一二三四五六'.charAt(new Date().getDay())
+        console.log(this.currentTime)
+
+        const id = this.$route.query.inspResourceId
+        this.getHospitalDetail(id)
+    },
     methods: {
+        getHospitalDetail(value) {
+            hospitalDetail(value).then((res) => {
+                // console.log(res.data)
+                this.formData = res.data.data
+            })
+        },
         onClick(name, title) {
             console.log(name)
             console.log(title)
@@ -113,7 +132,8 @@ export default {
         },
         order() {
             console.log('预约')
-            this.$router.push({ path: '/main/orderApplyFor' })
+            this.$router.push({ name: '预约申请', params: { formData: this.formData } })
+            // this.$router.push({ path: '/main/orderApplyFor', query: { formData: this.formData } })
         }
     }
 }

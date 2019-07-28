@@ -29,7 +29,7 @@
           <van-field
             readonly
             clickable
-            :value="formData.sexValue"
+            :value="formData.sex === 1 ? '男' : '女'"
             placeholder="请选择您的性别"
             @click="showPicker = true"
             class="sexField"
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import '../login/index.scss'
 import mixin from '@/mixin/image'
 
@@ -126,11 +127,10 @@ export default {
         // avatar: '',
         username: '',
         name: '',
-        sex: '',
+        sex: 1,
         password: '',
         qrPassword: '',
-        phone: '',
-        sexValue: ''
+        phone: ''
       },
       showPicker: false,
       sexColumns: ['男', '女']
@@ -220,7 +220,7 @@ export default {
                   qrPassword: '',
                   phone: '',
                   name: '',
-                  sexValue: ''
+                  sex: ''
                 }
                 this.$toast.loading({
                   mask: true,
@@ -256,7 +256,11 @@ export default {
       this.$router.push({ name: 'login' })
     },
     onConfirm(value) {
-      this.formData.sexValue = value;
+      if (value === '男'){
+        this.formData.sex = 1;
+      } else if (value === '女') {
+        this.formData.sex = 2;
+      }
       this.showPicker = false;
     }
   }

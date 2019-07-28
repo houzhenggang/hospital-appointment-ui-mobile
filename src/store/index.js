@@ -5,7 +5,6 @@ import { encryption } from '@/utils/'
 import { setStore, getStore } from '@/utils/store'
 import getters from './getters'
 import { getDictAll as getAdminDictAll } from '@/api/admin/dict'
-import { getDictAll as getBaseDictAll } from '@/api/base/dict'
 import {
   getUserInfo as getArchivesInfo
 } from '@/api/archives/index'
@@ -135,13 +134,10 @@ export default new Vuex.Store({
       })
     },
     GetDictAll ({ commit }) {
-      let adminDict = getAdminDictAll()
-      let baseDict = getBaseDictAll()
       return new Promise((resolve) => {
-        Promise.all([adminDict, baseDict]).then((values) => {
-          let data1 = values[0].data.data
-          let data2 = values[1].data.data
-          commit('SET_DICT_ALL', { ...data1, ...data2 })
+        getAdminDictAll().then((values) => {
+          let data = values.data.data
+          commit('SET_DICT_ALL', { ...data })
           resolve()
         })
       })

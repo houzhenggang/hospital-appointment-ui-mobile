@@ -14,7 +14,6 @@
     </div>
 </template>
 
-
 <script>
 /* eslint-disable */
 export default {
@@ -26,7 +25,7 @@ export default {
     methods: {
         onSearch() {
             console.log('搜索')
-            this.$router.push({ path: '/main/orderSearch' })
+            this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
         }
     }
 }

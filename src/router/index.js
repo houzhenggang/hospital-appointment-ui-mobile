@@ -65,6 +65,7 @@ let OLDPEPLE_ROUTER = new Router({
         },
         {
           path: 'orderApplyForWait',
+          name: '预约申请等待',
           component: () => import('@/views/orderApplyFor/wait')
         },
         {

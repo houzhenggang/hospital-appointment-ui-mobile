@@ -52,6 +52,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { randomLenNum } from '@/utils/index'
 
 import './index.scss'

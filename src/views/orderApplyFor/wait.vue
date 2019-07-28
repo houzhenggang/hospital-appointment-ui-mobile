@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
     <div id="orderApplyForWait">
-        <div class="TopTitle">南京市第一人民医院</div>
+        <!-- <div class="TopTitle"></div> -->
         <img src="./../../../public/image/order/waitBg.png" alt="" class="bitmap">
         <div class="title">您的预约检查申请已提交，</div>
         <div class="title">您可以在【我的预约】里查看详情</div>

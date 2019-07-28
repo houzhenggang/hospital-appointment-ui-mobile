@@ -10,19 +10,25 @@
             <div @click="showPopup" class="filter">筛选</div>
         </section>
         <section class="box">
-            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail">
+            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId)">
                 <div class="left">
                     <img :src="item.image" alt="">
                 </div>
                 <div class="middle">
-                    <span class="hospital">{{item.name}}</span>
-                    <span class="phone">电话：{{item.phone}}</span>
-                    <span class="project">{{item.text}}</span>
+                    <span class="hospital">{{item.hospitalName}}</span>
+                    <span class="hospitalPhone">电话：{{item.hospitalPhone}}</span>
+                    <span class="project">{{item.inspItemName}}</span>
                 </div>
                 <div class="right">
-                    <span class="num" :class="{gray: item.num === 0}">{{item.num}}</span>
-                    <span class="suffix">可预约</span>
-                    <van-icon name="arrow" />
+                    <div class="r-top">
+                        <span class="num" :class="{gray: item.quantity === 0}">{{item.quantity}}</span>
+                        <span class="suffix">可预约</span>
+                        <van-icon name="arrow"  class="r-arrow"/>
+                    </div>
+                    <div class="r-bottom">
+                        <span class="p-text">项目费用</span>
+                        <span class="unitPrice">¥{{item.unitPrice}}</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -38,7 +44,7 @@
                 <van-field
                     readonly
                     clickable
-                    :value="startTime.toString()"
+                    :value="currentTime.toString()"
                     placeholder="请选择开始时间"
                     @click="showStartPicker = true"
                     class="timeContent"
@@ -48,7 +54,7 @@
                 <van-field
                     readonly
                     clickable
-                    :value="endTime.toString()"
+                    :value="currentTime.toString()"
                     placeholder="请选择截止时间"
                     @click="showEndPicker = true"
                     class="timeContent"
@@ -63,14 +69,14 @@
 
             <van-popup v-model="showStartPicker" position="bottom">
                 <van-datetime-picker
-                    v-model="startTime"
+                    v-model="startTimeValue"
                     @cancel="showStartPicker = false"
                     @confirm="onStartConfirm"
                 />
             </van-popup>
             <van-popup v-model="showEndPicker" position="bottom">
                 <van-datetime-picker
-                    v-model="endTime"
+                    v-model="endTimeValue"
                     type="datetime"
                     @cancel="showEndPicker = false"
                     @confirm="onEndConfirm"
@@ -83,6 +89,9 @@
 
 <script>
 /* eslint-disable */
+import {
+  getHospitalList, getHospitalListWithTime
+} from '@/api/doctorinspectresource/index'
 export default {
     data() {
         return {
@@ -91,48 +100,70 @@ export default {
             showStartPicker: false,
             showEndPicker: false,
             list: [{
-                image: require('./../../../public/assets/touxiang_nan.png'),
-                name: '南京市第一人民医院',
-                phone: '025-9876543',
-                text: '心电图检测',
-                num: 188
+                createTime: '2019-07-26 21:21:30',
+                delFlag: '0',
+                hospitalName: '体格检查',
+                inspItemName: '五官科检查',
+                inspResourceId: 1,
+                updateTime: '2019-07-26 21:22:22',
+                version: 1
             }, {
                 image: require('./../../../public/assets/touxiang_nan.png'),
                 name: '南京市第一人民医院',
-                phone: '025-9876543',
+                hospitalPhone: '025-9876543',
                 text: '心电图检测',
                 num: 0
             }],
-            startTime: new Date(),
-            endTime: new Date()
+            currentTime: new Date(),
+            startTimeValue: new Date(),
+            endTimeValue: new Date(),
+            startTime: '',
+            endTime: ''
         }
     },
+    created() {
+        this.value = this.$route.query.data
+        this.getHospitalLists()
+    },
     methods: {
+        getHospitalLists() {
+            const current = 1
+            getHospitalList(this.value, current).then((res) => {
+                this.list = res.data.data.records
+                console.log(this.list)
+            })
+        },
         onSearch() {
+            this.getHospitalLists()
             console.log('搜索')
         },
         onCancel() {
             console.log('取消')
         },
-        toDetail() {
+        toDetail(inspResourceId) {
             console.log('去医院详情页')
-            this.$router.push({ path: '/main/hospitalDetails' })
+            this.$router.push({ path: '/main/hospitalDetails', query: { inspResourceId: inspResourceId } })
         },
         showPopup() {
             this.show = true;
         },
         onStartConfirm(value) {
-            console.log(value)
-            this.startTime = value
+            this.startTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate() + ' ' + value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds()}`
+            this.startTime = this.startTimeValue.toString()
             this.showStartPicker = false;
         },
         onEndConfirm(value) {
-            this.endTime = value.toString()
+            this.endTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate() + ' ' + value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds()}`
+            this.endTime = this.endTimeValue.toString()
             this.showEndPicker = false;
         },
         toFilter() {
             this.show = false
-            console.log('筛选')
+            const current = 1
+            getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
+                this.list = res.data.data.records
+                console.log(this.list)
+            })
         }
     }
 }
@@ -167,6 +198,7 @@ export default {
             align-items: center;
             border-bottom: 1px solid rgba(151,151,151,0.11);
             padding: 15px 18px;
+            position: relative;
             .left {
                 flex: 0 0 24%;
                 width: 24%;
@@ -189,11 +221,12 @@ export default {
                     color: #333333;
                     letter-spacing: 0.78px;
                 }
-                .phone {
+                .hospitalPhone {
                     font-family: PingFangSC-Regular;
                     font-size: 11px;
                     color: #4A4A4A;
                     letter-spacing: 0.71px;
+                    margin-top: 4px;
                 }
                 .project {
                     font-family: PingFangSC-Medium;
@@ -213,14 +246,33 @@ export default {
                     text-align: center;
                     line-height: 16px;
                 }
-                .num {
-                    color: #245EE5;
+                .r-top {
+                    margin-top: -12px;
+                    .num {
+                        color: #245EE5;
+                    }
+                    .gray {
+                        color: #9B9B9B;
+                    }
+                    .suffix {
+                        color: #000000;
+                    }
+                    .r-arrow {
+                        vertical-align: middle;
+                    }
                 }
-                .gray {
-                    color: #9B9B9B;
-                }
-                .suffix {
-                    color: #000000;
+                .r-bottom {
+                    position: absolute;
+                    margin-top: 8px;
+                    margin-right: 21px;
+                    .p-text {
+                        color: #9B9B9B;
+                        margin-right: 6px;
+                    }
+                    .unitPrice {
+                        font-size: 15px;
+                        color: #ca1249;
+                    }
                 }
             }
         }
