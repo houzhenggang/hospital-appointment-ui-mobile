@@ -44,7 +44,7 @@
                 <van-field
                     readonly
                     clickable
-                    :value="currentTime.toString()"
+                    :value="startTime.toString()"
                     placeholder="请选择开始时间"
                     @click="showStartPicker = true"
                     class="timeContent"
@@ -54,7 +54,7 @@
                 <van-field
                     readonly
                     clickable
-                    :value="currentTime.toString()"
+                    :value="endTime.toString()"
                     placeholder="请选择截止时间"
                     @click="showEndPicker = true"
                     class="timeContent"
@@ -70,6 +70,7 @@
             <van-popup v-model="showStartPicker" position="bottom">
                 <van-datetime-picker
                     v-model="startTimeValue"
+                    :min-date="minDate"
                     @cancel="showStartPicker = false"
                     @confirm="onStartConfirm"
                 />
@@ -114,6 +115,7 @@ export default {
                 text: '心电图检测',
                 num: 0
             }],
+            minDate: new Date(),
             currentTime: new Date(),
             startTimeValue: new Date(),
             endTimeValue: new Date(),

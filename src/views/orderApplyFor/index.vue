@@ -32,6 +32,27 @@
                     <span class="value">{{apply_time}}</span>
                 </van-cell>
             </van-list>
+            <div class="login-input">
+                <div class="label">详细时间</div>
+                <div class="span span-sex">
+                    <van-field
+                        readonly
+                        clickable
+                        :value="detailTime"
+                        placeholder="请选择预约检查详细时间"
+                        @click="showPicker = true"
+                        class="sexField"
+                    />
+                    <van-popup v-model="showPicker" position="bottom" class="cityPicker">
+                        <van-picker
+                        show-toolbar
+                        :columns="sexColumns"
+                        @cancel="showPicker = false"
+                        @confirm="onConfirm"
+                        />
+                    </van-popup>
+                </div>
+            </div>
             <div @click="sumbit" class="btn">提交申请</div>
         </div>
     </div>
@@ -69,7 +90,10 @@ export default {
         idCard: '',
         apply_time: '2019年8月21日 8:00-9:00',
         userValue: {},
-        hospitalValue: {}
+        hospitalValue: {},
+        detailTime: '',
+        showPicker: false,
+        sexColumns: ['男', '女'],
     }
   },
   computed: {
@@ -158,6 +182,15 @@ export default {
             }
         })
     //   this.$router.push({ path: '/main/orderApplyForWait' })
+    },
+    onConfirm (value) {
+        console.log(value)
+        // if (value === '男'){
+        //     this.formData.sex = 1;
+        // } else if (value === '女') {
+        //     this.formData.sex = 2;
+        // }
+        this.showPicker = false
     }
   }
 }
@@ -176,6 +209,7 @@ export default {
                 font-size: 14px;
                 color: #333333;
                 letter-spacing: 0.78px;
+                flex: 0 0 100px;
             }
             .value {
                 font-family: PingFangSC-Regular;
@@ -198,6 +232,33 @@ export default {
             color: #FFFFFF;
             letter-spacing: 0.94px;
             margin-top: 31px;
+        }
+        .login-input {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-bottom: 1px solid #eaeaea;
+            background: #FFF;
+            .label {
+                font-family: PingFangSC-Medium;
+                font-size: 14px;
+                color: #333333;
+                letter-spacing: 0.78px;
+                padding-top: 16px;
+            }
+            .sexField {
+                margin-left: 15px;
+                margin-top: -10px;
+                margin-bottom: -10px;
+            }
+            .span {
+                margin-top: 14px;
+                font-size: 14px;
+                color: #666;
+            }
         }
     }
 }

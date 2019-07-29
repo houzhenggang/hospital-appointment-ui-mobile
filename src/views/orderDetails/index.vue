@@ -29,7 +29,7 @@
                     <span class="value">{{peopleIdcard}}</span>
                 </van-cell>
                 <van-cell title="预约时间" title-class="leftTitle">
-                    <span class="value">{{orderValue.applyTime}}</span>
+                    <span class="value">{{orderValue.detailTime}}</span>
                 </van-cell>
             </van-list>
         </div>

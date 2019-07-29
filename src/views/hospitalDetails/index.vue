@@ -7,7 +7,7 @@
         </div>
         <div class="message">
                 <img src="./../../../public/image/order/map.png" alt="" class="left">
-                <span class="right">南京市秦淮区长乐路68号</span>
+                <span class="right">{{hospitalValue.address}}</span>
         </div>
         <div class="message">
             <img src="./../../../public/image/order/phone.png" alt=""  class="left">
@@ -69,6 +69,9 @@
 import {
   hospitalDetail
 } from '@/api/doctorinspectresource/index'
+import {
+  hospitalData, getHospitalDict
+} from '@/api/doctorhospital/index'
 export default {
     data() {
         return {
@@ -76,6 +79,8 @@ export default {
             currentTime: '',
             value: '',
             activeNames: ['0'],
+            hospitalValue: {},
+            hospitalDict: {},
             tabList: [{
                 title: '近一周'
             }, {
@@ -110,20 +115,30 @@ export default {
             }]
         }
     },
-    created() {
+    async created() {
         let value = new Date()
         this.currentTime = '今天是' + `${value.getFullYear() + '年' + (value.getMonth() + 1) + '月' + value.getDate() + '日'}` + ' 星期'+'日一二三四五六'.charAt(new Date().getDay())
         console.log(this.currentTime)
 
         const id = this.$route.query.inspResourceId
-        this.getHospitalDetail(id)
+        await this.getHospitalDetail(id)
+        await this.getHospitalData()
+        await this.getHospitalDictData()
     },
     methods: {
-        getHospitalDetail(value) {
-            hospitalDetail(value).then((res) => {
-                // console.log(res.data)
-                this.formData = res.data.data
-            })
+        async getHospitalDetail(value) {
+            let res = await hospitalDetail(value)
+            this.formData = res.data.data
+        },
+        async getHospitalData() {
+            const result = this.formData.hospitalId
+            let res = await hospitalData(result)
+            this.hospitalValue = res.data.data
+        },
+        async getHospitalDictData() {
+            let res = await getHospitalDict()
+            this.hospitalDict = res.data.data
+            console.log(this.hospitalDict)
         },
         onClick(name, title) {
             console.log(name)

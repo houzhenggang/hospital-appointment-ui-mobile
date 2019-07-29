@@ -11,7 +11,7 @@
                         </div>
                         <div class="part">
                             <div class="left">预约时间</div>
-                            <div class="right">{{lItem.applyTime}}</div>
+                            <div class="right">{{lItem.detailTime}}</div>
                         </div>
                         <div class="part">
                             <div class="left">预约机构</div>
@@ -155,7 +155,7 @@ export default {
         }
         .bottom {
             display: flex;
-            margin-top: 12px;
+            margin-top: 18px;
             .left {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
