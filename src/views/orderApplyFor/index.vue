@@ -46,6 +46,12 @@
 import {
   addOrder
 } from '@/api/doctorapplyorder/index'
+import {
+  hospitalDetail
+} from '@/api/doctorinspectresource/index'
+import {
+  getUserInfo
+} from '@/api/doctorpeopleinfo/index'
 import { mapGetters } from 'vuex'
 import { setTimeout } from 'timers'
 
@@ -61,7 +67,9 @@ export default {
         name: '张三',
         iphone: '13000001111',
         idCard: '',
-        apply_time: '2019年8月21日 8:00-9:00'
+        apply_time: '2019年8月21日 8:00-9:00',
+        userValue: {},
+        hospitalValue: {}
     }
   },
   computed: {
@@ -75,17 +83,53 @@ export default {
     // this.addressStreet =  formData.addressStreet
     this.inspItemName =  formData.inspItemName
     this.unitPrice =  formData.unitPrice
+
+    const id = this.$route.params.inspResourceId
+    this.getInfo()
+    this.getHospitalDetail(id)
   },
   methods: {
+      async getInfo() {
+            let value = await getUserInfo(this.user_info.userId)
+            this.userValue = value.data.data
+            console.log(this.userValue)
+            // .then(res => {
+            //     this.formData = res.data.data
+            // })
+        },
+      getHospitalDetail(value) {
+            hospitalDetail(value).then((res) => {
+                // console.log(res.data)
+                this.hospitalValue = res.data.data
+                console.log(this.hospitalValue)
+            })
+        },
+    //   hospitalId，hospitalName，hospitalPhone，hospitalAddr，
+    //   peopleId，peopleName，peopleIdcard，peoplePhone，
+    //   insptItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
+
     sumbit () {
         const data = {
-            hospitalName: this.hospitalName,
-            hospitalPhone: this.hospitalPhone,
-            inspItemName: this.inspItemName,
-            unitPrice: this.unitPrice,
-            apply_time: this.apply_time,
+            hospitalId: '',
+            hospitalName: this.hospitalValue.hospitalName,
+            hospitalPhone: this.hospitalValue.hospitalPhone,
+            hospitalAddr: '',
+
+            peopleId: this.userValue.peopleId,
+            peopleName: this.userValue.name,
+            peopleIdcard: '',
+            peoplePhone: this.userValue.phone,
+
+            insptItemId: this.hospitalValue.insptItemId,
+            inspItemName: this.hospitalValue.inspItemName,
+            insptResourceId: this.hospitalValue.insptResourceId,
+
+            feeTotal: this.hospitalValue.unitPrice,
+            quantity: this.hospitalValue.quantity,
+            detailTime: '',
+            // unitPrice: this.unitPrice,
+            applyTime: this.apply_time,
             userName: this.user_info.username,
-            peopleId: this.user_info.peopleId,
             orderState: 10
         }
         addOrder(data).then((res) => {

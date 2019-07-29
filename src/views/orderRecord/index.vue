@@ -1,17 +1,17 @@
 /* eslint-disable */
 <template>
     <div id="orderRecord">
-        <van-tabs @click="onClick" color='#999'>
+        <van-tabs @click="onClick" color='#235FE3'>
             <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
                 <div v-for="(lItem, lIndex) in list" :key="lIndex" class="list">
-                    <div class="top">
+                    <div class="top" @click="toDetails(lItem.applyOrderId)">
                         <div class="part">
                             <div class="left">预约项目</div>
-                            <div class="right">{{lItem.text1}}</div>
+                            <div class="right">{{lItem.inspItemName}}</div>
                         </div>
                         <div class="part">
                             <div class="left">预约时间</div>
-                            <div class="right">{{lItem.time}}</div>
+                            <div class="right">{{lItem.applyTime}}</div>
                         </div>
                         <div class="part">
                             <div class="left">预约机构</div>
@@ -19,13 +19,13 @@
                         </div>
                         <div class="part">
                             <div class="left">预约人</div>
-                            <div class="right"></div>
+                            <div class="right">{{lItem.peopleName}}</div>
                         </div>
                     </div>
                     <div class="bottom">
                         <span class="left">项目费用</span>
-                        <span class="middle">¥{{lItem.price}}</span>
-                        <button class="right" @click="cancelOrder(lItem)">取消</button>
+                        <span class="middle">¥{{lItem.feeTotal}}</span>
+                        <button class="right" @click="cancelOrder(lItem)" v-if="tabNum === 0">取消</button>
                     </div>
                 </div>
             </van-tab>
@@ -59,16 +59,9 @@ export default {
                 title: '已取消',
                 orderState: 40
             }],
-            list: [{
-                text1: '心电检测',
-                time: '2019-05-08 10:10:54',
-                price: 246,
-            }, {
-                text1: '心电检测',
-                time: '2019-05-08 10:10:54',
-                price: 246,
-            }],
-            peopleId: ''
+            list: [],
+            peopleId: '',
+            tabNum: 0
         }
     },
     async created() {
@@ -95,6 +88,7 @@ export default {
         onClick(name, title) {
             console.log(name)
             console.log(title)
+            this.tabNum = name
             this.getOrdersList(this.peopleId, (name +1) * 10)
             // 更改条件，显示不同的列表
         },
@@ -117,6 +111,10 @@ export default {
             }).catch(() => {
             // on cancel
             });
+        },
+        toDetails(applyOrderId) {
+            this.$router.push({ name: '预约详情', query: {applyOrderId: applyOrderId}})
+            // this.$router.push({ name: '预约详情', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId } })
         }
     }
 }

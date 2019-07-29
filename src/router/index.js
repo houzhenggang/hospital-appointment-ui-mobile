@@ -72,6 +72,11 @@ let OLDPEPLE_ROUTER = new Router({
           path: 'orderRecord',
           name: '我的预约',
           component: () => import('@/views/orderRecord/index')
+        },
+        {
+          path: 'orderDetails',
+          name: '预约详情',
+          component: () => import('@/views/orderDetails/index')
         }
       ]
     }, {

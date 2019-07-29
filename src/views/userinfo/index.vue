@@ -3,9 +3,10 @@
   <div class="user-info">
     <div class="head">
       <div class="avatar">
-        <!-- <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
-        <img v-else src="./../../../public/image/me/defaultAvatar@2x.png"> -->
-        <img src="./../../../public/image/me/defaultAvatar@2x.png">
+        <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
+        <img v-else src="./../../../public/image/me/defaultAvatar@2x.png">
+        <!-- <img src="./../../../public/image/me/defaultAvatar@2x.png"> -->
+        
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>

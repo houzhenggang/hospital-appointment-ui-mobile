@@ -4,9 +4,11 @@
     <div @click="sumbit" class="saveBtn">保存</div>
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
-        <img :src="'../img/register-photo-min.png'" alt="" v-if="!formData.avatar">
+        <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.avatar" class="defaultImg">
+        <!-- <img :src="'../img/register-photo-min.png'" alt="" v-if="!formData.avatar"> -->
         <img class="img-2" v-else :src="`/api/admin/file/${formData.avatar}`">
       </van-uploader>
+      <div class="defaultText">点击修改头像</div>
     </div>
     <div class="login-form">
       <div class="login-input">
@@ -251,10 +253,22 @@ export default {
   .uploader {
     text-align: center;
     margin-top: 80px;
+    .defaultImg {
+      width: 80px;
+      height: 80px;
+    }
     .img-2 {
       width: 90px;
       height: 90px;
       border-radius: 50%;
+    }
+    .defaultText {
+      font-family: PingFangSC-Medium;
+      font-size: 10px;
+      color: #9B9B9B;
+      letter-spacing: 0.94px;
+      text-align: center;
+      margin-top: 11px;
     }
   }
   .login-form {

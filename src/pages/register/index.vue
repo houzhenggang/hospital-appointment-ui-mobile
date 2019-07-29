@@ -26,14 +26,17 @@
       <div class="login-input">
         <div class="label">性别</div>
         <div class="span">
-          <van-field
-            readonly
-            clickable
-            :value="formData.sex === 1 ? '男' : '女'"
-            placeholder="请选择您的性别"
-            @click="showPicker = true"
-            class="sexField"
-          />
+          <div class="otherBox">
+            <van-field
+              readonly
+              clickable
+              :value="formData.sex === 1 ? '男' : '女'"
+              placeholder="请选择您的性别"
+              @click="showPicker = true"
+              class="sexField"
+            />
+            <div class="icon"><van-icon name="arrow" /></div>
+          </div>
           <van-popup v-model="showPicker" position="bottom">
             <van-picker
               show-toolbar
@@ -280,6 +283,9 @@ export default {
 .sexField {
   margin-left: -15px;
   margin-top: -10px;
-  margin-bottom: -5px;
+  margin-bottom: -12px;
+}
+.otherBox {
+  display: flex;
 }
 </style>

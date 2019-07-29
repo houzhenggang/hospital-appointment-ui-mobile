@@ -22,6 +22,10 @@ export const getOrders= (peopleId, orderState) => {
   return request.get(`${baseUrl}/page?peopleId=${peopleId}&&orderState=${orderState}`)
 }
 
+export const getOrderValue= (applyOrderId) => {
+  return request.get(`${baseUrl}/${applyOrderId}`)
+}
+
 export const updateOrder= (data) => {
   return request.put(`${baseUrl}`, data)
 }

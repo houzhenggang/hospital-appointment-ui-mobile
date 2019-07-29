@@ -24,7 +24,7 @@
             <div class="right">
                 <span class="r-text">项目费用</span>
                 <span class="r-price">¥{{formData.unitPrice}}</span>
-                <img src="./../../../public/image/order/rightArrow.png" alt="" class="r-arrow">
+                <!-- <img src="./../../../public/image/order/rightArrow.png" alt="" class="r-arrow"> -->
             </div>
         </div>
         <div class="orderTime">
@@ -132,7 +132,7 @@ export default {
         },
         order() {
             console.log('预约')
-            this.$router.push({ name: '预约申请', params: { formData: this.formData } })
+            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId } })
             // this.$router.push({ path: '/main/orderApplyFor', query: { formData: this.formData } })
         }
     }
