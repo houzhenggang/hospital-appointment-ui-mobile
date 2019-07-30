@@ -52,6 +52,7 @@
                         />
                     </van-popup>
                 </div>
+                <van-icon name="arrow" class="r-arrow" />
             </div>
             <div @click="sumbit" class="btn">提交申请</div>
         </div>
@@ -280,6 +281,10 @@ export default {
                 font-size: 14px;
                 color: #666;
                 width: 220px;
+            }
+            .r-arrow {
+                padding-top: 16px;
+                color: #999;
             }
         }
     }

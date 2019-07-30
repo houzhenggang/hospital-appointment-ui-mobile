@@ -12,7 +12,8 @@
         <section class="box">
             <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId)">
                 <div class="left">
-                    <img :src="item.image" alt="">
+                    <img :src="item.image" alt="" v-if="item.image">
+                    <img src="./../../../public/image/order/hospitalBanner.png" alt="" v-else>
                 </div>
                 <div class="middle">
                     <span class="hospital">{{item.hospitalName}}</span>

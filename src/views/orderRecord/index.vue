@@ -156,7 +156,7 @@ export default {
         }
         .bottom {
             display: flex;
-            margin-top: 18px;
+            margin-top: 24px;
             .left {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
