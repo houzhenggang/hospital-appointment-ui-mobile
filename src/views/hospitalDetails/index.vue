@@ -42,7 +42,7 @@
 
             <van-tabs @click="onClick" color='#245EE5' :line-width=24>
                 <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
-                    <van-collapse v-model="activeNames" accordion>
+                    <van-collapse v-model="activeNames" accordion v-if="thisWeek.length > 0">
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
                             <div slot="title" class="v-title" @click="toGetGroupDetail(lItem,lIndex)">
                                 <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
@@ -58,6 +58,7 @@
                             </div>
                         </van-collapse-item>
                     </van-collapse>
+                    <div v-else class="tips">暂无数据</div>
                 </van-tab>
             </van-tabs> 
         </div>
@@ -363,6 +364,14 @@ export default {
                     background: #D8D8D8;
                 }
             }
+        }
+        .tips {
+            font-family: PingFangSC-Medium;
+            font-size: 13px;
+            color: #9B9B9B;
+            letter-spacing: 0.72px;
+            text-align: center;
+            margin-top: 84px;
         }
     }
 }

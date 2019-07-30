@@ -3,31 +3,34 @@
     <div id="orderRecord">
         <van-tabs @click="onClick" color='#235FE3'>
             <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
-                <div v-for="(lItem, lIndex) in list" :key="lIndex" class="list">
-                    <div class="top" @click="toDetails(lItem.applyOrderId)">
-                        <div class="part">
-                            <div class="left">预约项目</div>
-                            <div class="right">{{lItem.inspItemName}}</div>
+                <div v-if="list.length > 0">
+                    <div v-for="(lItem, lIndex) in list" :key="lIndex" class="list">
+                        <div class="top" @click="toDetails(lItem.applyOrderId)">
+                            <div class="part">
+                                <div class="left">预约项目</div>
+                                <div class="right">{{lItem.inspItemName}}</div>
+                            </div>
+                            <div class="part">
+                                <div class="left">预约时间</div>
+                                <div class="right">{{lItem.detailTime}}</div>
+                            </div>
+                            <div class="part">
+                                <div class="left">预约机构</div>
+                                <div class="right">{{lItem.hospitalPhone}}</div>
+                            </div>
+                            <div class="part">
+                                <div class="left">预约人</div>
+                                <div class="right">{{lItem.peopleName}}</div>
+                            </div>
                         </div>
-                        <div class="part">
-                            <div class="left">预约时间</div>
-                            <div class="right">{{lItem.detailTime}}</div>
+                        <div class="bottom">
+                            <span class="left">项目费用</span>
+                            <span class="middle">¥{{lItem.feeTotal}}</span>
+                            <button class="right" @click="cancelOrder(lItem)" v-if="tabNum === 0">取消</button>
                         </div>
-                        <div class="part">
-                            <div class="left">预约机构</div>
-                            <div class="right">{{lItem.hospitalPhone}}</div>
-                        </div>
-                        <div class="part">
-                            <div class="left">预约人</div>
-                            <div class="right">{{lItem.peopleName}}</div>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <span class="left">项目费用</span>
-                        <span class="middle">¥{{lItem.feeTotal}}</span>
-                        <button class="right" @click="cancelOrder(lItem)" v-if="tabNum === 0">取消</button>
                     </div>
                 </div>
+                <div v-else class="tips">暂无数据</div>
             </van-tab>
         </van-tabs>
     </div>
@@ -126,11 +129,12 @@ export default {
     background: #F7F7F7;
     height: 100%;
     .list {
-        background: url('./../../../public/image/me/card@2x.png') no-repeat;
-        background-size: 100% 100%;
         height: 44vw;
-        width: 100%;
         margin: 0 auto;
+        background: #FDFDFD;
+        margin: 20px;
+        border-radius: 4px;
+        box-shadow: 0 0 12px #8e8d8da3;
         .top {
             padding-left: 21px;
             padding-top: 14px;
@@ -156,7 +160,9 @@ export default {
         }
         .bottom {
             display: flex;
-            margin-top: 24px;
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px dashed #afaeb0;
             .left {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
@@ -189,6 +195,14 @@ export default {
                 border-radius: 4px;
             }
         }
+    }
+    .tips {
+        font-family: PingFangSC-Medium;
+        font-size: 13px;
+        color: #9B9B9B;
+        letter-spacing: 0.72px;
+        text-align: center;
+        margin-top: 40%;
     }
 }
 </style>

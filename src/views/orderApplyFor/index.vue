@@ -102,6 +102,13 @@ export default {
   },
   async created() {
     const formData = this.$route.params.formData
+    if (!formData) {
+        this.$notify({
+            message: '请返回上层重新选择预约时间',
+            background: '#FF4444'
+        })
+        return
+    }
 
     this.hospitalName =  formData.hospitalName
     this.hospitalPhone =  formData.hospitalPhone
