@@ -16,4 +16,16 @@ export const hospitalDetail = (inspResourceId) => {
     return request.get(`${baseUrl}/${inspResourceId}`)
   }
 
-// /doctorinspectresource/{inspResourceId}
+// 获取可预约时间组
+export const timeGroupDetail = (startDate, endDate) => {
+  return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}`)
+}
+
+export const groupDetail = (queryDate, inspItemAp) => {
+  return request.get(`${baseUrl}/detail/group?queryDate=${queryDate}&&inspItemAp=${inspItemAp}`)
+}
+
+// 获取详细时间
+export const getDetailTime = (startTime, endTime, hospitalId, inspItemName) => {
+  return request.get(`${baseUrl}/list/?startTime=${startTime}&&endTime=${endTime}&&hospitalId=${hospitalId}&&inspItemName=${inspItemName}`)
+}

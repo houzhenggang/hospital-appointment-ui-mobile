@@ -68,7 +68,7 @@ import {
   addOrder
 } from '@/api/doctorapplyorder/index'
 import {
-  hospitalDetail
+  hospitalDetail, getDetailTime
 } from '@/api/doctorinspectresource/index'
 import {
   getUserInfo
@@ -99,7 +99,7 @@ export default {
   computed: {
     ...mapGetters(['user_info'])
   },
-  created() {
+  async created() {
     const formData = this.$route.params.formData
 
     this.hospitalName =  formData.hospitalName
@@ -109,30 +109,55 @@ export default {
     this.unitPrice =  formData.unitPrice
 
     const id = this.$route.params.inspResourceId
-    this.getInfo()
-    this.getHospitalDetail(id)
+    await this.getInfo()
+    await this.getHospitalDetail(id)
+    
+    const timeDetail = this.$route.params.timeDetail
+    
+    let str = timeDetail.inspItemDate
+    let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
+    this.apply_time = result + ' ' + timeDetail.period
+    await this.getDetailTimeList()
   },
   methods: {
-      async getInfo() {
-            let value = await getUserInfo(this.user_info.userId)
-            this.userValue = value.data.data
-            console.log(this.userValue)
-            // .then(res => {
-            //     this.formData = res.data.data
-            // })
-        },
-      getHospitalDetail(value) {
-            hospitalDetail(value).then((res) => {
-                // console.log(res.data)
-                this.hospitalValue = res.data.data
-                console.log(this.hospitalValue)
+        async getDetailTimeList() {
+            const timeDetail = this.$route.params.timeDetail
+            let startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
+            let endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
+
+            let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
+            console.log(res.data.data)
+
+            this.sexColumns = res.data.data.map((item,index) => {
+                let str = item.inspItemDate
+                let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
+                let res1 = item.startTime.split(' ')[1].slice(0, 5)
+                let res2 = item.endTime.split(' ')[1].slice(0, 5)
+                let list = `${result} ${res1}-${res2}`
+                console.log(list)
+                return list
             })
         },
+        async getInfo() {
+                let value = await getUserInfo(this.user_info.userId)
+                this.userValue = value.data.data
+            },
+        async getHospitalDetail(value) {
+                let res = await hospitalDetail(value)
+                this.hospitalValue = res.data.data
+            },
     //   hospitalId，hospitalName，hospitalPhone，hospitalAddr，
     //   peopleId，peopleName，peopleIdcard，peoplePhone，
     //   insptItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
 
     sumbit () {
+        if (!this.detailTime) {
+            this.$notify({
+                message: '请选择详细时间',
+                background: '#FF4444'
+            })
+            return
+        }
         const data = {
             hospitalId: '',
             hospitalName: this.hospitalValue.hospitalName,
@@ -150,7 +175,7 @@ export default {
 
             feeTotal: this.hospitalValue.unitPrice,
             quantity: this.hospitalValue.quantity,
-            detailTime: '',
+            detailTime: this.detailTime,
             // unitPrice: this.unitPrice,
             applyTime: this.apply_time,
             userName: this.user_info.username,
@@ -185,11 +210,7 @@ export default {
     },
     onConfirm (value) {
         console.log(value)
-        // if (value === '男'){
-        //     this.formData.sex = 1;
-        // } else if (value === '女') {
-        //     this.formData.sex = 2;
-        // }
+        this.detailTime = value
         this.showPicker = false
     }
   }
@@ -258,6 +279,7 @@ export default {
                 margin-top: 14px;
                 font-size: 14px;
                 color: #666;
+                width: 220px;
             }
         }
     }

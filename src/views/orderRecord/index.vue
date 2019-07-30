@@ -103,6 +103,7 @@ export default {
             }).then(() => {
             // on confirm
                 updateOrder(data).then(res => {
+                    this.getOrdersList(this.peopleId, 10)
                     Toast('取消成功');
                 }).catch(err => {
                     Toast('取消失败');

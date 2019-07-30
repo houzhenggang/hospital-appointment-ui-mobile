@@ -42,18 +42,18 @@
 
             <van-tabs @click="onClick" color='#245EE5' :line-width=24>
                 <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
-                    <van-collapse v-model="activeNames">
+                    <van-collapse v-model="activeNames" accordion>
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
-                            <div slot="title" class="v-title">
-                                <div class="left">{{lItem.title}}</div>
-                                <div class="right" v-if="lItem.num === 0">已满</div>
-                                <div class="right exist" v-if="lItem.num > 0">有空缺</div>
+                            <div slot="title" class="v-title" @click="toGetGroupDetail(lItem,lIndex)">
+                                <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
+                                <div class="right" v-if="lItem.quantity === 0">已满</div>
+                                <div class="right exist" v-if="lItem.quantity > 0">有空缺</div>
                             </div>
                             <div class="content">
                                 <div v-for="(tItem, tIndex) in timeList" :key="tIndex" class="tList">
-                                    <div class="timeSlot">{{tItem.timeSlot}}</div>
-                                    <div class="noNum" v-if="tItem.num === 0">已满</div>
-                                    <div class="seatNum" v-if="tItem.num > 0" @click="order">预约</div>
+                                    <div class="timeSlot">{{tItem.period}}</div>
+                                    <div class="noNum" v-if="tItem.quantity === 0">已满</div>
+                                    <div class="seatNum" v-if="tItem.quantity > 0" @click="order(tItem)">预约</div>
                                 </div>
                             </div>
                         </van-collapse-item>
@@ -67,7 +67,7 @@
 <script>
 /* eslint-disable */
 import {
-  hospitalDetail
+  hospitalDetail, timeGroupDetail, groupDetail
 } from '@/api/doctorinspectresource/index'
 import {
   hospitalData, getHospitalDict
@@ -81,6 +81,7 @@ export default {
             activeNames: ['0'],
             hospitalValue: {},
             hospitalDict: {},
+            timeGroup: {},
             tabList: [{
                 title: '近一周'
             }, {
@@ -93,26 +94,7 @@ export default {
                 title: '8月22日  星期四 下午',
                 num: 2
             }],
-            nextWeek: [{
-                title: '8月25日  星期三 下午',
-                num: 0
-            }, {
-                title: '8月26日  星期四 下午',
-                num: 2
-            }],
-            timeList: [{
-                timeSlot: '8:00-9:00',
-                num: 1
-            }, {
-                timeSlot: '9:00-10:00',
-                num: 0
-            }, {
-                timeSlot: '10:00-11:00',
-                num: 13
-            }, {
-                timeSlot: '11:00-12:00',
-                num: 3
-            }]
+            timeList: {}
         }
     },
     async created() {
@@ -124,6 +106,7 @@ export default {
         await this.getHospitalDetail(id)
         await this.getHospitalData()
         await this.getHospitalDictData()
+        await this.getTimeGroup()
     },
     methods: {
         async getHospitalDetail(value) {
@@ -140,17 +123,81 @@ export default {
             this.hospitalDict = res.data.data
             console.log(this.hospitalDict)
         },
+        async getTimeGroup(name) {
+            let value = new Date()
+            let startValue, startDate, endValue, endDate
+            if (!name || name === 0) {
+                // 近一周
+                startDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
+                endValue = new Date(value.getTime() + 1000*60*60*24*7)
+                endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
+            } else {
+                // 下一周
+                startValue = new Date(value.getTime() + 1000*60*60*24*8)
+                startDate = `${startValue.getFullYear() + '-' + (startValue.getMonth() + 1) + '-' + startValue.getDate()}`
+    
+                endValue = new Date(value.getTime() + 1000*60*60*24*15)
+                endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
+            }
+            let res = await timeGroupDetail(startDate, endDate)
+            this.thisWeek = res.data.data
+            console.log(res)
+        },
+        async toGetGroupDetail(value, index) {
+            await this.getGroupDetail(value, index)
+        },
+        getGroupDetail(value, index) {
+            groupDetail(value.inspItemDate, value.inspItemAp).then(res => {
+                console.log(res)
+            this.timeList = res.data.data.map(item => {
+                switch(item.period) {
+                    case '1': 
+                        item.period = '8:00-9:00'
+                        break
+                    case '2': 
+                        item.period = '9:00-10:00'
+                        break
+                    case '3': 
+                        item.period = '10:00-11:00'
+                        break
+                    case '4': 
+                        item.period = '11:00-12:00'
+                        break
+                    case '5': 
+                        item.period = '13:00-14:00'
+                        break
+                    case '6': 
+                        item.period = '14:00-15:00'
+                        break
+                    case '7': 
+                        item.period = '15:00-16:00'
+                        break
+                    case '8': 
+                        item.period = '16:00-17:00'
+                        break
+                }
+                return item
+            })
+            this.thisWeek[index].timeList = this.timeList
+            console.log(this.thisWeek)
+            })
+        },
+        aaa(value) {
+            console.log(value)
+        },
         onClick(name, title) {
             console.log(name)
             console.log(title)
             // 更改条件，显示不同的列表
+            this.getTimeGroup(name)
         },
-        order() {
+        order(value) {
+            console.log(value)
             console.log('预约')
-            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId } })
+            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId, timeDetail: value } })
             // this.$router.push({ path: '/main/orderApplyFor', query: { formData: this.formData } })
         }
-    }
+    } 
 }
 </script>
 
