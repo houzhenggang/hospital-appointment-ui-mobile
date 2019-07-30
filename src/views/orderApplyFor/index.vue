@@ -34,25 +34,27 @@
             </van-list>
             <div class="login-input">
                 <div class="label">详细时间</div>
-                <div class="span span-sex">
-                    <van-field
-                        readonly
-                        clickable
-                        :value="detailTime"
-                        placeholder="请选择预约检查详细时间"
-                        @click="showPicker = true"
-                        class="sexField"
-                    />
-                    <van-popup v-model="showPicker" position="bottom" class="cityPicker">
-                        <van-picker
-                        show-toolbar
-                        :columns="sexColumns"
-                        @cancel="showPicker = false"
-                        @confirm="onConfirm"
+                <div class="l-right">
+                    <div class="span span-sex">
+                        <van-field
+                            readonly
+                            clickable
+                            :value="detailTime"
+                            placeholder="       请选择预约检查详细时间"
+                            @click="showPicker = true"
+                            class="sexField"
                         />
-                    </van-popup>
+                        <van-popup v-model="showPicker" position="bottom" class="cityPicker">
+                            <van-picker
+                            show-toolbar
+                            :columns="sexColumns"
+                            @cancel="showPicker = false"
+                            @confirm="onConfirm"
+                            />
+                        </van-popup>
+                    </div>
+                    <van-icon name="arrow" class="r-arrow" />
                 </div>
-                <van-icon name="arrow" class="r-arrow" />
             </div>
             <div @click="sumbit" class="btn">提交申请</div>
         </div>
@@ -278,6 +280,10 @@ export default {
                 letter-spacing: 0.78px;
                 padding-top: 16px;
             }
+            .l-right {
+                display: flex;
+                justify-content: flex-end;
+            }
             .sexField {
                 margin-left: 15px;
                 margin-top: -10px;
@@ -290,7 +296,7 @@ export default {
                 width: 220px;
             }
             .r-arrow {
-                padding-top: 16px;
+                padding-top: 18px;
                 color: #999;
             }
         }

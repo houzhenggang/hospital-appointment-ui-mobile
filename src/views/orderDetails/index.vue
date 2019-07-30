@@ -29,6 +29,9 @@
                     <span class="value">{{peopleIdcard}}</span>
                 </van-cell>
                 <van-cell title="预约时间" title-class="leftTitle">
+                    <span class="value">{{orderValue.applyTime}}</span>
+                </van-cell>
+                <van-cell title="详细时间" title-class="leftTitle">
                     <span class="value">{{orderValue.detailTime}}</span>
                 </van-cell>
             </van-list>
@@ -84,6 +87,7 @@ export default {
                 font-size: 14px;
                 color: #333333;
                 letter-spacing: 0.78px;
+                flex: 0 0 100px;
             }
             .value {
                 font-family: PingFangSC-Regular;
