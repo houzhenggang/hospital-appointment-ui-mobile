@@ -221,7 +221,7 @@ export default {
         order(value) {
             console.log(value)
             console.log('预约')
-            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId, timeDetail: value } })
+            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId, timeDetail: value, address: this.hospitalValue.address } })
             // this.$router.push({ path: '/main/orderApplyFor', query: { formData: this.formData } })
         }
     } 

@@ -85,7 +85,7 @@ export default {
     //   cardList: cardList,
         hospitalName: '南京第一人民医院',
         hospitalPhone: '13000001111',
-        addressStreet: 'addressStreet',
+        addressStreet: '',
         inspItemName: '血常规',
         unitPrice: '0',
         name: '张三',
@@ -114,10 +114,10 @@ export default {
         })
         return
     }
+    this.addressStreet = this.$route.params.address
 
     this.hospitalName =  formData.hospitalName
     this.hospitalPhone =  formData.hospitalPhone
-    // this.addressStreet =  formData.addressStreet
     this.inspItemName =  formData.inspItemName
     this.unitPrice =  formData.unitPrice
 
