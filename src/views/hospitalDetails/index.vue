@@ -11,7 +11,7 @@
         </div>
         <div class="message">
             <img src="./../../../public/image/order/phone.png" alt=""  class="left">
-            <span class="right">{{formData.hospitalPhone}}</span>
+            <span class="right">{{hospitalValue.phone}}</span>
         </div>
         <div class="project">
             <div class="left">
@@ -73,6 +73,9 @@ import {
 import {
   hospitalData, getHospitalDict
 } from '@/api/doctorhospital/index'
+import {
+  getInspectionitemDict
+} from '@/api/doctorinspectionitem/index'
 export default {
     data() {
         return {
@@ -95,7 +98,9 @@ export default {
                 title: '8月22日  星期四 下午',
                 num: 2
             }],
-            timeList: {}
+            timeList: {},
+            hospitalDict: {},
+            inspectionitemDict: {}
         }
     },
     async created() {
@@ -104,15 +109,35 @@ export default {
         console.log(this.currentTime)
 
         const id = this.$route.query.inspResourceId
+        await this.getHospitalDictData()
+        await this.getInspectionitemDictValue()
         await this.getHospitalDetail(id)
         await this.getHospitalData()
-        await this.getHospitalDictData()
         await this.getTimeGroup()
     },
     methods: {
+        async getInspectionitemDictValue() {
+            let res = await getInspectionitemDict()
+            this.inspectionitemDict = res.data.data
+            // inspectionitemDict
+        },
         async getHospitalDetail(value) {
             let res = await hospitalDetail(value)
             this.formData = res.data.data
+
+            this.hospitalDict.forEach(element => {
+                if (this.formData.hospitalName === element.hospitalId) {
+                    this.formData.hospitalId = element.hospitalId
+                    this.formData.hospitalName = element.name
+                }
+            })
+
+
+            this.inspectionitemDict.forEach(element => {
+                if (this.formData.inspItemName === element.inspItemId) {
+                    this.formData.inspItemName = element.inspItemName
+                }
+            })
         },
         async getHospitalData() {
             const result = this.formData.hospitalId

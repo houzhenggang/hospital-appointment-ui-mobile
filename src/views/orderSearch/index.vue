@@ -12,8 +12,8 @@
         <section class="box">
             <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId)">
                 <div class="left">
-                    <img :src="item.image" alt="" v-if="item.image">
-                    <img src="./../../../public/image/order/hospitalBanner.png" alt="" v-else>
+                    <!-- <img :src="item.image" alt="" v-if="item.image"> -->
+                    <img src="./../../../public/image/order/hospitalBanner.png" alt="">
                 </div>
                 <div class="middle">
                     <span class="hospital">{{item.hospitalName}}</span>
@@ -95,6 +95,13 @@
 import {
   getHospitalList, getHospitalListWithTime
 } from '@/api/doctorinspectresource/index'
+import {
+  getHospitalDict
+} from '@/api/doctorhospital/index'
+import {
+  getInspectionitemDict
+} from '@/api/doctorinspectionitem/index'
+
 export default {
     data() {
         return {
@@ -102,40 +109,50 @@ export default {
             show: false,
             showStartPicker: false,
             showEndPicker: false,
-            list: [{
-                createTime: '2019-07-26 21:21:30',
-                delFlag: '0',
-                hospitalName: '体格检查',
-                inspItemName: '五官科检查',
-                inspResourceId: 1,
-                updateTime: '2019-07-26 21:22:22',
-                version: 1
-            }, {
-                image: require('./../../../public/assets/touxiang_nan.png'),
-                name: '南京市第一人民医院',
-                hospitalPhone: '025-9876543',
-                text: '心电图检测',
-                num: 0
-            }],
+            list: [],
             minDate: new Date(),
             currentTime: new Date(),
             startTimeValue: new Date(),
             endTimeValue: new Date(),
             startTime: '',
-            endTime: ''
+            endTime: '',
+            hospitalDict: {},
+            inspectionitemDict: {}
         }
     },
-    created() {
+    async created() {
         this.value = this.$route.query.data
-        this.getHospitalLists()
+        await this.getHospitalDictValue()
+        await this.getInspectionitemDictValue()
+        await this.getHospitalLists()
     },
     methods: {
-        getHospitalLists() {
+        async getHospitalLists() {
             const current = 1
-            getHospitalList(this.value, current).then((res) => {
-                this.list = res.data.data.records
-                console.log(this.list)
+            let res = await getHospitalList(this.value, current)
+            this.list = res.data.data.records.map(item => {
+                this.hospitalDict.forEach(element => {
+                    if (item.hospitalName === element.hospitalId) {
+                        item.hospitalName = element.name
+                    }
+                })
+                this.inspectionitemDict.forEach(element => {
+                    if (item.inspItemName === element.inspItemId) {
+                        item.inspItemName = element.inspItemName
+                    }
+                })
+                return item
             })
+        },
+        async getHospitalDictValue() {
+            let res = await getHospitalDict()
+            this.hospitalDict = res.data.data
+            // hospitalDict
+        },
+        async getInspectionitemDictValue() {
+            let res = await getInspectionitemDict()
+            this.inspectionitemDict = res.data.data
+            // inspectionitemDict
         },
         onSearch() {
             this.getHospitalLists()
