@@ -17,8 +17,8 @@ export const hospitalDetail = (inspResourceId) => {
   }
 
 // 获取可预约时间组
-export const timeGroupDetail = (startDate, endDate) => {
-  return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}`)
+export const timeGroupDetail = (startDate, endDate, hospitalId) => {
+  return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}&&hospitalId=${hospitalId}`)
 }
 
 export const groupDetail = (queryDate, inspItemAp) => {

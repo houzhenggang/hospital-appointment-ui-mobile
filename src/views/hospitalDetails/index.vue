@@ -165,7 +165,8 @@ export default {
                 endValue = new Date(value.getTime() + 1000*60*60*24*15)
                 endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
             }
-            let res = await timeGroupDetail(startDate, endDate)
+            let hospitalId = this.formData.hospitalId
+            let res = await timeGroupDetail(startDate, endDate, hospitalId)
             this.thisWeek = res.data.data
             console.log(res)
         },
