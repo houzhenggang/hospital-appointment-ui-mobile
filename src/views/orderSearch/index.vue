@@ -198,9 +198,11 @@ export default {
 <style lang="scss" scoped>
 #orderSearch {
     position: relative;
+    width: 100%;
+    height: 100%;
     .search {
-        position: absolute;
-        top: -41px;
+        position: fixed;
+        top: 5px;
         z-index: 2;
         right: 0;
         width: calc(100% - 30px);

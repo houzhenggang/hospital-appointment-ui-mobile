@@ -233,7 +233,7 @@ export default {
     background: #F3F3F3;
     height: 100%;
     .TopTitle {
-        position: absolute;
+        position: fixed;
         top: 20px;
         z-index: 3;
         left: 50%;
