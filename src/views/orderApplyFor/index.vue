@@ -177,7 +177,7 @@ export default {
             hospitalId: this.hospitalValue.hospitalId,
             hospitalName: this.hospitalValue.hospitalName,
             hospitalPhone: this.hospitalValue.hospitalPhone,
-            hospitalAddr: '',
+            hospitalAddr: this.addressStreet,
 
             peopleId: this.userValue.peopleId,
             peopleName: this.userValue.name,
