@@ -16,7 +16,7 @@
                             </div>
                             <div class="part">
                                 <div class="left">预约机构</div>
-                                <div class="right">{{lItem.hospitalPhone}}</div>
+                                <div class="right">{{lItem.hospitalName}}</div>
                             </div>
                             <div class="part">
                                 <div class="left">预约人</div>
