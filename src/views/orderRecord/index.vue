@@ -54,7 +54,7 @@ export default {
                 orderState: 10,
             }, {
                 title: '已检查',
-                orderState: 20,
+                orderState: 50,
             }, {
                 title: '已过期',
                 orderState: 30,
@@ -91,8 +91,13 @@ export default {
         onClick(name, title) {
             console.log(name)
             console.log(title)
+
             this.tabNum = name
-            this.getOrdersList(this.peopleId, (name +1) * 10)
+            if (title === '已检查') {
+                this.getOrdersList(this.peopleId, 50)
+            } else {
+                this.getOrdersList(this.peopleId, (name +1) * 10)
+            }
             // 更改条件，显示不同的列表
         },
         cancelOrder(value) {

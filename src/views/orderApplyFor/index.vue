@@ -47,7 +47,7 @@
                         <van-popup v-model="showPicker" position="bottom" class="cityPicker">
                             <van-picker
                             show-toolbar
-                            :columns="sexColumns"
+                            :columns="timeColumns"
                             @cancel="showPicker = false"
                             @confirm="onConfirm"
                             />
@@ -96,7 +96,10 @@ export default {
         hospitalValue: {},
         detailTime: '',
         showPicker: false,
-        sexColumns: ['男', '女'],
+        timeColumns: [],
+        detailTimeList: {},
+        startTime: '',
+        endTime: ''
     }
   },
   computed: {
@@ -137,8 +140,9 @@ export default {
 
             let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
             console.log(res.data.data)
+            this.detailTimeList = res.data.data
 
-            this.sexColumns = res.data.data.map((item,index) => {
+            this.timeColumns = res.data.data.map((item,index) => {
                 let str = item.inspItemDate
                 let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
                 let res1 = item.startTime.split(' ')[1].slice(0, 5)
@@ -189,7 +193,9 @@ export default {
             // unitPrice: this.unitPrice,
             applyTime: this.apply_time,
             userName: this.user_info.username,
-            orderState: 10
+            orderState: 10,
+            startTime: this.startTime,
+            endTime: this.endTime
         }
         addOrder(data).then((res) => {
             if (res.data.code === 0) {
@@ -218,9 +224,13 @@ export default {
         })
     //   this.$router.push({ path: '/main/orderApplyForWait' })
     },
-    onConfirm (value) {
+    onConfirm (value, index) {
         console.log(value)
         this.detailTime = value
+        
+        this.startTime = this.detailTimeList[index].startTime
+        this.endTime = this.detailTimeList[index].endTime
+        
         this.showPicker = false
     }
   }
