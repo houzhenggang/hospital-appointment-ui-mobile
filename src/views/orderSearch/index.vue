@@ -126,9 +126,13 @@ export default {
         await this.getInspectionitemDictValue()
         await this.getHospitalLists()
     },
+    watch: {
+        '$route': 'getHospitalLists'
+    },
     methods: {
         async getHospitalLists() {
             const current = 1
+            this.value = this.$route.query.data
             let res = await getHospitalList(this.value, current)
             this.list = res.data.data.records.map(item => {
                 this.hospitalDict.forEach(element => {
