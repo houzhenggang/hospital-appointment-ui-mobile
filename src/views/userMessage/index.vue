@@ -30,7 +30,7 @@
           <van-field
             readonly
             clickable
-            :value="formData.sex === 1 ? '男' : '女'"
+            :value="Number(formData.sex) === 1 ? '男' : '女'"
             placeholder="请选择您的性别"
             @click="showPicker = true"
             class="sexField"
@@ -205,7 +205,6 @@ export default {
       })
     },
     onRead (file) {
-      debugger
       // let formData = new FormData()
       // formData.append('file', file.file, file.file.name)
       // 在上传前需要将图片进行压缩处理
