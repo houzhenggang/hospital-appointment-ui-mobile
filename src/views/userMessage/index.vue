@@ -10,7 +10,7 @@
       </van-uploader>
       <div class="defaultText">点击修改头像</div>
     </div>
-    <div class="login-form">
+    <div class="userMessage-form">
       <div class="login-input">
         <div class="label">姓名</div>
         <div class="span">
@@ -245,10 +245,6 @@ export default {
 <style lang="scss" scoped>
 #userMessage {
   margin-bottom: 30px;
-  .title {
-    margin: 60px 30px 0;
-    font-size: 26px;
-  }
   .uploader {
     text-align: center;
     margin-top: 80px;
@@ -270,79 +266,76 @@ export default {
       margin-top: 11px;
     }
   }
-  .login-form {
-    margin-top: 30px;
-  }
-}
-.login-form {
-  margin-top: 60px;
-  .login-input {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
-    border-bottom: 1px solid #eaeaea;
-    .label {
-      font-size: 15px;
-      padding-top: 14px;
-      color: #333;
-      .tag {
-        font-size: 9px;
-        color: #9B9B9B;
-        margin-left: 8px;
+  .userMessage-form {
+    margin-top: 60px;
+    .login-input {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+      border-bottom: 1px solid #eaeaea;
+      .label {
+        font-size: 15px;
+        padding-top: 14px;
+        color: #333;
+        .tag {
+          font-size: 9px;
+          color: #9B9B9B;
+          margin-left: 8px;
+        }
       }
-    }
-    .sexField {
-        margin-left: 15px;
-        margin-top: -10px;
-        margin-bottom: -5px;
-    }
-    .input {
-      text-align: right;
-    }
-    .span {
-      margin-top: 14px;
-      font-size: 14px;
-      color: #666;
-      input {
-        border: 0;
-        background: none;
-        width: 100%;
+      .sexField {
+          margin-left: 15px;
+          margin-top: -10px;
+          margin-bottom: -5px;
+      }
+      .input {
+        text-align: right;
+      }
+      .span {
+        margin-top: 14px;
         font-size: 14px;
+        color: #666;
+        input {
+          border: 0;
+          background: none;
+          width: 100%;
+          font-size: 14px;
+        }
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color: #989898
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+          color: #989898
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+          color: #989898
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color: #989898
+        }
       }
-      ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color: #989898
+      .span-sex {
+        width: 44px;
       }
-      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: #989898
+      .span-city {
+        width: 90px;
       }
-      ::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: #989898
-      }
-      :-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: #989898
-      }
-    }
-    .span-sex {
-      width: 44px;
-    }
-    .span-city {
-      width: 90px;
     }
   }
-}
 
-.saveBtn {
-    position: absolute;
-    top: 20px;
-    z-index: 2;
-    right: 24px;
-    font-family: PingFangSC-Medium;
-    font-size: 14px;
-    color: #4A4A4A;
-    letter-spacing: 0.94px;
-    text-align: center;
+  .saveBtn {
+      position: fixed;
+      top: 20px;
+      z-index: 2;
+      right: 24px;
+      font-family: PingFangSC-Medium;
+      font-size: 14px;
+      color: #4A4A4A;
+      letter-spacing: 0.94px;
+      text-align: center;
+  }
 }
 </style>
