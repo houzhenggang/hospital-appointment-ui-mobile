@@ -132,12 +132,12 @@ export default {
             let res = await getHospitalList(this.value, current)
             this.list = res.data.data.records.map(item => {
                 this.hospitalDict.forEach(element => {
-                    if (item.hospitalName === element.hospitalId) {
+                    if (item.hospitalId === element.hospitalId) {
                         item.hospitalName = element.name
                     }
                 })
                 this.inspectionitemDict.forEach(element => {
-                    if (item.inspItemName === element.inspItemId) {
+                    if (item.inspItemId === element.inspItemId) {
                         item.inspItemName = element.inspItemName
                     }
                 })

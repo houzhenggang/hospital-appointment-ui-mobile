@@ -162,7 +162,7 @@ export default {
             },
     //   hospitalId，hospitalName，hospitalPhone，hospitalAddr，
     //   peopleId，peopleName，peopleIdcard，peoplePhone，
-    //   insptItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
+    //   inspItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
 
     sumbit () {
         if (!this.detailTime) {
@@ -173,7 +173,7 @@ export default {
             return
         }
         const data = {
-            hospitalId: '',
+            hospitalId: this.hospitalValue.hospitalId,
             hospitalName: this.hospitalValue.hospitalName,
             hospitalPhone: this.hospitalValue.hospitalPhone,
             hospitalAddr: '',
@@ -183,7 +183,7 @@ export default {
             peopleIdcard: '',
             peoplePhone: this.userValue.phone,
 
-            insptItemId: this.hospitalValue.insptItemId,
+            inspItemId: this.hospitalValue.inspItemId,
             inspItemName: this.hospitalValue.inspItemName,
             insptResourceId: this.hospitalValue.insptResourceId,
 
