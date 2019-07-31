@@ -4,11 +4,11 @@ import request from '@/router/axios'
 let baseUrl = '/api/base/doctorinspectresource'
 
 export const getHospitalList = (data, current) => {
-  return request.get(`${baseUrl}/page?inspItemName=${data}&&current=${current}&&size=10`)
+  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10`)
 }
 
 export const getHospitalListWithTime = (data, current, startTime, endTime) => {
-  return request.get(`${baseUrl}/page?inspItemName=${data}&&current=${current}&&size=10&&startTime=${startTime}&&endTime=${endTime}`)
+  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10&&startTime=${startTime}&&endTime=${endTime}`)
 //   return request.get(`${baseUrl}/page?inspItemName=${data}&&current=${current}&&size=10`)
 }
 
@@ -17,12 +17,12 @@ export const hospitalDetail = (inspResourceId) => {
   }
 
 // 获取可预约时间组
-export const timeGroupDetail = (startDate, endDate, hospitalId) => {
-  return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}&&hospitalId=${hospitalId}`)
+export const timeGroupDetail = (startDate, endDate, hospitalId, inspItemId) => {
+  return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}&&hospitalId=${hospitalId}&&inspItemId=${inspItemId}`)
 }
 
-export const groupDetail = (queryDate, inspItemAp) => {
-  return request.get(`${baseUrl}/detail/group?queryDate=${queryDate}&&inspItemAp=${inspItemAp}`)
+export const groupDetail = (queryDate, inspItemAp, inspItemId) => {
+  return request.get(`${baseUrl}/detail/group?queryDate=${queryDate}&&inspItemAp=${inspItemAp}&&inspItemId=${inspItemId}`)
 }
 
 // 获取详细时间

@@ -99,7 +99,8 @@ export default {
         timeColumns: [],
         detailTimeList: {},
         startTime: '',
-        endTime: ''
+        endTime: '',
+        inspResourceId: ''
     }
   },
   computed: {
@@ -195,7 +196,8 @@ export default {
             userName: this.user_info.username,
             orderState: 10,
             startTime: this.startTime,
-            endTime: this.endTime
+            endTime: this.endTime,
+            inspResourceId: this.inspResourceId
         }
         addOrder(data).then((res) => {
             if (res.data.code === 0) {
@@ -230,6 +232,7 @@ export default {
         
         this.startTime = this.detailTimeList[index].startTime
         this.endTime = this.detailTimeList[index].endTime
+        this.inspResourceId = this.detailTimeList[index].inspResourceId
         
         this.showPicker = false
     }

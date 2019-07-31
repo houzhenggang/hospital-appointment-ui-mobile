@@ -166,7 +166,8 @@ export default {
                 endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
             }
             let hospitalId = this.formData.hospitalId
-            let res = await timeGroupDetail(startDate, endDate, hospitalId)
+            let inspItemId = this.formData.inspItemId
+            let res = await timeGroupDetail(startDate, endDate, hospitalId, inspItemId)
             this.thisWeek = res.data.data
             console.log(res)
         },
@@ -174,7 +175,7 @@ export default {
             await this.getGroupDetail(value, index)
         },
         getGroupDetail(value, index) {
-            groupDetail(value.inspItemDate, value.inspItemAp).then(res => {
+            groupDetail(value.inspItemDate, value.inspItemAp, this.formData.inspItemId).then(res => {
                 console.log(res)
             this.timeList = res.data.data.map(item => {
                 switch(item.period) {
