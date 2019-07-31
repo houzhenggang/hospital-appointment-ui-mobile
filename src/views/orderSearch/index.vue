@@ -80,6 +80,7 @@
                 <van-datetime-picker
                     v-model="endTimeValue"
                     type="datetime"
+                    :min-date="minDate"
                     @cancel="showEndPicker = false"
                     @confirm="onEndConfirm"
                 />
@@ -163,6 +164,7 @@ export default {
         toFilter() {
             this.show = false
             const current = 1
+            // getHospitalListWithTime(this.value, current, this.startTime, '2019-08-03 16:59:58').then((res) => {
             getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
                 this.list = res.data.data.records
                 console.log(this.list)
