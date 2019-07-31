@@ -175,7 +175,7 @@ export default {
             await this.getGroupDetail(value, index)
         },
         getGroupDetail(value, index) {
-            groupDetail(value.inspItemDate, value.inspItemAp, this.formData.inspItemId).then(res => {
+            groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId).then(res => {
                 console.log(res)
             this.timeList = res.data.data.map(item => {
                 switch(item.period) {

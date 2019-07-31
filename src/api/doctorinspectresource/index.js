@@ -21,8 +21,8 @@ export const timeGroupDetail = (startDate, endDate, hospitalId, inspItemId) => {
   return request.get(`${baseUrl}/list/group?startDate=${startDate}&&endDate=${endDate}&&hospitalId=${hospitalId}&&inspItemId=${inspItemId}`)
 }
 
-export const groupDetail = (queryDate, inspItemAp, inspItemId) => {
-  return request.get(`${baseUrl}/detail/group?queryDate=${queryDate}&&inspItemAp=${inspItemAp}&&inspItemId=${inspItemId}`)
+export const groupDetail = (queryDate, inspItemAp, hospitalId, inspItemId) => {
+  return request.get(`${baseUrl}/detail/group?queryDate=${queryDate}&&inspItemAp=${inspItemAp}&&hospitalId=${hospitalId}&&inspItemId=${inspItemId}`)
 }
 
 // 获取详细时间
