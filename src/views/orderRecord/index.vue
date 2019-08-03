@@ -12,7 +12,7 @@
                             </div>
                             <div class="part">
                                 <div class="left">预约时间</div>
-                                <div class="right">{{lItem.detailTime}}</div>
+                                <div class="right">{{lItem.applyTime}}</div>
                             </div>
                             <div class="part">
                                 <div class="left">预约机构</div>

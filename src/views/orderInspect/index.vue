@@ -8,21 +8,47 @@
             <van-field v-model="value" />
             <div @click="onSearch" class="searchBtn">搜索</div>
         </div>
-        <div class="example">
-            示例：“心电检测“
+        <div class="hotBox">
+            <span class="hotTitle">热门搜索</span>
+            <div class="hotList">
+                <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item)">
+                    {{item.inspItemName}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 /* eslint-disable */
+import {
+  hotInspitem
+} from '@/api/doctorinspectionitem/index'
 export default {
     data() {
         return {
-            value: ''
+            value: '',
+            hotList: []
         }
     },
+    created() {
+        this.getHotInspitem()
+    },
     methods: {
+        getHotInspitem() {
+            hotInspitem().then(res => {
+                this.hotList = res.data.data.filter((item, i) => {
+                    return i < 10
+                })
+                console.log(this.hotList)
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        choose(value) {
+            this.value = value.inspItemName
+            this.onSearch()
+        },
         onSearch() {
             console.log('搜索')
             this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
@@ -74,6 +100,35 @@ export default {
         color: #9B9B9B;
         letter-spacing: 0.83px;
         text-align: center;
+    }
+    .hotBox {
+        margin: 0 51px;
+        .hotTitle {
+            font-family: PingFangSC-Regular;
+            font-size: 13px;
+            color: #9B9B9B;
+            letter-spacing: 0.79px;
+            text-align: center;
+            margin-top: 22px;
+        }
+        .hotList {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 11px;
+            .item {
+                font-family: PingFangSC-Regular;
+                font-size: 13px;
+                color: #9B9B9B;
+                letter-spacing: 0.79px;
+                text-align: center;
+                border: 1px solid rgba(151,151,151,0.21);
+                border-radius: 4px;
+                padding: 7px 20px;
+                margin-right: 16px;
+                margin-bottom: 12px;
+            }
+        }
+
     }
 }
 </style>

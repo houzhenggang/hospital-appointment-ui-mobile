@@ -6,3 +6,8 @@ let baseUrl = '/api/base/doctorinspectionitem'
 export const getInspectionitemDict = () => {
   return request.get(`${baseUrl}/dict`)
 }
+
+// 获取热门搜索关键词
+export const hotInspitem = () => {
+  return request.get(`${baseUrl}/query/hot/inspitem`)
+}

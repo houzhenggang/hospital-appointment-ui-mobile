@@ -32,7 +32,7 @@
                     <span class="value">{{apply_time}}</span>
                 </van-cell>
             </van-list>
-            <div class="login-input">
+            <!-- <div class="login-input">
                 <div class="label">详细时间</div>
                 <div class="l-right">
                     <div class="span span-sex">
@@ -55,7 +55,7 @@
                     </div>
                     <van-icon name="arrow" class="r-arrow" />
                 </div>
-            </div>
+            </div> -->
             <div @click="sumbit" class="btn">提交申请</div>
         </div>
     </div>
@@ -71,7 +71,8 @@ import {
   addOrder
 } from '@/api/doctorapplyorder/index'
 import {
-  hospitalDetail, getDetailTime
+  hospitalDetail
+//   , getDetailTime
 } from '@/api/doctorinspectresource/index'
 import {
   getUserInfo
@@ -94,10 +95,10 @@ export default {
         apply_time: '2019年8月21日 8:00-9:00',
         userValue: {},
         hospitalValue: {},
-        detailTime: '',
-        showPicker: false,
-        timeColumns: [],
-        detailTimeList: {},
+        // detailTime: '',
+        // showPicker: false,
+        // timeColumns: [],
+        // detailTimeList: {},
         startTime: '',
         endTime: '',
         inspResourceId: ''
@@ -131,28 +132,28 @@ export default {
     let str = timeDetail.inspItemDate
     let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
     this.apply_time = result + ' ' + timeDetail.period
-    await this.getDetailTimeList()
+    // await this.getDetailTimeList()
   },
   methods: {
-        async getDetailTimeList() {
-            const timeDetail = this.$route.params.timeDetail
-            let startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
-            let endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
+        // async getDetailTimeList() {
+        //     const timeDetail = this.$route.params.timeDetail
+        //     let startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
+        //     let endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
 
-            let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
-            console.log(res.data.data)
-            this.detailTimeList = res.data.data
+        //     let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
+        //     console.log(res.data.data)
+        //     this.detailTimeList = res.data.data
 
-            this.timeColumns = res.data.data.map((item,index) => {
-                let str = item.inspItemDate
-                let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
-                let res1 = item.startTime.split(' ')[1].slice(0, 5)
-                let res2 = item.endTime.split(' ')[1].slice(0, 5)
-                let list = `${result} ${res1}-${res2}`
-                console.log(list)
-                return list
-            })
-        },
+        //     this.timeColumns = res.data.data.map((item,index) => {
+        //         let str = item.inspItemDate
+        //         let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
+        //         let res1 = item.startTime.split(' ')[1].slice(0, 5)
+        //         let res2 = item.endTime.split(' ')[1].slice(0, 5)
+        //         let list = `${result} ${res1}-${res2}`
+        //         console.log(list)
+        //         return list
+        //     })
+        // },
         async getInfo() {
                 let value = await getUserInfo(this.user_info.userId)
                 this.userValue = value.data.data
@@ -166,13 +167,13 @@ export default {
     //   inspItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
 
     sumbit () {
-        if (!this.detailTime) {
-            this.$notify({
-                message: '请选择详细时间',
-                background: '#FF4444'
-            })
-            return
-        }
+        // if (!this.detailTime) {
+        //     this.$notify({
+        //         message: '请选择详细时间',
+        //         background: '#FF4444'
+        //     })
+        //     return
+        // }
         const data = {
             hospitalId: this.hospitalValue.hospitalId,
             hospitalName: this.hospitalValue.hospitalName,
@@ -190,8 +191,7 @@ export default {
 
             feeTotal: this.hospitalValue.unitPrice,
             quantity: this.hospitalValue.quantity,
-            detailTime: this.detailTime,
-            // unitPrice: this.unitPrice,
+            // detailTime: this.detailTime,
             applyTime: this.apply_time,
             userName: this.user_info.username,
             orderState: 10,
@@ -226,16 +226,16 @@ export default {
         })
     //   this.$router.push({ path: '/main/orderApplyForWait' })
     },
-    onConfirm (value, index) {
-        console.log(value)
-        this.detailTime = value
+    // onConfirm (value, index) {
+    //     console.log(value)
+    //     this.detailTime = value
         
-        this.startTime = this.detailTimeList[index].startTime
-        this.endTime = this.detailTimeList[index].endTime
-        this.inspResourceId = this.detailTimeList[index].inspResourceId
+    //     this.startTime = this.detailTimeList[index].startTime
+    //     this.endTime = this.detailTimeList[index].endTime
+    //     this.inspResourceId = this.detailTimeList[index].inspResourceId
         
-        this.showPicker = false
-    }
+    //     this.showPicker = false
+    // }
   }
 }
 </script>
