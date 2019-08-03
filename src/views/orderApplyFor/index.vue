@@ -132,6 +132,8 @@ export default {
     let str = timeDetail.inspItemDate
     let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
     this.apply_time = result + ' ' + timeDetail.period
+
+    this.inspResourceId = this.$route.params.timeDetail.inspResourceId
     // await this.getDetailTimeList()
   },
   methods: {
