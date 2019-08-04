@@ -199,7 +199,8 @@ export default {
             orderState: 10,
             startTime: this.startTime,
             endTime: this.endTime,
-            inspResourceId: this.inspResourceId
+            inspResourceId: this.inspResourceId,
+            period: this.$route.params.formData.period
         }
         addOrder(data).then((res) => {
             if (res.data.code === 0) {
