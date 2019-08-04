@@ -11,7 +11,7 @@
                     <span class="value">{{orderValue.hospitalPhone}}</span>
                 </van-cell>
                 <van-cell title="机构地址" title-class="leftTitle">
-                    <span class="value">{{addressStreet}}</span>
+                    <span class="value">{{orderValue.hospitalAddr}}</span>
                 </van-cell>
                 <van-cell title="检查项目" title-class="leftTitle">
                     <span class="value">{{orderValue.inspItemName}}</span>
@@ -31,9 +31,9 @@
                 <van-cell title="预约时间" title-class="leftTitle">
                     <span class="value">{{orderValue.applyTime}}</span>
                 </van-cell>
-                <van-cell title="详细时间" title-class="leftTitle">
+                <!-- <van-cell title="详细时间" title-class="leftTitle">
                     <span class="value">{{orderValue.detailTime}}</span>
-                </van-cell>
+                </van-cell> -->
             </van-list>
         </div>
     </div>
