@@ -86,6 +86,16 @@
                 />
             </van-popup>
         </van-popup>
+
+        <van-pagination 
+        v-model="currentPage" 
+        :total-items="total" 
+        :items-per-page="10"
+        :show-page-size="3" 
+        force-ellipses
+        @change="change1"
+        class="page"
+        />
     </div>
 </template>
 
@@ -117,7 +127,9 @@ export default {
             startTime: '',
             endTime: '',
             hospitalDict: {},
-            inspectionitemDict: {}
+            inspectionitemDict: {},
+            currentPage: 1,
+            total: 0,
         }
     },
     async created() {
@@ -134,7 +146,7 @@ export default {
             await this.getHospitalLists(this.$route.query.data)
         },
         async getHospitalLists(result) {
-            const current = 1
+            const current = this.currentPage
             if (result) {
                 this.value = result
             }
@@ -152,6 +164,8 @@ export default {
                 })
                 return item
             })
+            this.currentPage = res.data.data.current
+            this.total = res.data.data.total
         },
         async getHospitalDictValue() {
             let res = await getHospitalDict()
@@ -202,7 +216,23 @@ export default {
             getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
                 this.list = res.data.data.records
                 console.log(this.list)
+
+                this.currentPage = res.data.data.current
+                this.total = res.data.data.total
             })
+        },
+        change1(value) {
+            this.currentPage = value
+            if (this.startTime && this.endTime) {
+                getHospitalListWithTime(this.value, value, this.startTime, this.endTime).then((res) => {
+                    this.list = res.data.data.records
+
+                    this.currentPage = res.data.data.current
+                    this.total = res.data.data.total
+                })
+            } else {
+                this.getHospitalLists()
+            }
         }
     }
 }
@@ -234,6 +264,7 @@ export default {
     }
     .box {
         padding-top: 20px;
+        margin-bottom: 100px;
         .list {
             display: flex;
             align-items: center;
@@ -364,6 +395,13 @@ export default {
 
             }
         }
+    }
+    .page {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #FFF;
     }
 }
 </style>

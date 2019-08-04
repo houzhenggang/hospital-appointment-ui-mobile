@@ -43,11 +43,11 @@ export default {
         text-align: center;
     }
     .bitmap {
-        width: 51.7vw;
-        height: 24vw;
+        width: 190px;
+        height: 140px;
         margin: 0 auto;
         display: block;
-        padding-top: 107px;
+        padding-top: 92px;
         margin-bottom: 26px;
     }
     .title {
