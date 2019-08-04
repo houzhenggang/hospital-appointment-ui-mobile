@@ -190,6 +190,14 @@ export default {
         toFilter() {
             this.show = false
             const current = 1
+
+            if (!this.startTime || !this.endTime) {
+                this.$notify({
+                    message: '请选择开始时间和结束时间',
+                    background: '#FF4444'
+                })
+                return
+            }
             // getHospitalListWithTime(this.value, current, this.startTime, '2019-08-03 16:59:58').then((res) => {
             getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
                 this.list = res.data.data.records
