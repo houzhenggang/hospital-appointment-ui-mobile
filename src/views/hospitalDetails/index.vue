@@ -87,9 +87,9 @@ export default {
             hospitalDict: {},
             timeGroup: {},
             tabList: [{
-                title: '近一周'
+                title: '近7天'
             }, {
-                title: '下一周'
+                title: '未来7-14天'
             }],
             thisWeek:[{
                 title: '8月21日  星期三 下午',

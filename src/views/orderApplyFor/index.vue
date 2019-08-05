@@ -56,7 +56,7 @@
                     <van-icon name="arrow" class="r-arrow" />
                 </div>
             </div> -->
-            <div @click="sumbit" class="btn">提交申请</div>
+            <div @click="timeControl" class="btn">提交申请</div>
         </div>
     </div>
 </div>
@@ -101,7 +101,10 @@ export default {
         // detailTimeList: {},
         startTime: '',
         endTime: '',
-        inspResourceId: ''
+        inspResourceId: '',
+        lastTime: new Date().getTime(),
+        nowTime: '',
+        flag: false
     }
   },
   computed: {
@@ -164,11 +167,27 @@ export default {
                 let res = await hospitalDetail(value)
                 this.hospitalValue = res.data.data
             },
+
+        timeControl () {
+            if (!this.flag) {
+                this.sumbit()
+            } else {
+                this.nowTime = new Date().getTime()
+                if (this.nowTime - this.lastTime > 3000) {
+                    this.lastTime = new Date().getTime()
+                    this.sumbit()
+                } else {
+                    this.lastTime = new Date().getTime()
+                    console.log('不可频繁提交预约申请')
+                }
+            }
+        },
     //   hospitalId，hospitalName，hospitalPhone，hospitalAddr，
     //   peopleId，peopleName，peopleIdcard，peoplePhone，
     //   inspItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
 
     sumbit () {
+        this.flag = true
         // if (!this.detailTime) {
         //     this.$notify({
         //         message: '请选择详细时间',

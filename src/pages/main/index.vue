@@ -1,6 +1,7 @@
 <template>
   <div id="main-layout">
-    <van-nav-bar :title="title" left-arrow fixed @click-left="clickLeft"></van-nav-bar>
+    <van-nav-bar :title="title" fixed @click-left="clickLeft" v-if="$route.name === '预约申请等待'"></van-nav-bar>
+    <van-nav-bar :title="title" left-arrow fixed @click-left="clickLeft" v-else></van-nav-bar>
     <div class="content">
       <router-view />
     </div>
