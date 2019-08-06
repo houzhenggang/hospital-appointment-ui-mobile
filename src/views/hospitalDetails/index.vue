@@ -1,6 +1,8 @@
 /* eslint-disable */
 <template>
     <div id="hospitalDetails">
+        <van-loading size="60px" color="#1989fa" type="spinner" v-if="isLoad" class="load">加载中...</van-loading>
+        <div v-else>
         <div class="TopTitle">{{formData.hospitalName}}</div>
         <div class="banner">
             <img src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
@@ -24,7 +26,6 @@
             <div class="right">
                 <span class="r-text">项目费用</span>
                 <span class="r-price">¥{{formData.unitPrice}}</span>
-                <!-- <img src="./../../../public/image/order/rightArrow.png" alt="" class="r-arrow"> -->
             </div>
         </div>
         <div class="orderTime">
@@ -61,6 +62,7 @@
                     <div v-else class="tips">暂无数据</div>
                 </van-tab>
             </van-tabs> 
+        </div>
         </div>
     </div>
 </template>
@@ -100,7 +102,8 @@ export default {
             }],
             timeList: {},
             hospitalDict: {},
-            inspectionitemDict: {}
+            inspectionitemDict: {},
+            isLoad: true
         }
     },
     async created() {
@@ -169,6 +172,7 @@ export default {
             let inspItemId = this.formData.inspItemId
             let res = await timeGroupDetail(startDate, endDate, hospitalId, inspItemId)
             this.thisWeek = res.data.data
+            this.isLoad = false
             console.log(res)
         },
         async toGetGroupDetail(value, index) {
@@ -233,6 +237,10 @@ export default {
 #hospitalDetails {
     background: #F3F3F3;
     height: 100%;
+    .load {
+        top: 40%;
+        left: calc(50% - 30px);
+    }
     .TopTitle {
         position: fixed;
         top: 20px;

@@ -161,6 +161,12 @@ export default {
         // },
         async getInfo() {
                 let value = await getUserInfo(this.user_info.userId)
+                if (!value.data.data.peopleId) {
+                    this.$notify({
+                        message: '用户信息不完整',
+                        background: '#FF4444'
+                    })
+                }
                 this.userValue = value.data.data
             },
         async getHospitalDetail(value) {
