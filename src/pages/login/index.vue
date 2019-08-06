@@ -54,7 +54,10 @@
 <script>
 /* eslint-disable */
 import { randomLenNum } from '@/utils/index'
-
+import {
+  getUserInfo as getPeopleInfo
+} from '@/api/doctorpeopleinfo/index'
+import { mapGetters } from 'vuex'
 import './index.scss'
 
 export default {
@@ -73,6 +76,9 @@ export default {
         len: 17
       }
     }
+  },
+  computed: {
+    ...mapGetters(['user_info'])
   },
   methods: {
     refreshCode () {
@@ -96,18 +102,27 @@ export default {
         })
       } else {
         this.$store.dispatch('LoginByUsername', this.formData).then(() => {
-          this.formData = {
-            username: '',
-            password: '',
-            code: ''
-          }
-          this.$notify({
-            message: '登录成功',
-            background: '#00cc33'
-          })
           this.$store.dispatch('getUserInfo').then(() => {
-            this.$store.dispatch('GetDictAll').then(() => {
-              this.$router.push({ name: 'userinfo' })
+            this.$store.dispatch('GetDictAll').then(async () => {
+              let result = await getPeopleInfo(this.user_info.userId)
+              if (!(result.data.data && result.data.data.peopleId)) {
+                this.$notify({
+                  message: '非居民用户',
+                  background: '#ff4444'
+                })
+                return
+              } else {
+                this.formData = {
+                  username: '',
+                  password: '',
+                  code: ''
+                }
+                this.$notify({
+                  message: '登录成功',
+                  background: '#00cc33'
+                })
+                this.$router.push({ name: 'userinfo' })
+              }
             })
           }).catch(() => {
             this.$notify({
