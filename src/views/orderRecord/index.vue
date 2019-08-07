@@ -71,10 +71,17 @@ export default {
         await this.getInfo()
         await this.getOrdersList(this.peopleId, 10)
     },
+    watch: {
+        '$route': 'fecth'
+    },
     computed: {
         ...mapGetters(['user_info'])
     },
     methods: {
+        async fecth() {
+            await this.getInfo()
+            await this.getOrdersList(this.peopleId, 10)
+        },
         async getOrdersList(peopleId, id) {
             let res = await getOrders(this.peopleId, id)
             // console.log(res.da)

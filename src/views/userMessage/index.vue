@@ -170,6 +170,9 @@ export default {
   computed: {
     ...mapGetters(['user_info'])
   },
+  watch: {
+    '$route': 'getInfo'
+  },
   created() {
     console.log(this.user_info)
     this.getInfo()
