@@ -25,7 +25,8 @@
             </div>
             <div class="right">
                 <span class="r-text">项目费用</span>
-                <span class="r-price">¥{{formData.unitPrice}}</span>
+                <span class="r-price" v-if="formData.unitPrice < maxUnitPrice">¥{{formData.unitPrice}}-{{maxUnitPrice}}</span>
+                <span class="r-price" v-else>¥{{formData.unitPrice}}</span>
             </div>
         </div>
         <div class="orderTime">
@@ -103,7 +104,8 @@ export default {
             timeList: {},
             hospitalDict: {},
             inspectionitemDict: {},
-            isLoad: true
+            isLoad: true,
+            maxUnitPrice: undefined
         }
     },
     async created() {
@@ -112,6 +114,7 @@ export default {
         console.log(this.currentTime)
 
         const id = this.$route.query.inspResourceId
+        this.maxUnitPrice = this.$route.query.maxUnitPrice
         await this.getHospitalDictData()
         await this.getInspectionitemDictValue()
         await this.getHospitalDetail(id)

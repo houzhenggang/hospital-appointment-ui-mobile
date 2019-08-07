@@ -10,7 +10,7 @@
             <div @click="showPopup" class="filter">筛选</div>
         </section>
         <section class="box">
-            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId)">
+            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
                 <div class="left">
                     <!-- <img :src="item.image" alt="" v-if="item.image"> -->
                     <img src="./../../../public/image/order/hospitalBanner.png" alt="">
@@ -28,7 +28,8 @@
                     </div>
                     <div class="r-bottom">
                         <span class="p-text">项目费用</span>
-                        <span class="unitPrice">¥{{item.unitPrice}}</span>
+                        <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
+                        <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
                     </div>
                 </div>
             </div>
@@ -72,6 +73,7 @@
                 <van-datetime-picker
                     v-model="startTimeValue"
                     :min-date="minDate"
+                    type="date"
                     @cancel="showStartPicker = false"
                     @confirm="onStartConfirm"
                 />
@@ -79,7 +81,7 @@
             <van-popup v-model="showEndPicker" position="bottom">
                 <van-datetime-picker
                     v-model="endTimeValue"
-                    type="datetime"
+                    type="date"
                     :min-date="minDate"
                     @cancel="showEndPicker = false"
                     @confirm="onEndConfirm"
@@ -147,7 +149,7 @@ export default {
         },
         async getHospitalLists(result) {
             const current = this.currentPage
-            if (result) {
+            if (result !== undefined) {
                 this.value = result
             }
             let res = await getHospitalList(this.value, current)
@@ -184,20 +186,20 @@ export default {
         onCancel() {
             console.log('取消')
         },
-        toDetail(inspResourceId) {
+        toDetail(inspResourceId, maxUnitPrice) {
             console.log('去医院详情页')
-            this.$router.push({ path: '/main/hospitalDetails', query: { inspResourceId: inspResourceId } })
+            this.$router.push({ path: '/main/hospitalDetails', query: { inspResourceId: inspResourceId, maxUnitPrice: maxUnitPrice } })
         },
         showPopup() {
             this.show = true;
         },
         onStartConfirm(value) {
-            this.startTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate() + ' ' + value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds()}`
+            this.startTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
             this.startTime = this.startTimeValue.toString()
             this.showStartPicker = false;
         },
         onEndConfirm(value) {
-            this.endTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate() + ' ' + value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds()}`
+            this.endTimeValue = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
             this.endTime = this.endTimeValue.toString()
             this.showEndPicker = false;
         },
@@ -212,7 +214,6 @@ export default {
                 })
                 return
             }
-            // getHospitalListWithTime(this.value, current, this.startTime, '2019-08-03 16:59:58').then((res) => {
             getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
                 this.list = res.data.data.records
                 console.log(this.list)
@@ -336,7 +337,7 @@ export default {
                 .r-bottom {
                     position: absolute;
                     margin-top: 8px;
-                    margin-right: 21px;
+                    right: 21px;
                     .p-text {
                         color: #9B9B9B;
                         margin-right: 6px;

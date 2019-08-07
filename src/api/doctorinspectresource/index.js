@@ -8,8 +8,7 @@ export const getHospitalList = (data, current) => {
 }
 
 export const getHospitalListWithTime = (data, current, startTime, endTime) => {
-  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10&&startTime=${startTime}&&endTime=${endTime}`)
-//   return request.get(`${baseUrl}/page?inspItemName=${data}&&current=${current}&&size=10`)
+  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
 }
 
 export const hospitalDetail = (inspResourceId) => {
