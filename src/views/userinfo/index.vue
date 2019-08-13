@@ -23,7 +23,13 @@
         <div class="item">
           <div class="title">{{item.name}}</div>
         </div>
-        <div class="icon"><van-icon name="arrow" /></div>
+        <div v-if="index === 0">
+          <div class="rightText">已认证</div>
+        </div>
+        <div v-if="index === 1">
+          <div class="rightText">340302********0657</div>
+        </div>
+        <div class="icon" v-if="index === 2 || index === 3"><van-icon name="arrow" /></div>
       </div>
       <div class="logout" @click="handleLogout">退出登录</div>
     </div>
@@ -50,10 +56,14 @@ export default {
           name: '身份证认证',
           icon: require('./../../../public/image/me/credentials_icon@2x.png'),
           pathName: 'signing'
+        // }, {
+        //   name: '医保卡认证',
+        //   icon: require('./../../../public/image/me/medicare_card@2x.png'),
+        //   pathName: 'signing'
         }, {
-          name: '医保卡认证',
+          name: '就诊人管理',
           icon: require('./../../../public/image/me/medicare_card@2x.png'),
-          pathName: 'signing'
+          pathName: '就诊人管理'
         }, {
           name: '我的预约',
           icon: require('./../../../public/image/me/medicare_card@2x.png'),

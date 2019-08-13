@@ -19,7 +19,11 @@
                 <van-cell title="检查费用" title-class="leftTitle">
                     <span class="value">{{unitPrice}}</span>
                 </van-cell>
-                <van-cell title="预约人" title-class="leftTitle">
+                <van-cell title="注意禁忌症" title-class="leftTitle" :class="{close: open === true, open: open === false}">
+                    <div class="text" :class="{choosed: open === true}">{{text}}</div>
+                    <div class="openBtn" @click="open = false" v-if="open">展开</div>
+                </van-cell>
+                <van-cell title="就诊人" title-class="leftTitle">
                     <span class="value">{{user_info.username}}</span>
                 </van-cell>
                 <van-cell title="手机号" title-class="leftTitle">
@@ -104,7 +108,9 @@ export default {
         inspResourceId: '',
         lastTime: new Date().getTime(),
         nowTime: '',
-        flag: false
+        flag: false,
+        open: true,
+        text: '1、 有严重贫血、白血病、出血性疾病等血液系统疾病的；2、 重症高血压病，近期心肌梗死，心绞痛频繁发作，心功能III—IV级，心脏病合并高血压等，禁忌或暂缓拔牙。一般高血压患者可以拔牙，但血压高于180/100mmHg，应先治疗在拔牙；3、 血糖没能控制的糖尿病患者；4、 甲状腺功能亢进且未能控制者；'
     }
   },
   computed: {
@@ -289,6 +295,37 @@ export default {
                 color: #4A4A4A;
                 letter-spacing: 0.78px;
                 text-align: center;
+            }
+                        .open {
+                position: relative;
+                height: 200px;
+            }
+            .close {
+                position: relative;
+                height: 100px;
+            }
+            .text {
+                position: fixed;
+                left: 0;
+                margin-top: 30px;
+                padding: 0 20px;
+                text-align: justify;
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #4A4A4A;
+                letter-spacing: 0.78px;
+            }
+            .choosed {
+                height: 50px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+            }
+            .openBtn {
+                font-family: PingFangSC-Regular;
+                font-size: 11px;
+                color: #235FE3;
+                letter-spacing: 0.66px;
             }
         }
         .btn {

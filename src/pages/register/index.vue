@@ -49,6 +49,18 @@
       </div>
 
       <div class="login-input">
+        <div class="label">身份证号<span class="tag">(15位或18位数字)</span></div>
+        <div class="span">
+          <input
+            class="input phone"
+            type="text"
+            v-model="formData.idCard"
+            autocomplete="off"
+            placeholder="请填写您的身份证号码" />
+        </div>
+      </div>
+
+      <!-- <div class="login-input">
         <div class="label">手机号</div>
         <div class="span">
           <input
@@ -58,7 +70,7 @@
             autocomplete="off"
             placeholder="请填写您的手机号" />
         </div>
-      </div>
+      </div> -->
 
       <div class="login-input">
         <div class="label">用户名<span class="tag">(仅支持英文、数字)</span></div>
@@ -133,7 +145,8 @@ export default {
         sex: 1,
         password: '',
         qrPassword: '',
-        phone: ''
+        phone: '',
+        idCard: ''
       },
       showPicker: false,
       sexColumns: ['男', '女']

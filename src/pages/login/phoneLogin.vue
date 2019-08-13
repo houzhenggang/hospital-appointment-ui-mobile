@@ -5,31 +5,20 @@
     </div>
     <div class="login-form">
       <div class="login-input">
-        <div class="label">用户名</div>
+        <div class="label">手机号</div>
         <div class="span">
           <input
             class="input username"
             type="text"
-            v-model="formData.username"
+            v-model="formData.phone"
             autocomplete="off"
             autofocus
-            placeholder="请输入您的用户名" />
-        </div>
-      </div>
-      <div class="login-input">
-        <div class="label">密码</div>
-        <div class="span">
-          <input
-            class="input password"
-            type="password"
-            v-model="formData.password"
-            autocomplete="off"
-            placeholder="请输入您的登录密码" />
+            placeholder="请输入您的手机号" />
         </div>
       </div>
 
       <div class="login-input">
-        <div class="label">图形验证码</div>
+        <div class="label">短信验证码</div>
         <div class="span code">
           <input
             class="input"
@@ -38,13 +27,14 @@
             type="text"
             v-model="formData.code"
             autocomplete="off"
-            placeholder="请输入右侧图形验证码"
+            placeholder="请输入短信验证码"
             maxlength="4" />
-          <img slot="button" :src="code.src" class="login-code-img" @click="refreshCode" />
+          <van-button slot="button" size="small" v-if="flag" class="login-code" type="info" @click="pushCode">获取验证码</van-button>
+          <van-button slot="button" size="small" v-if="!flag" class="login-code" disabled type="info" @click="pushCode">{{time}}s</van-button>
         </div>
       </div>
 
-      <div class="toPhoneLogin" @click="toPhoneLogin">使用手机号登录</div>
+      <div class="toPhoneLogin" @click="toLogin">使用用户名密码登录</div>
     </div>
     <div class="login-btn" @click="submit">登录</div>
     <div class="change-login-register">
@@ -68,33 +58,46 @@ export default {
       title: '用户登录',
       codeFocus: false,
       formData: {
-        username: '',
-        password: '',
+        phone: '',
         code: '',
         randomStr: ''
       },
       code: {
         src: `/api/code`,
         len: 17
-      }
+      },
+      flag: true,
+      time: 59
     }
   },
   computed: {
     ...mapGetters(['user_info'])
   },
+  watch: {
+    '$route': 'reset'
+  },
   methods: {
-    refreshCode () {
-      this.formData.code = ''
-      // this.formData.randomStr = randomLenNum(this.code.len, true)
-      this.$set(this.formData, 'randomStr', randomLenNum(this.code.len, true))
-      this.code.type === 'text'
-        ? (this.code.value = randomLenNum(this.code.len))
-        : (this.code.src = `/api/code?randomStr=${this.formData.randomStr}`)
+    reset() {
+      this.flag = true
+      this.time = 59
+    },
+    pushCode() {
+      // 置灰
+      // 倒计时60秒
+      this.flag = false
+      const val = setInterval(() => {
+        if (this.time > 0) {
+          this.time = this.time - 1
+        } else {
+          this.flag = true
+          clearInterval(val)
+        }
+      }, 1000);
     },
     submit () {
-      if (this.formData.username === '' || this.formData.password === '') {
+      if (this.formData.phone === '') {
         this.$notify({
-          message: '请输入用户名密码',
+          message: '请输入手机号',
           background: '#ff4444'
         })
       } else if (this.formData.code === '' || this.formData.code.length < 4) {
@@ -115,7 +118,7 @@ export default {
                 return
               } else {
                 this.formData = {
-                  username: '',
+                  phone: '',
                   password: '',
                   code: ''
                 }
@@ -144,27 +147,21 @@ export default {
     toRegister () {
       this.$router.push({ name: 'registerFirst' })
     },
-    toPhoneLogin () {
-      this.$router.push({ name: 'phoneLogin' })
+    toLogin () {
+      this.$router.push({ name: 'login' })
     }
   },
   created () {
-    let { username, password } = this.$route.params
-    if (username && password) {
-      this.$set(this.formData, 'username', username)
-      this.$set(this.formData, 'password', password)
+    let { phone } = this.$route.params
+    if (phone) {
+      this.$set(this.formData, 'phone', phone)
     }
-  },
-  mounted () {
-    this.refreshCode()
   },
   activated () {
-    let { username, password } = this.$route.params
-    if (username && password) {
-      this.$set(this.formData, 'username', username)
-      this.$set(this.formData, 'password', password)
+    let { phone } = this.$route.params
+    if (phone) {
+      this.$set(this.formData, 'phone', phone)
     }
-    this.refreshCode()
   }
 }
 </script>
