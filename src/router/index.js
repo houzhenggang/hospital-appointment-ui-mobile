@@ -82,6 +82,11 @@ let OLDPEPLE_ROUTER = new Router({
           component: () => import('@/views/patient/add')
         },
         {
+          path: 'otherList',
+          name: '检查分类列表',
+          component: () => import('@/views/orderInspect/otherList')
+        },
+        {
           path: 'orderSearch',
           component: () => import('@/views/orderSearch/index')
         },

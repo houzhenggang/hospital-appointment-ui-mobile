@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { userLogin, getUserInfo, userLoginNoCode } from '@/api/user/'
+import { userLogin, getUserInfo, userLoginNoCode, mobileLogin } from '@/api/user/'
 import { encryption } from '@/utils/'
 import { setStore, getStore } from '@/utils/store'
 import getters from './getters'
@@ -70,6 +70,25 @@ export default new Vuex.Store({
       })
       return new Promise((resolve, reject) => {
         userLogin(user.username, user.password, user.code, user.randomStr).then(response => {
+          const data = response.data
+          commit('SET_ACCESS_TOKEN', data.access_token)
+          commit('SET_REFRESH_TOKEN', data.refresh_token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    LoginByMobile ({ commit }, userInfo) {
+      debugger
+      const user = encryption({
+        data: userInfo,
+        key: 'pigxpigxpigxpigx',
+        param: ['password']
+      })
+      return new Promise((resolve, reject) => {
+        mobileLogin(user.mobile, user.code, user.grant_type).then(response => {
+          debugger
           const data = response.data
           commit('SET_ACCESS_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)

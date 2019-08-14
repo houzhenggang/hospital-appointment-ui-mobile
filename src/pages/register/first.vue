@@ -46,7 +46,9 @@ import mixin from '@/mixin/image'
 
 import {
   userRegister,
-  hasUserName
+  hasUserName,
+  getMobileCode,
+  checkCode
 } from '@/api/user/index'
 import { setTimeout } from 'timers'
 
@@ -86,9 +88,29 @@ export default {
           clearInterval(val)
         }
       }, 1000);
+      getMobileCode(this.formData.phone).then(res => {
+        console.log(res.data)
+        if (res.data.code === 0 && res.data.msg === '手机号未注册') {
+          this.$notify({
+            message: '手机号未注册',
+            background: '#ff4444'
+          })
+        }
+      })
     },
-    toRegister () {
-      this.$router.push({ name: 'register' })
+    async toRegister () {
+      this.$router.push({ path: '/register', query: { phone: this.formData.phone }})
+      // let res = await checkCode(this.formData)
+      // console.log(res.data)
+      // if (res.data.code === 0 && res.data.msg === '验证成功!') {
+      //   debugger
+      //   this.$router.push({ path: 'register' })
+      // } else {
+      //   this.$notify({
+      //     message: '验证码错误',
+      //     background: '#ff4444'
+      //   })
+      // }
     },
   }
 }

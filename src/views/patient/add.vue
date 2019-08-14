@@ -56,7 +56,7 @@
             ref="city"
             readonly
             clickable
-            :value="formData.cityValue"
+            :value="formData.currentDate"
             placeholder="   请选择"
             @click="showDatePicker = true"
             class="sexField"
@@ -93,8 +93,11 @@
 /* eslint-disable */
 import mixin from '@/mixin/image'
 import {
-  getUserInfo, userMessageUpdate
+  getUserInfo
 } from '@/api/doctorpeopleinfo/index'
+import {
+  addPatientInfo
+} from '@/api/applyerinfo/index'
 import { mapGetters } from 'vuex'
 
 import { setTimeout } from 'timers'
@@ -156,7 +159,31 @@ export default {
         this.showDatePicker = false;
     },
     submit () {
-      userMessageUpdate(this.formData).then(({ data }) => {
+
+      // {
+      //   "applyerId": "string",
+      //   "applyerName": "string",
+      //   "birthDate": "2019-08-14T14:52:20.848Z",
+      //   "createTime": "2019-08-14T14:52:20.848Z",
+      //   "delFlag": "string",
+      //   "idCard": "string",
+      //   "phone": "string",
+      //   "sex": "string",
+      //   "updateTime": "2019-08-14T14:52:20.848Z",
+      //   "userId": 0,
+      //   "version": 0
+      // }
+      debugger
+      console.log(this.user_info)
+      let data = {
+        applyerName: this.formData.name,
+        birthDate: this.formData.currentDate,
+        idCard: this.formData.idCard,
+        phone: this.formData.phone,
+        sex: this.formData.sex,
+        userId: 82,
+      }
+      addPatientInfo(data).then(({ data }) => {
         if (data.code === 0) {
           if (!data.data) {
             this.$notify({

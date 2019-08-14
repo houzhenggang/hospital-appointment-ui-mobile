@@ -24,10 +24,11 @@
           <div class="title">{{item.name}}</div>
         </div>
         <div v-if="index === 0">
-          <div class="rightText">已认证</div>
+          <div class="rightText" v-if="formData.phone">已认证</div>
+          <div class="rightText" v-else>未认证</div>
         </div>
         <div v-if="index === 1">
-          <div class="rightText">340302********0657</div>
+          <div class="rightText">{{formData.idCard}}</div>
         </div>
         <div class="icon" v-if="index === 2 || index === 3"><van-icon name="arrow" /></div>
       </div>
@@ -40,6 +41,9 @@
 /* eslint-disable */
 import { mapGetters } from 'vuex'
 import './style.scss'
+import {
+  getUserInfo
+} from '@/api/doctorpeopleinfo/index'
 
 export default {
   computed: {
@@ -69,10 +73,28 @@ export default {
           icon: require('./../../../public/image/me/medicare_card@2x.png'),
           pathName: '我的预约'
         }
-      ]
+      ],
+      formData: []
     }
   },
+  watch: {
+    '$route': 'getInfo'
+  },
+  created() {
+    this.getInfo()
+  },
   methods: {
+    getInfo() {
+      getUserInfo(this.user_info.userId).then(res => {
+        this.formData = res.data.data
+
+        if (res.data.data.idCard) {
+          let result = this.formData.idCard.substring(4,14)
+          this.formData.idCard =  this.formData.idCard.replace(result,'**********')
+        }
+        // console.log(this.formData)
+      })
+    },
     jumpPage (pathName) {
       this.$router.push({ name: pathName })
     },

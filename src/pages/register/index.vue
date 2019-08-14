@@ -152,6 +152,11 @@ export default {
       sexColumns: ['男', '女']
     }
   },
+  created() {
+    // debugger
+    this.formData.phone = this.$route.query.phone
+    // console.log(this.$route.query.phone)
+  },
   methods: {
     onRead (file) {
       // let formData = new FormData()
@@ -212,6 +217,7 @@ export default {
       }
     },
     submit () {
+      debugger
       if (!this.validateName) {
         this.$notify({
           message: '用户名已存在请修改',

@@ -2,17 +2,22 @@
 <template>
     <div id="orderInspect">
         <img src="./../../../public/image/order/bitmap@2x.png" alt="" class="bitmap">
-        <div class="title">请输入您要预约检查的项目</div>
+        <!-- <div class="title">请输入您要预约检查的项目</div> -->
 
         <div class="search">
-            <van-field v-model="value" />
+            <van-field v-model="value" placeholder="请输入您要预约检查的项目" />
             <div @click="onSearch" class="searchBtn">搜索</div>
         </div>
         <div class="hotBox">
             <span class="hotTitle">热门搜索</span>
             <div class="hotList">
-                <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item)">
-                    {{item.inspItemName}}
+                <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item, index)">
+                    <div class="iconBox">
+                        <!-- <img src="./../../../public/image/order/bitmap@2x.png" alt="" class="icon"> -->
+                    </div>
+                    <div class="name">
+                        {{item.inspItemName}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,11 +33,27 @@ export default {
     data() {
         return {
             value: '',
-            hotList: []
+            hotList: [{
+                inspItemName: '心电图检查'
+            }, {
+                inspItemName: '肝功能'
+            }, {
+                inspItemName: '肾功能'
+            }, {
+                inspItemName: '血常规'
+            }, {
+                inspItemName: 'B超'
+            }, {
+                inspItemName: '脑CT'
+            }, {
+                inspItemName: '外科7项'
+            }, {
+                inspItemName: '其他预约'
+            }]
         }
     },
     created() {
-        this.getHotInspitem()
+        // this.getHotInspitem()
     },
     methods: {
         getHotInspitem() {
@@ -45,9 +66,14 @@ export default {
                 console.log(err)
             })
         },
-        choose(value) {
-            this.value = value.inspItemName
-            this.onSearch()
+        choose(value, index) {
+            // debugger
+            if(value.inspItemName === '其他预约' && index === 7) {
+                this.$router.push({ path: '/main/otherList' })
+            } else {
+                this.value = value.inspItemName
+                this.onSearch()
+            }
         },
         onSearch() {
             console.log('搜索')
@@ -62,11 +88,11 @@ export default {
     background: #FFF;
     height: 100%;
     .bitmap {
-        width: 146px;
-        height: 112px;
+        width: 102px;
+        height: 77.5px;
         margin: 0 auto;
         display: block;
-        padding-top: 33px;
+        padding-top: 16px;
     }
     .title {
         font-family: PingFangSC-Medium;
@@ -77,7 +103,7 @@ export default {
         margin-top: 22px;
     }
     .search {
-        margin: 16px 51px;
+        margin: 16px 36px;
         display: flex;
         background: #FFFFFF;
         border: 1px solid rgba(151,151,151,0.22);
@@ -102,7 +128,7 @@ export default {
         text-align: center;
     }
     .hotBox {
-        margin: 0 51px;
+        margin: 0 21px;
         .hotTitle {
             font-family: PingFangSC-Regular;
             font-size: 13px;
@@ -114,18 +140,29 @@ export default {
         .hotList {
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
             margin-top: 11px;
+            &::after {
+                content: '';
+                width: 90px;
+            }
             .item {
-                font-family: PingFangSC-Regular;
-                font-size: 13px;
-                color: #9B9B9B;
-                letter-spacing: 0.79px;
-                text-align: center;
-                border: 1px solid rgba(151,151,151,0.21);
-                border-radius: 4px;
-                padding: 7px 20px;
-                margin-right: 16px;
-                margin-bottom: 12px;
+                padding: 15px;
+                .iconBox {
+                    width: 60px;
+                    height: 60px;
+                }
+                .icon {
+                    width: 60px;
+                    height: 60px;
+                }
+                .name {
+                    font-family: PingFangSC-Regular;
+                    font-size: 12px;
+                    color: #072E48;
+                    letter-spacing: 0.67px;
+                    text-align: center;
+                }
             }
         }
 
