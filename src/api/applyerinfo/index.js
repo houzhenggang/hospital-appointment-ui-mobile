@@ -6,6 +6,6 @@ export const addPatientInfo = (data) => {
 }
 
 // 分页查询
-export const getPatientInfo= () => {
-  return request.get(`${baseUrl}/page`)
+export const getPatientInfo= (userId) => {
+  return request.get(`${baseUrl}/page?userId=${userId}`)
 }

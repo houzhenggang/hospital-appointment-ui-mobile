@@ -29,25 +29,11 @@ export default {
   },
   data () {
     return {
-      list: [
-        {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }, {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }, {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }
-      ]
+      list: []
     }
   },
   created() {
-    getPatientInfo().then(res => {
+    getPatientInfo(this.user_info.userId).then(res => {
       this.list = res.data.data.records
     })
   },

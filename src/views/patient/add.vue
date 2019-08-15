@@ -9,7 +9,7 @@
             ref="name"
             class="input username"
             type="text"
-            v-model="formData.name"
+            v-model="formData.applyerName"
             autocomplete="off"
             placeholder="请填写您的真实姓名" />
         </div>
@@ -56,7 +56,7 @@
             ref="city"
             readonly
             clickable
-            :value="formData.currentDate"
+            :value="formData.birthDate"
             placeholder="   请选择"
             @click="showDatePicker = true"
             class="sexField"
@@ -79,7 +79,7 @@
             ref="linkName"
             class="input username"
             type="text"
-            v-model="formData.linkName"
+            v-model="formData.idCard"
             autocomplete="off"
             placeholder="请填写身份证号" />
         </div>
@@ -111,30 +111,17 @@ export default {
   data () {
     return {
       formData: {
-        avatar: '',
-        name: '',
+        applyerName: '',
         phone: '',
         sex: 1,
-        // cityValue: '',
-        // area: '',
-        linkName: '',
-        linkPhone: ''
+        birthDate: '',
+        idCard: '',
+        userId: undefined
       },
       currentDate: new Date(),
       showPicker: false,
       sexColumns: ['男', '女'],
-      showDatePicker: false,
-      cityColumns: [
-        {
-          values: Object.keys(citys),
-          className: 'column1'
-        },
-        {
-          values: citys['浙江'],
-          className: 'column2',
-          defaultIndex: 2
-        }
-      ]
+      showDatePicker: false
     }
   },
   computed: {
@@ -145,45 +132,28 @@ export default {
   },
   created() {
     console.log(this.user_info)
-    this.getInfo()
+    this.formData.userId = this.user_info.userId
   },
   methods: {
-    getInfo() {
-      getUserInfo(this.user_info.userId).then(res => {
-        this.formData = res.data.data
-        console.log(this.formData)
-      })
-    },
     onDateConfirm(value) {
-        this.currentDate = value
-        this.showDatePicker = false;
+      this.currentDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
+      this.formData.birthDate = this.timeFilter(this.currentDate.toString())
+      this.showDatePicker = false;
+    },
+    timeFilter(time) {
+      let result = time.split("-")
+      if (result[1].length === 1) {
+        result[1] = '0'.concat(time.split("-")[1])
+      }
+      if (result[2].length === 1) {
+        result[2] = '0'.concat(time.split("-")[2])
+      }
+      time = `${result[0]}-${result[1]}-${result[2]}`
+      return time
     },
     submit () {
-
-      // {
-      //   "applyerId": "string",
-      //   "applyerName": "string",
-      //   "birthDate": "2019-08-14T14:52:20.848Z",
-      //   "createTime": "2019-08-14T14:52:20.848Z",
-      //   "delFlag": "string",
-      //   "idCard": "string",
-      //   "phone": "string",
-      //   "sex": "string",
-      //   "updateTime": "2019-08-14T14:52:20.848Z",
-      //   "userId": 0,
-      //   "version": 0
-      // }
-      debugger
-      console.log(this.user_info)
-      let data = {
-        applyerName: this.formData.name,
-        birthDate: this.formData.currentDate,
-        idCard: this.formData.idCard,
-        phone: this.formData.phone,
-        sex: this.formData.sex,
-        userId: 82,
-      }
-      addPatientInfo(data).then(({ data }) => {
+      // "320456199310021234"
+      addPatientInfo(this.formData).then(({ data }) => {
         if (data.code === 0) {
           if (!data.data) {
             this.$notify({
@@ -193,9 +163,16 @@ export default {
           } else {
             this.$toast.loading({
               mask: true,
-              message: '修改成功',
+              message: '保存成功',
               duration: 2000
             })
+            this.formData = {
+              applyerName: '',
+              phone: '',
+              sex: 1,
+              birthDate: '',
+              idCard: ''
+            }
           }
         } else {
           this.$notify({

@@ -22,18 +22,43 @@
             </van-list>
             <div class="careful">
                 <div class="label">注意禁忌症</div>
-                <div class="text" :class="{choosed: open === true}">{{text}}</div>
+                <div class="text" :class="{choosed: open === true}">{{inspItemTaboo}}</div>
                 <div class="openBtn" @click="open = false" v-if="open">展开</div>
             </div>
+
+            <div class="login-input">
+                <div class="label">就诊人</div>
+                <div class="l-right">
+                    <div class="text">
+                        <van-field
+                            readonly
+                            clickable
+                            :value="applyerinfo.applyerName"
+                            placeholder="请选择"
+                            @click="showPatientPicker = true"
+                            class="sexField"
+                        />
+                        <van-popup v-model="showPatientPicker" position="bottom" class="cityPicker">
+                            <van-picker
+                            show-toolbar
+                            :columns="patientColumns"
+                            @cancel="showPatientPicker = false"
+                            @confirm="onPatientConfirm"
+                            />
+                        </van-popup>
+                    </div>
+                    <van-icon name="arrow" class="r-arrow" />
+                </div>
+            </div>
             <van-list>
-                <van-cell title="就诊人" title-class="leftTitle">
+                <!-- <van-cell title="就诊人" title-class="leftTitle">
                     <span class="value">{{user_info.username}}</span>
-                </van-cell>
+                </van-cell> -->
                 <van-cell title="手机号" title-class="leftTitle">
-                    <span class="value">{{user_info.phone}}</span>
+                    <span class="value">{{applyerinfo.phone}}</span>
                 </van-cell>
                 <van-cell title="身份证号" title-class="leftTitle">
-                    <span class="value">{{user_info.peopleId}}</span>
+                    <span class="value">{{applyerinfo.idCard}}</span>
                 </van-cell>
                 <van-cell title="预约时间" title-class="leftTitle">
                     <span class="value">{{apply_time}}</span>
@@ -82,8 +107,14 @@ import {
 //   , getDetailTime
 } from '@/api/doctorinspectresource/index'
 import {
+  inspitemTips
+} from '@/api/doctorinspectionitem/index'
+import {
   getUserInfo
 } from '@/api/doctorpeopleinfo/index'
+import {
+  getPatientInfo
+} from '@/api/applyerinfo/index'
 import { mapGetters } from 'vuex'
 import { setTimeout } from 'timers'
 
@@ -113,7 +144,11 @@ export default {
         nowTime: '',
         flag: false,
         open: true,
-        text: '1、 有严重贫血、白血病、出血性疾病等血液系统疾病的；2、 重症高血压病，近期心肌梗死，心绞痛频繁发作，心功能III—IV级，心脏病合并高血压等，禁忌或暂缓拔牙。一般高血压患者可以拔牙，但血压高于180/100mmHg，应先治疗在拔牙；3、 血糖没能控制的糖尿病患者；4、 甲状腺功能亢进且未能控制者；'
+        inspItemTaboo: '',
+        showPatientPicker: false,
+        patientColumns: [],
+        applyerinfoList: [],
+        applyerinfo: []
     }
   },
   computed: {
@@ -138,6 +173,7 @@ export default {
     const id = this.$route.params.inspResourceId
     await this.getInfo()
     await this.getHospitalDetail(id)
+    await this.getInspitemTips()
     
     const timeDetail = this.$route.params.timeDetail
     
@@ -146,28 +182,62 @@ export default {
     this.apply_time = result + ' ' + timeDetail.period
 
     this.inspResourceId = this.$route.params.timeDetail.inspResourceId
-    // await this.getDetailTimeList()
+    this.getDetailTimeList()
+    await this.getPatientList()
   },
   methods: {
-        // async getDetailTimeList() {
-        //     const timeDetail = this.$route.params.timeDetail
-        //     let startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
-        //     let endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
+        async getInspitemTips() {
+            let id = this.hospitalValue.inspItemId
+            let res = await inspitemTips(id)
+            this.inspItemTaboo = res.data.data.inspItemTaboo
+            console.log(res.data)
+        },
+        async getPatientList() {
+            let res = await getPatientInfo(this.user_info.userId)
+            this.applyerinfoList = res.data.data.records
+            
+            this.patientColumns = this.applyerinfoList.map((item,index) => {
+                return item.applyerName
+            })
+        },
+        getDetailTimeList() {
+            const timeDetail = this.$route.params.timeDetail
+            this.startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
+            this.endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
+            
+            this.startTime = this.timeFilter(this.startTime)
+            this.endTime = this.timeFilter(this.endTime)
+            // let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
+            // console.log(res.data.data)
+            // this.detailTimeList = res.data.data
 
-        //     let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
-        //     console.log(res.data.data)
-        //     this.detailTimeList = res.data.data
+            // this.timeColumns = res.data.data.map((item,index) => {
+            //     let str = item.inspItemDate
+            //     let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
+            //     let res1 = item.startTime.split(' ')[1].slice(0, 5)
+            //     let res2 = item.endTime.split(' ')[1].slice(0, 5)
+            //     let list = `${result} ${res1}-${res2}`
+            //     console.log(list)
+            //     return list
+            // })
+        },
+        timeFilter(time) {
+            let value = time.split(" ")
+            let res = value[1]
 
-        //     this.timeColumns = res.data.data.map((item,index) => {
-        //         let str = item.inspItemDate
-        //         let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
-        //         let res1 = item.startTime.split(' ')[1].slice(0, 5)
-        //         let res2 = item.endTime.split(' ')[1].slice(0, 5)
-        //         let list = `${result} ${res1}-${res2}`
-        //         console.log(list)
-        //         return list
-        //     })
-        // },
+            let result = res.split(":")
+            if (result[0].length === 1) {
+                result[0] = '0'.concat(res.split(":")[0])
+            }
+            if (result[1].length === 1) {
+                result[1] = '0'.concat(res.split(":")[1])
+            }
+            if (result[2].length === 1) {
+                result[2] = '0'.concat(res.split(":")[2])
+            }
+            time = `${value[0]} ${result[0]}:${result[1]}:${result[2]}`
+            return time
+        },
         async getInfo() {
                 let value = await getUserInfo(this.user_info.userId)
                 if (!value.data.data.peopleId) {
@@ -179,10 +249,9 @@ export default {
                 this.userValue = value.data.data
             },
         async getHospitalDetail(value) {
-                let res = await hospitalDetail(value)
-                this.hospitalValue = res.data.data
-            },
-
+            let res = await hospitalDetail(value)
+            this.hospitalValue = res.data.data
+        },
         timeControl () {
             if (!this.flag) {
                 this.sumbit()
@@ -197,82 +266,82 @@ export default {
                 }
             }
         },
-    //   hospitalId，hospitalName，hospitalPhone，hospitalAddr，
-    //   peopleId，peopleName，peopleIdcard，peoplePhone，
-    //   inspItemId，inspItemName，insptResourceId，feeTotal，quantity，applyTime，detailTime
+        sumbit () {
+            this.flag = true
+            // if (!this.detailTime) {
+            //     this.$notify({
+            //         message: '请选择详细时间',
+            //         background: '#FF4444'
+            //     })
+            //     return
+            // }
+            const data = {
+                hospitalId: this.hospitalValue.hospitalId,
+                hospitalName: this.hospitalValue.hospitalName,
+                hospitalPhone: this.hospitalValue.hospitalPhone,
+                hospitalAddr: this.addressStreet,
 
-    sumbit () {
-        this.flag = true
-        // if (!this.detailTime) {
-        //     this.$notify({
-        //         message: '请选择详细时间',
-        //         background: '#FF4444'
-        //     })
-        //     return
-        // }
-        const data = {
-            hospitalId: this.hospitalValue.hospitalId,
-            hospitalName: this.hospitalValue.hospitalName,
-            hospitalPhone: this.hospitalValue.hospitalPhone,
-            hospitalAddr: this.addressStreet,
+                peopleId: this.applyerinfo.applyerId,
+                peopleName: this.applyerinfo.applyerName,
+                peopleIdcard: this.applyerinfo.idCard,
+                peoplePhone: this.applyerinfo.phone,
 
-            peopleId: this.userValue.peopleId,
-            peopleName: this.userValue.name,
-            peopleIdcard: '',
-            peoplePhone: this.userValue.phone,
+                inspItemId: this.hospitalValue.inspItemId,
+                inspItemName: this.hospitalValue.inspItemName,
+                insptResourceId: this.hospitalValue.insptResourceId,
 
-            inspItemId: this.hospitalValue.inspItemId,
-            inspItemName: this.hospitalValue.inspItemName,
-            insptResourceId: this.hospitalValue.insptResourceId,
-
-            feeTotal: this.hospitalValue.unitPrice,
-            quantity: this.hospitalValue.quantity,
-            // detailTime: this.detailTime,
-            applyTime: this.apply_time,
-            userName: this.user_info.username,
-            orderState: 10,
-            startTime: this.startTime,
-            endTime: this.endTime,
-            inspResourceId: this.inspResourceId,
-            period: this.$route.params.formData.period
-        }
-        addOrder(data).then((res) => {
-            if (res.data.code === 0) {
-                if (!res.data.data) {
-                    this.$notify({
-                    message: '未知异常，提交申请失败',
-                    background: '#FF4444'
-                    })
-                } else {
-                    this.$toast.loading({
-                        mask: true,
-                        message: '提交申请成功',
-                        duration: 2000
-                    })
-                    setTimeout(() => {
-                        this.$router.push({ path: '/main/orderApplyForWait' })
-                    })
-
-                    }
-                } else {
-                this.$notify({
-                    message: '未知异常，提交申请失败',
-                    background: '#FF4444'
-                })
+                feeTotal: this.hospitalValue.unitPrice,
+                quantity: this.hospitalValue.quantity,
+                // detailTime: this.detailTime,
+                applyTime: this.apply_time,
+                userName: this.user_info.username,
+                orderState: 10,
+                startTime: this.startTime,
+                endTime: this.endTime,
+                inspResourceId: this.inspResourceId,
+                period: this.$route.params.formData.period,
+                inspItemTaboo: this.inspItemTaboo
             }
-        })
-    //   this.$router.push({ path: '/main/orderApplyForWait' })
-    },
-    // onConfirm (value, index) {
-    //     console.log(value)
-    //     this.detailTime = value
-        
-    //     this.startTime = this.detailTimeList[index].startTime
-    //     this.endTime = this.detailTimeList[index].endTime
-    //     this.inspResourceId = this.detailTimeList[index].inspResourceId
-        
-    //     this.showPicker = false
-    // }
+            addOrder(data).then((res) => {
+                if (res.data.code === 0) {
+                    if (!res.data.data) {
+                        this.$notify({
+                        message: '未知异常，提交申请失败',
+                        background: '#FF4444'
+                        })
+                    } else {
+                        this.$toast.loading({
+                            mask: true,
+                            message: '提交申请成功',
+                            duration: 2000
+                        })
+                        setTimeout(() => {
+                            this.$router.push({ path: '/main/orderApplyForWait' })
+                        })
+
+                        }
+                    } else {
+                    this.$notify({
+                        message: '未知异常，提交申请失败',
+                        background: '#FF4444'
+                    })
+                }
+            })
+        },
+        // onConfirm (value, index) {
+        //     console.log(value)
+        //     this.detailTime = value
+            
+        //     this.startTime = this.detailTimeList[index].startTime
+        //     this.endTime = this.detailTimeList[index].endTime
+        //     this.inspResourceId = this.detailTimeList[index].inspResourceId
+            
+        //     this.showPicker = false
+        // }
+        onPatientConfirm (value, index) {
+            this.applyerinfo = this.applyerinfoList[index]
+            this.showPatientPicker = false
+        }
   }
 }
 </script>
@@ -375,6 +444,12 @@ export default {
                 font-size: 14px;
                 color: #666;
                 width: 220px;
+            }
+            .text {
+                margin-top: 14px;
+                font-size: 14px;
+                color: #666;
+                width: 85px;
             }
             .r-arrow {
                 padding-top: 18px;
