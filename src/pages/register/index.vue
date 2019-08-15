@@ -45,7 +45,7 @@
         <div class="span">
           <input
             class="input phone"
-            type="text"
+            type="number"
             v-model="formData.idCard"
             autocomplete="off"
             placeholder="请填写您的身份证号码" />
@@ -143,7 +143,6 @@ export default {
     }
   },
   created() {
-    // debugger
     this.formData.phone = this.$route.query.phone
   },
   methods: {
@@ -173,7 +172,7 @@ export default {
         cb(false, '用户名长度不能少于5位')
       } else if (!formData.idCard) {
         cb(false, '身份证号不能为空')
-      } else if (formData.idCard.length !== 15 || formData.idCard.length !== 18) {
+      } else if (formData.idCard.length !== 15 && formData.idCard.length !== 18) {
         cb(false, '身份证位数不正确')
       } else if (!(/^[0-9]+$/.exec(formData.idCard))) {
         cb(false, '身份证号不符合规范，仅支持数字')

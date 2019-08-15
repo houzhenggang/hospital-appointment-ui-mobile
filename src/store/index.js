@@ -80,7 +80,6 @@ export default new Vuex.Store({
       })
     },
     LoginByMobile ({ commit }, userInfo) {
-      debugger
       const user = encryption({
         data: userInfo,
         key: 'pigxpigxpigxpigx',
@@ -88,7 +87,6 @@ export default new Vuex.Store({
       })
       return new Promise((resolve, reject) => {
         mobileLogin(user.mobile, user.code, user.grant_type).then(response => {
-          debugger
           const data = response.data
           commit('SET_ACCESS_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
