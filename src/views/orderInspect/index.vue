@@ -169,6 +169,7 @@ export default {
             letter-spacing: 0.79px;
             text-align: center;
             margin-top: 22px;
+            padding: 0 15px;
         }
         .hotList {
             display: flex;
