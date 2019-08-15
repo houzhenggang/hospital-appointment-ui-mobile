@@ -4,10 +4,15 @@
         <div @click="toAddPatient" class="filter">新增</div>
         <div class="list">
             <div class="title">当前用户</div>
-            <div class="user-list" v-for="(item, index) in list" :key="index" @click="toPatientDetail(item)">
-                <div>{{item.applyerName}}</div>
-                <div>{{item.sex === "1" ? '男' : '女'}}</div>
-                <div>{{item.idCard}}</div>
+            <div v-if="list.length === 0" class="tips">
+              暂无数据
+            </div>
+            <div v-else>
+              <div class="user-list" v-for="(item, index) in list" :key="index" @click="toPatientDetail(item)">
+                  <div>{{item.applyerName}}</div>
+                  <div>{{item.sex === "1" ? '男' : '女'}}</div>
+                  <div>{{item.idCard}}</div>
+              </div>
             </div>
         </div>
     </div>
@@ -87,6 +92,14 @@ export default {
         color: #4A4A4A;
         letter-spacing: 0.94px;
         text-align: center;
+    }
+    .tips {
+      font-family: PingFangSC-Medium;
+      font-size: 13px;
+      color: #9B9B9B;
+      letter-spacing: 0.72px;
+      text-align: center;
+      margin-top: 40%;
     }
 }
 </style>

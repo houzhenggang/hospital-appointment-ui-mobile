@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="addPatient">
-    <div @click="deletePatient" class="deleteBtn">删除</div>
+    <div @click="deletePatient" class="deleteBtn" v-if="$route.query.applyerId">删除</div>
     <div class="userMessage-form">
       <div class="login-input">
         <div class="label">姓名</div>
