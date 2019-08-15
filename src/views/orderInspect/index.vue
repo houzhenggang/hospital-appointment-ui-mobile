@@ -33,33 +33,20 @@ export default {
     data() {
         return {
             value: '',
-            hotList: [{
-                inspItemName: '心电图检查'
-            }, {
-                inspItemName: '肝功能'
-            }, {
-                inspItemName: '肾功能'
-            }, {
-                inspItemName: '血常规'
-            }, {
-                inspItemName: 'B超'
-            }, {
-                inspItemName: '脑CT'
-            }, {
-                inspItemName: '外科7项'
-            }, {
-                inspItemName: '其他预约'
-            }]
+            hotList: []
         }
     },
     created() {
-        // this.getHotInspitem()
+        this.getHotInspitem()
     },
     methods: {
         getHotInspitem() {
             hotInspitem().then(res => {
                 this.hotList = res.data.data.filter((item, i) => {
                     return i < 10
+                })
+                this.hotList.push({
+                    inspItemName: '其他预约'
                 })
                 console.log(this.hotList)
             }).catch(err => {
@@ -68,7 +55,7 @@ export default {
         },
         choose(value, index) {
             // debugger
-            if(value.inspItemName === '其他预约' && index === 7) {
+            if(value.inspItemName === '其他预约' && index === this.hotList.length - 1) {
                 this.$router.push({ path: '/main/otherList' })
             } else {
                 this.value = value.inspItemName
