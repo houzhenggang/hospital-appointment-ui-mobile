@@ -36,7 +36,7 @@ let OLDPEPLE_ROUTER = new Router({
       path: '/quickLogin',
       name: 'quickLogin',
       component: () => import('@/pages/login/quickLogin')
-      }, {
+    }, {
       path: '/home',
       name: 'layout',
       component: () => import('@/pages/layout/home'),
@@ -65,9 +65,11 @@ let OLDPEPLE_ROUTER = new Router({
         },
         {
           path: 'registerFirst',
+          name: 'registerFirst',
           component: () => import('@/pages/register/first')
         }, {
           path: 'register',
+          name: 'register',
           component: () => import('@/pages/register/index')
         },
         {
@@ -120,7 +122,7 @@ let OLDPEPLE_ROUTER = new Router({
   ]
 })
 
-const whitePageList = ['login', 'register', 'quickLogin']
+const whitePageList = ['login', 'registerFirst', 'register', 'quickLogin', 'phoneLogin']
 
 OLDPEPLE_ROUTER.beforeEach((to, from, next) => {
   let session_token = JSON.parse(sessionStorage.getItem('access_token'))

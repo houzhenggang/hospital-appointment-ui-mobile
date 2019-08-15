@@ -13,7 +13,7 @@
             <div class="hotList">
                 <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item, index)">
                     <div class="iconBox">
-                        <!-- <img src="./../../../public/image/order/bitmap@2x.png" alt="" class="icon"> -->
+                        <img :src="item.icon" alt="" class="icon">
                     </div>
                     <div class="name">
                         {{item.inspItemName}}
@@ -48,10 +48,53 @@ export default {
                 this.hotList.push({
                     inspItemName: '其他预约'
                 })
+                this.hotList.map(item => {
+                    item.icon = this.addIcon(item.inspItemName)
+                    return item
+                })
                 console.log(this.hotList)
             }).catch(err => {
                 console.log(err)
             })
+        },
+        addIcon(value) {
+            let iconName
+            switch (value) {
+                case '脑电检查':
+                    iconName = '大脑'
+                    break
+                case '血常规':
+                    iconName = '血袋'
+                    break
+                case '外科7项':
+                    iconName = '大脑'
+                    break
+                case '血脂4项':
+                    iconName = '针管'
+                    break
+                case '心电检测':
+                    iconName = '心血管'
+                    break
+                case '肝功能':
+                    iconName = '肝'
+                    break
+                case '尿常规':
+                    iconName = '化验'
+                    break
+                case '眼科4项':
+                    iconName = '眼睛'
+                    break
+                case '妇科B超':
+                    iconName = 'CT'
+                    break
+                case '肾功能':
+                    iconName = '肾'
+                    break
+                default:
+                    iconName = '挂号'
+                    break
+            }
+            return require('./../../../public/image/orderInspect/' + iconName + '.png')
         },
         choose(value, index) {
             // debugger
