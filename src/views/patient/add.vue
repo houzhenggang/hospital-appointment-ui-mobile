@@ -242,6 +242,7 @@ export default {
                   message: '修改成功',
                   duration: 2000
                 })
+                this.$router.go(-1)
               }
             } else {
               this.$notify({
