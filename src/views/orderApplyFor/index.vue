@@ -22,7 +22,7 @@
             </van-list>
             <div class="careful">
                 <div class="label">注意禁忌症</div>
-                <div class="text" :class="{choosed: open === true}">{{inspItemTaboo}}</div>
+                <div class="text" :class="{choosed: open === true}" ref='care'>{{inspItemTaboo}}</div>
                 <div class="openBtn" @click="open = false" v-if="open">展开</div>
             </div>
 
@@ -143,7 +143,7 @@ export default {
         lastTime: new Date().getTime(),
         nowTime: '',
         flag: false,
-        open: true,
+        open: false,
         inspItemTaboo: '',
         showPatientPicker: false,
         patientColumns: [],
@@ -184,6 +184,9 @@ export default {
     this.inspResourceId = this.$route.params.timeDetail.inspResourceId
     this.getDetailTimeList()
     await this.getPatientList()
+    if (this.$refs.care.offsetHeight > 50) {
+        this.open = true
+    }
   },
   methods: {
         async getInspitemTips() {
@@ -281,7 +284,7 @@ export default {
                 hospitalPhone: this.hospitalValue.hospitalPhone,
                 hospitalAddr: this.addressStreet,
 
-                peopleId: this.applyerinfo.applyerId,
+                peopleId: this.userValue.peopleId,
                 peopleName: this.applyerinfo.applyerName,
                 peopleIdcard: this.applyerinfo.idCard,
                 peoplePhone: this.applyerinfo.phone,
@@ -487,7 +490,7 @@ export default {
                 height: 100px;
             }
             .choosed {
-                height: 35px;
+                height: 50px;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;

@@ -60,7 +60,7 @@
             :value="formData.birthDate"
             placeholder="   请选择"
             @click="showDatePicker = true"
-            class="sexField"
+            class="borthField"
           />
           <van-popup v-model="showDatePicker" position="bottom" class="cityPicker">
             <van-datetime-picker
@@ -341,7 +341,12 @@ export default {
       .sexField {
           margin-left: 15px;
           margin-top: -10px;
-          margin-bottom: -5px;
+          margin-bottom: -10px;
+      }
+      .borthField {
+        margin-left: 34px;
+        margin-top: -10px;
+        margin-bottom: -10px;
       }
       .input {
         text-align: right;
