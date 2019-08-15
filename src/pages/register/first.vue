@@ -1,15 +1,13 @@
 /* eslint-disable no-unused-vars */
 <template>
-  <div id="register">
-    <div class="title">{{ title }}</div>
-
+  <div id="registerFirst">
     <div class="login-form">
       <div class="login-input">
         <div class="label">手机号</div>
         <div class="span">
           <input
             class="input username"
-            type="text"
+            type="number"
             v-model="formData.phone"
             autocomplete="off"
             autofocus
@@ -46,7 +44,9 @@ import mixin from '@/mixin/image'
 
 import {
   userRegister,
-  hasUserName
+  hasUserName,
+  getMobileCode,
+  checkCode
 } from '@/api/user/index'
 import { setTimeout } from 'timers'
 
@@ -77,6 +77,13 @@ export default {
     pushCode() {
       // 置灰
       // 倒计时60秒
+      if (!/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.test(this.formData.phone)) {
+        this.$notify({
+          message: '手机号不正确',
+          background: '#ff4444'
+        })
+        return
+      }
       this.flag = false
       const val = setInterval(() => {
         if (this.time > 0) {
@@ -86,15 +93,38 @@ export default {
           clearInterval(val)
         }
       }, 1000);
+      getMobileCode(this.formData.phone).then(res => {
+        console.log(res.data)
+        if (res.data.code === 0 && res.data.msg === '手机号未注册') {
+          this.$notify({
+            message: '手机号未注册',
+            background: '#ff4444'
+          })
+        }
+      })
     },
-    toRegister () {
-      this.$router.push({ name: 'register' })
+    async toRegister () {
+      let res = await checkCode(this.formData)
+      console.log(res.data)
+      if (res.data.code === 0 && res.data.msg === '验证成功!') {
+        this.$router.push({ path: '/main/register', query: { name: '注册', phone: this.formData.phone }})
+      } else {
+        this.$notify({
+          message: '验证码错误',
+          background: '#ff4444'
+        })
+      }
     },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+#registerFirst {
+  .login-form {
+    margin-top: 100px;
+  }
+}
 .label {
   font-size: 15px;
   color: #333;

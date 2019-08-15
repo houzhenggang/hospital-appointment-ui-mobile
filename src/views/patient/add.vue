@@ -1,6 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="addPatient">
+    <div @click="deletePatient" class="deleteBtn">删除</div>
     <div class="userMessage-form">
       <div class="login-input">
         <div class="label">姓名</div>
@@ -9,7 +10,7 @@
             ref="name"
             class="input username"
             type="text"
-            v-model="formData.name"
+            v-model="formData.applyerName"
             autocomplete="off"
             placeholder="请填写您的真实姓名" />
         </div>
@@ -56,7 +57,7 @@
             ref="city"
             readonly
             clickable
-            :value="formData.cityValue"
+            :value="formData.birthDate"
             placeholder="   请选择"
             @click="showDatePicker = true"
             class="sexField"
@@ -79,13 +80,14 @@
             ref="linkName"
             class="input username"
             type="text"
-            v-model="formData.linkName"
+            v-model="formData.idCard"
             autocomplete="off"
             placeholder="请填写身份证号" />
         </div>
       </div>
     </div>
-    <div class="saveBtn" @click="submit">保存</div>
+    <div class="saveBtn" @click="update" v-if="$route.query.applyerId">保存</div>
+    <div class="saveBtn" @click="submit" v-else>保存</div>
   </div>
 </template>
 
@@ -93,8 +95,11 @@
 /* eslint-disable */
 import mixin from '@/mixin/image'
 import {
-  getUserInfo, userMessageUpdate
+  getUserInfo
 } from '@/api/doctorpeopleinfo/index'
+import {
+  addPatientInfo, getPatientInfo, updatePatientInfo, deletePatientInfo
+} from '@/api/applyerinfo/index'
 import { mapGetters } from 'vuex'
 
 import { setTimeout } from 'timers'
@@ -108,30 +113,17 @@ export default {
   data () {
     return {
       formData: {
-        avatar: '',
-        name: '',
+        applyerName: '',
         phone: '',
         sex: 1,
-        // cityValue: '',
-        // area: '',
-        linkName: '',
-        linkPhone: ''
+        birthDate: '',
+        idCard: '',
+        userId: undefined
       },
       currentDate: new Date(),
       showPicker: false,
       sexColumns: ['男', '女'],
-      showDatePicker: false,
-      cityColumns: [
-        {
-          values: Object.keys(citys),
-          className: 'column1'
-        },
-        {
-          values: citys['浙江'],
-          className: 'column2',
-          defaultIndex: 2
-        }
-      ]
+      showDatePicker: false
     }
   },
   computed: {
@@ -140,39 +132,144 @@ export default {
   watch: {
     '$route': 'getInfo'
   },
-  created() {
+  async created() {
     console.log(this.user_info)
-    this.getInfo()
+    console.log(this.$route.query.applyerId)
+    if (this.$route.query.applyerId) {
+      await this.getPatientInfoBox(this.$route.query.applyerId)
+    }
+    this.formData.userId = this.user_info.userId
   },
   methods: {
-    getInfo() {
-      getUserInfo(this.user_info.userId).then(res => {
-        this.formData = res.data.data
-        console.log(this.formData)
-      })
+    async getPatientInfoBox(id) {
+      let res = await getPatientInfo(id)
+      this.formData = res.data.data
     },
     onDateConfirm(value) {
-        this.currentDate = value
-        this.showDatePicker = false;
+      this.currentDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
+      this.formData.birthDate = this.timeFilter(this.currentDate.toString())
+      this.showDatePicker = false;
+    },
+    timeFilter(time) {
+      let result = time.split("-")
+      if (result[1].length === 1) {
+        result[1] = '0'.concat(time.split("-")[1])
+      }
+      if (result[2].length === 1) {
+        result[2] = '0'.concat(time.split("-")[2])
+      }
+      time = `${result[0]}-${result[1]}-${result[2]}`
+      return time
+    },
+    validate (cb) {
+      let formData = this.formData
+      if (!formData.applyerName) {
+        cb(false, '用户名不能为空')
+      } else if (!formData.phone) {
+        cb(false, '请输入您的联系电话')
+      } else if (!formData.birthDate) {
+        cb(false, '请选择出生日期')
+      } else if (!formData.idCard) {
+        cb(false, '身份证号不能为空')
+      } else if (formData.idCard.length !== 15 || formData.idCard.length !== 18) {
+        cb(false, '身份证位数不正确')
+      } else if (!(/^[0-9]+$/.exec(formData.idCard))) {
+        cb(false, '身份证号不符合规范，仅支持数字')
+      } else {
+        cb(true)
+      }
     },
     submit () {
-      userMessageUpdate(this.formData).then(({ data }) => {
+      this.validate((valid, msg) => {
+        if (valid) {
+          // "320456199310021234"
+          addPatientInfo(this.formData).then(({ data }) => {
+            if (data.code === 0) {
+              if (!data.data) {
+                this.$notify({
+                  message: '未知异常，修改失败',
+                  background: '#FF4444'
+                })
+              } else {
+                this.$toast.loading({
+                  mask: true,
+                  message: '保存成功',
+                  duration: 2000
+                })
+                this.formData = {
+                  applyerName: '',
+                  phone: '',
+                  sex: 1,
+                  birthDate: '',
+                  idCard: ''
+                }
+              }
+            } else {
+              this.$notify({
+                message: '未知异常，修改失败',
+                background: '#FF4444'
+              })
+            }
+          })
+        } else {
+          this.$notify({
+            message: msg || '请规范填写表单后提交',
+            background: '#FF4444'
+          })
+        }
+      })
+    },
+    update() {
+      this.validate((valid, msg) => {
+        if (valid) {
+          updatePatientInfo(this.formData).then(({ data }) => {
+            if (data.code === 0) {
+              if (!data.data) {
+                this.$notify({
+                  message: '未知异常，修改失败',
+                  background: '#FF4444'
+                })
+              } else {
+                this.$toast.loading({
+                  mask: true,
+                  message: '修改成功',
+                  duration: 2000
+                })
+              }
+            } else {
+              this.$notify({
+                message: '未知异常，修改失败',
+                background: '#FF4444'
+              })
+            }
+          })
+        } else {
+          this.$notify({
+            message: msg || '请规范填写表单后提交',
+            background: '#FF4444'
+          })
+        }
+      })
+    },
+    deletePatient() {
+      deletePatientInfo(this.formData.applyerId).then(({ data }) => {
         if (data.code === 0) {
           if (!data.data) {
             this.$notify({
-              message: '未知异常，修改失败',
+              message: '未知异常，删除失败',
               background: '#FF4444'
             })
           } else {
             this.$toast.loading({
               mask: true,
-              message: '修改成功',
+              message: '删除成功',
               duration: 2000
             })
+            this.$router.go(-1)
           }
         } else {
           this.$notify({
-            message: '未知异常，注册失败',
+            message: '未知异常，删除失败',
             background: '#FF4444'
           })
         }
@@ -275,7 +372,7 @@ export default {
         width: 44px;
       }
       .span-city {
-        width: 90px;
+        width: 110px;
       }
     }
   }
@@ -289,6 +386,27 @@ export default {
     padding: 8px 0;
     text-align: center;
     color: #fff;
+  }
+  .deleteBtn {
+    // position: fixed;
+    // top: 20px;
+    // z-index: 2;
+    // right: 24px;
+    // font-family: PingFangSC-Medium;
+    // font-size: 14px;
+    // color: #4A4A4A;
+    // letter-spacing: 0.94px;
+    // text-align: center;
+
+    position: fixed;
+    top: 5px;
+    z-index: 2;
+    right: 20px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #4A4A4A;
+    letter-spacing: 0.94px;
+    padding-top: 20px
   }
 }
 </style>

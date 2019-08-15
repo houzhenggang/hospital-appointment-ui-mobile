@@ -36,14 +36,6 @@ let OLDPEPLE_ROUTER = new Router({
       path: '/quickLogin',
       name: 'quickLogin',
       component: () => import('@/pages/login/quickLogin')
-    }, {
-      path: '/registerFirst',
-      name: 'registerFirst',
-      component: () => import('@/pages/register/first')
-      }, {
-        path: '/register',
-        name: 'register',
-        component: () => import('@/pages/register/index')
       }, {
       path: '/home',
       name: 'layout',
@@ -72,14 +64,25 @@ let OLDPEPLE_ROUTER = new Router({
           component: () => import('@/views/userMessage/index')
         },
         {
+          path: 'registerFirst',
+          component: () => import('@/pages/register/first')
+        }, {
+          path: 'register',
+          component: () => import('@/pages/register/index')
+        },
+        {
           path: 'patientList',
           name: '就诊人管理',
           component: () => import('@/views/patient/list')
         },
         {
           path: 'addPatient',
-          name: '新增就诊人',
           component: () => import('@/views/patient/add')
+        },
+        {
+          path: 'otherList',
+          name: '检查分类列表',
+          component: () => import('@/views/orderInspect/otherList')
         },
         {
           path: 'orderSearch',

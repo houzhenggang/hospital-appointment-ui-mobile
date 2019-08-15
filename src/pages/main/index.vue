@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -18,7 +18,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user_info']),
+    // ...mapGetters(['user_info']),
     title () {
       return this.$route.query.name || this.$route.meta.title || this.$route.name
     }

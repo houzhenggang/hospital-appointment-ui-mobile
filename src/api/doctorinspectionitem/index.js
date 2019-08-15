@@ -11,3 +11,8 @@ export const getInspectionitemDict = () => {
 export const hotInspitem = () => {
   return request.get(`${baseUrl}/query/hot/inspitem`)
 }
+
+// 获取禁忌词
+export const inspitemTips = (data) => {
+  return request.get(`${baseUrl}/${data}`)
+}

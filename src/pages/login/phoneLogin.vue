@@ -10,7 +10,7 @@
           <input
             class="input username"
             type="text"
-            v-model="formData.phone"
+            v-model="formData.mobile"
             autocomplete="off"
             autofocus
             placeholder="请输入您的手机号" />
@@ -30,7 +30,7 @@
             placeholder="请输入短信验证码"
             maxlength="4" />
           <van-button slot="button" size="small" v-if="flag" class="login-code" type="info" @click="pushCode">获取验证码</van-button>
-          <van-button slot="button" size="small" v-if="!flag" class="login-code" disabled type="info" @click="pushCode">{{time}}s</van-button>
+          <van-button slot="button" size="small" v-if="!flag" class="login-code" disabled type="info">{{time}}s</van-button>
         </div>
       </div>
 
@@ -49,6 +49,9 @@ import { randomLenNum } from '@/utils/index'
 import {
   getUserInfo as getPeopleInfo
 } from '@/api/doctorpeopleinfo/index'
+import {
+  getMobileCode
+} from '@/api/user/index'
 import { mapGetters } from 'vuex'
 import './index.scss'
 
@@ -58,7 +61,7 @@ export default {
       title: '用户登录',
       codeFocus: false,
       formData: {
-        phone: '',
+        mobile: '',
         code: '',
         randomStr: ''
       },
@@ -82,6 +85,13 @@ export default {
       this.time = 59
     },
     pushCode() {
+      if (!/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.test(this.formData.mobile)) {
+        this.$notify({
+          message: '手机号不正确',
+          background: '#ff4444'
+        })
+        return
+      }
       // 置灰
       // 倒计时60秒
       this.flag = false
@@ -93,9 +103,18 @@ export default {
           clearInterval(val)
         }
       }, 1000);
+      getMobileCode(this.formData.mobile).then(res => {
+        console.log(res.data)
+        // if (res.data.code === 0) {
+        //   this.$notify({
+        //     message: res.data.msg,
+        //     background: '#ff4444'
+        //   })
+        // }
+      })
     },
     submit () {
-      if (this.formData.phone === '') {
+      if (this.formData.mobile === '') {
         this.$notify({
           message: '请输入手机号',
           background: '#ff4444'
@@ -106,9 +125,13 @@ export default {
           background: '#ff4444'
         })
       } else {
-        this.$store.dispatch('LoginByUsername', this.formData).then(() => {
+        // LoginByMobile
+        this.$store.dispatch('LoginByMobile', this.formData).then(() => {
+          debugger
           this.$store.dispatch('getUserInfo').then(() => {
+            debugger
             this.$store.dispatch('GetDictAll').then(async () => {
+              debugger
               let result = await getPeopleInfo(this.user_info.userId)
               if (!(result.data.data && result.data.data.peopleId)) {
                 this.$notify({
@@ -118,8 +141,7 @@ export default {
                 return
               } else {
                 this.formData = {
-                  phone: '',
-                  password: '',
+                  mobile: '',
                   code: ''
                 }
                 this.$notify({
@@ -145,22 +167,22 @@ export default {
       }
     },
     toRegister () {
-      this.$router.push({ name: 'registerFirst' })
+      this.$router.push({ path: '/main/registerFirst', query: { name: '注册' } })
     },
     toLogin () {
       this.$router.push({ name: 'login' })
     }
   },
   created () {
-    let { phone } = this.$route.params
-    if (phone) {
-      this.$set(this.formData, 'phone', phone)
+    let { mobile } = this.$route.params
+    if (mobile) {
+      this.$set(this.formData, 'mobile', mobile)
     }
   },
   activated () {
-    let { phone } = this.$route.params
-    if (phone) {
-      this.$set(this.formData, 'phone', phone)
+    let { mobile } = this.$route.params
+    if (mobile) {
+      this.$set(this.formData, 'mobile', mobile)
     }
   }
 }

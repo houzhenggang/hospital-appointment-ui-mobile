@@ -20,7 +20,7 @@
                     <span class="value">{{orderValue.feeTotal}}</span>
                 </van-cell>
                 <van-cell title="注意禁忌症" title-class="leftTitle" :class="{close: flag === true, open: flag === false}">
-                    <div class="text" :class="{choosed: flag === true}">{{text}}</div>
+                    <div class="text" :class="{choosed: flag === true}">{{orderValue.inspItemTaboo}}</div>
                     <div class="openBtn" @click="flag = false" v-if="flag">展开</div>
                 </van-cell>
                 <van-cell title="就诊人" title-class="leftTitle">
@@ -30,7 +30,7 @@
                     <span class="value">{{orderValue.peoplePhone}}</span>
                 </van-cell>
                 <van-cell title="身份证号" title-class="leftTitle">
-                    <span class="value">{{peopleIdcard}}</span>
+                    <span class="value">{{orderValue.idCard}}</span>
                 </van-cell>
                 <van-cell title="预约时间" title-class="leftTitle">
                     <span class="value">{{orderValue.applyTime}}</span>
@@ -58,8 +58,7 @@ export default {
         orderValue: {},
         addressStreet: 'addressStreet',
         peopleIdcard: '',
-        flag: true,
-        text: '1、 有严重贫血、白血病、出血性疾病等血液系统疾病的；2、 重症高血压病，近期心肌梗死，心绞痛频繁发作，心功能III—IV级，心脏病合并高血压等，禁忌或暂缓拔牙。一般高血压患者可以拔牙，但血压高于180/100mmHg，应先治疗在拔牙；3、 血糖没能控制的糖尿病患者；4、 甲状腺功能亢进且未能控制者；'
+        flag: true
     }
   },
   computed: {

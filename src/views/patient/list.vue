@@ -4,9 +4,9 @@
         <div @click="toAddPatient" class="filter">新增</div>
         <div class="list">
             <div class="title">当前用户</div>
-            <div class="user-list" v-for="(item, index) in list" :key="index">
-                <div>{{item.name}}</div>
-                <div>{{item.sex}}</div>
+            <div class="user-list" v-for="(item, index) in list" :key="index" @click="toPatientDetail(item)">
+                <div>{{item.applyerName}}</div>
+                <div>{{item.sex === "1" ? '男' : '女'}}</div>
                 <div>{{item.idCard}}</div>
             </div>
         </div>
@@ -16,6 +16,12 @@
 <script>
 /* eslint-disable */
 import { mapGetters } from 'vuex'
+import {
+  getUserInfo
+} from '@/api/doctorpeopleinfo/index'
+import {
+  getPatientInfoList
+} from '@/api/applyerinfo/index'
 
 export default {
   computed: {
@@ -23,26 +29,20 @@ export default {
   },
   data () {
     return {
-      list: [
-        {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }, {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }, {
-          name: '张芳芳',
-          sex: '女',
-          idCard: '340302********0657'
-        }
-      ]
+      list: []
     }
+  },
+  created() {
+    getPatientInfoList(this.user_info.userId).then(res => {
+      this.list = res.data.data.records
+    })
   },
   methods: {
     toAddPatient () {
-      this.$router.push({ name: '新增就诊人' })
+      this.$router.push({ path: '/main/addPatient', query: { name: '新增就诊人' } })
+    },
+    toPatientDetail (item) {
+      this.$router.push({ path: '/main/addPatient', query: { name: '编辑就诊人信息', applyerId: item.applyerId } })
     }
   }
 }
