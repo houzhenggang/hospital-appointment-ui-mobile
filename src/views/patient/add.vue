@@ -171,7 +171,7 @@ export default {
         cb(false, '请选择出生日期')
       } else if (!formData.idCard) {
         cb(false, '身份证号不能为空')
-      } else if (formData.idCard.length !== 15 || formData.idCard.length !== 18) {
+      } else if (formData.idCard.length !== 15 && formData.idCard.length !== 18) {
         cb(false, '身份证位数不正确')
       } else if (!(/^[0-9]+$/.exec(formData.idCard))) {
         cb(false, '身份证号不符合规范，仅支持数字')
