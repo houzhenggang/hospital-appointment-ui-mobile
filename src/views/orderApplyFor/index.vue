@@ -268,13 +268,13 @@ export default {
         },
         sumbit () {
             this.flag = true
-            // if (!this.detailTime) {
-            //     this.$notify({
-            //         message: '请选择详细时间',
-            //         background: '#FF4444'
-            //     })
-            //     return
-            // }
+            if (!this.applyerinfo.applyerName) {
+                this.$notify({
+                    message: '请选择就诊人',
+                    background: '#FF4444'
+                })
+                return
+            }
             const data = {
                 hospitalId: this.hospitalValue.hospitalId,
                 hospitalName: this.hospitalValue.hospitalName,
@@ -418,7 +418,6 @@ export default {
             display: flex;
             justify-content: space-between;
             padding-bottom: 10px;
-            margin-bottom: 20px;
             padding-left: 15px;
             padding-right: 15px;
             border-bottom: 1px solid #eaeaea;

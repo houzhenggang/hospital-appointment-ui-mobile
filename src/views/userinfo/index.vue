@@ -75,9 +75,6 @@ export default {
       formData: []
     }
   },
-  watch: {
-    '$route': 'getInfo'
-  },
   created() {
     this.getInfo()
   },

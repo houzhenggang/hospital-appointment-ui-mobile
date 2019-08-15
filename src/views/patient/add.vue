@@ -203,6 +203,7 @@ export default {
                   birthDate: '',
                   idCard: ''
                 }
+                this.$router.go(-1)
               }
             } else {
               this.$notify({
