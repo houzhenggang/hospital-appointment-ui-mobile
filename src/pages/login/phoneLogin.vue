@@ -159,7 +159,6 @@ export default {
             message: '登录失败',
             background: '#ff4444'
           })
-          this.refreshCode()
         })
       }
     },
