@@ -49,7 +49,7 @@ export function userLoginNoCode (code) {
 
 // 获取登录短信验证码：/admin/mobile/{mobile}，样例/admin/mobile/15565502588
 export const getMobileCode = (phone) => {
-  return request.get(`/admin/mobile/${phone}`)
+  return request.get(`/api/admin/mobile/${phone}`)
 }
 
 // 手机号登录接口：/auth/mobile/token/sms，参数：mobile，code，grant_type
@@ -71,5 +71,5 @@ export const mobileLogin = (mobile, code) => {
 
 // 验证短息验证码接口：/admin/mobile/valid/sms，参数：mobile，code
 export const checkCode = (formData) => {
-  return request.get(`/admin/mobile/valid/sms`, formData)
+  return request.get(`/api/admin/mobile/valid/sms`, formData)
 }
