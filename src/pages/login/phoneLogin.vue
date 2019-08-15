@@ -127,11 +127,8 @@ export default {
       } else {
         // LoginByMobile
         this.$store.dispatch('LoginByMobile', this.formData).then(() => {
-          debugger
           this.$store.dispatch('getUserInfo').then(() => {
-            debugger
             this.$store.dispatch('GetDictAll').then(async () => {
-              debugger
               let result = await getPeopleInfo(this.user_info.userId)
               if (!(result.data.data && result.data.data.peopleId)) {
                 this.$notify({
