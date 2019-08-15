@@ -142,7 +142,7 @@ export default {
       }
     },
     toRegister () {
-      this.$router.push({ name: 'registerFirst' })
+      this.$router.push({ path: '/main/registerFirst', query: { name: '注册' } })
     },
     toPhoneLogin () {
       this.$router.push({ name: 'phoneLogin' })

@@ -113,7 +113,7 @@ import {
   getUserInfo
 } from '@/api/doctorpeopleinfo/index'
 import {
-  getPatientInfo
+  getPatientInfoList
 } from '@/api/applyerinfo/index'
 import { mapGetters } from 'vuex'
 import { setTimeout } from 'timers'
@@ -193,7 +193,7 @@ export default {
             console.log(res.data)
         },
         async getPatientList() {
-            let res = await getPatientInfo(this.user_info.userId)
+            let res = await getPatientInfoList(this.user_info.userId)
             this.applyerinfoList = res.data.data.records
             
             this.patientColumns = this.applyerinfoList.map((item,index) => {

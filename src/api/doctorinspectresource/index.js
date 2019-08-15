@@ -28,3 +28,8 @@ export const groupDetail = (queryDate, inspItemAp, hospitalId, inspItemId) => {
 export const getDetailTime = (startTime, endTime, hospitalId, inspItemName) => {
   return request.get(`${baseUrl}/list/?startTime=${startTime}&&endTime=${endTime}&&hospitalId=${hospitalId}&&inspItemName=${inspItemName}`)
 }
+
+// 资源分类列表查询
+export const getInslList = () => {
+  return request.get(`${baseUrl}/page/all/item/group`)
+}

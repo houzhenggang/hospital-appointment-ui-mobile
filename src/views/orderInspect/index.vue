@@ -77,7 +77,11 @@ export default {
         },
         onSearch() {
             console.log('搜索')
-            this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
+            if (this.value === '') {
+                this.$router.push({ path: '/main/otherList' })
+            } else {
+                this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
+            }
         }
     }
 }

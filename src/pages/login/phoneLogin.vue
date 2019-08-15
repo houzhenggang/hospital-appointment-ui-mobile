@@ -85,6 +85,13 @@ export default {
       this.time = 59
     },
     pushCode() {
+      if (!/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.test(this.formData.mobile)) {
+        this.$notify({
+          message: '手机号不正确',
+          background: '#ff4444'
+        })
+        return
+      }
       // 置灰
       // 倒计时60秒
       this.flag = false
@@ -160,7 +167,7 @@ export default {
       }
     },
     toRegister () {
-      this.$router.push({ name: 'registerFirst' })
+      this.$router.push({ path: '/main/registerFirst', query: { name: '注册' } })
     },
     toLogin () {
       this.$router.push({ name: 'login' })
