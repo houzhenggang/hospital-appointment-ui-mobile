@@ -50,7 +50,7 @@ import {
   getUserInfo as getPeopleInfo
 } from '@/api/doctorpeopleinfo/index'
 import {
-  getMobileCode
+  getLoginMobileCode
 } from '@/api/user/index'
 import { mapGetters } from 'vuex'
 import './index.scss'
@@ -103,7 +103,7 @@ export default {
           clearInterval(val)
         }
       }, 1000);
-      getMobileCode(this.formData.mobile).then(res => {
+      getLoginMobileCode(this.formData.mobile).then(res => {
         console.log(res.data)
         // if (res.data.code === 0) {
         //   this.$notify({

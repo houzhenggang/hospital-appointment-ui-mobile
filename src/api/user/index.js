@@ -48,8 +48,18 @@ export function userLoginNoCode (code) {
 }
 
 // 获取登录短信验证码：/admin/mobile/{mobile}，样例/admin/mobile/15565502588
-export const getMobileCode = (phone) => {
-  return request.get(`/api/admin/mobile/${phone}`)
+// export const getMobileCode = (phone) => {
+//   return request.get(`/api/admin/mobile/${phone}`)
+// }
+
+// 发送注册短息验证码：/admin/mobile/register/{mobile}
+export const getRegisterMobileCode = (phone) => {
+  return request.get(`/api/admin/mobile/register/${phone}`)
+}
+
+// 发送登录短息验证码/mobile/login/{mobile}
+export const getLoginMobileCode = (phone) => {
+  return request.get(`/api/admin/mobile/login/${phone}`)
 }
 
 // 手机号登录接口：/auth/mobile/token/sms，参数：mobile，code，grant_type

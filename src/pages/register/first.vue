@@ -45,7 +45,7 @@ import mixin from '@/mixin/image'
 import {
   userRegister,
   hasUserName,
-  getMobileCode,
+  getRegisterMobileCode,
   checkCode
 } from '@/api/user/index'
 import { setTimeout } from 'timers'
@@ -93,7 +93,7 @@ export default {
           clearInterval(val)
         }
       }, 1000);
-      getMobileCode(this.formData.phone).then(res => {
+      getRegisterMobileCode(this.formData.phone).then(res => {
         console.log(res.data)
         if (res.data.code === 0 && res.data.msg === '手机号未注册') {
           this.$notify({
