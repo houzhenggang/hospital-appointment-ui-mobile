@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="addPatient">
-    <div @click="deletePatient" class="deleteBtn" v-if="$route.query.applyerId">删除</div>
+    <div @click="deletePatient" class="deleteBtn" v-if="$route.query.applyerId && !flag">删除</div>
     <div class="userMessage-form">
       <div class="login-input">
         <div class="label">姓名</div>
@@ -103,10 +103,6 @@ import {
 import { mapGetters } from 'vuex'
 
 import { setTimeout } from 'timers'
-const citys = {
-  '浙江': ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-  '福建': ['福州', '厦门', '莆田', '三明', '泉州']
-};
 export default {
   name: 'register',
   mixins: [ mixin ],
@@ -123,7 +119,8 @@ export default {
       currentDate: new Date(),
       showPicker: false,
       sexColumns: ['男', '女'],
-      showDatePicker: false
+      showDatePicker: false,
+      flag: false
     }
   },
   computed: {
@@ -138,9 +135,18 @@ export default {
     if (this.$route.query.applyerId) {
       await this.getPatientInfoBox(this.$route.query.applyerId)
     }
+    await this.getUserInfoValue()
     this.formData.userId = this.user_info.userId
   },
   methods: {
+    async getUserInfoValue() {
+      let res = await getUserInfo(this.user_info.userId)
+      console.log(res.data)
+
+      if (res.data.data.idCard === this.formData.idCard) {
+        this.flag = true
+      }
+    },
     async getPatientInfoBox(id) {
       let res = await getPatientInfo(id)
       this.formData = res.data.data
@@ -276,28 +282,6 @@ export default {
         }
       })
     },
-    onRead (file) {
-      // let formData = new FormData()
-      // formData.append('file', file.file, file.file.name)
-      // 在上传前需要将图片进行压缩处理
-      this.$toast.loading({
-        duration: 0,
-        forbidClick: true,
-        mask: true,
-        message: '上传中...'
-      })
-      this.imgPreview(file.file)
-    },
-    imageUpload (file) {
-      let config = {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }
-
-      this.axios.post('/api/admin/file/upload', file, config).then(({ data }) => {
-        this.$set(this.formData, 'avatar', `${data.data.bucketName}-${data.data.fileName}`)
-        this.$toast.clear()
-      })
-    },
     onConfirm (value) {
       if (value === '男'){
         this.formData.sex = 1;
@@ -305,10 +289,6 @@ export default {
         this.formData.sex = 2;
       }
       this.showPicker = false
-    },
-    onCityConfirm (picker, values) {
-      this.formData.cityValue = picker.toString()
-      this.showDatePicker = false
     }
   }
 }
