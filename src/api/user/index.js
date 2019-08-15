@@ -54,7 +54,6 @@ export const getMobileCode = (phone) => {
 
 // 手机号登录接口：/auth/mobile/token/sms，参数：mobile，code，grant_type
 export const mobileLogin = (mobile, code) => {
-  debugger
   const grant_type = 'mobile'
   mobile = 'SMS@'.concat(mobile)
 

@@ -55,11 +55,9 @@ export default {
         {
           name: '手机号认证',
           icon: require('./../../../public/image/me/phone@2x.png'),
-          pathName: 'archives'
         }, {
           name: '身份证认证',
           icon: require('./../../../public/image/me/credentials_icon@2x.png'),
-          pathName: 'signing'
         // }, {
         //   name: '医保卡认证',
         //   icon: require('./../../../public/image/me/medicare_card@2x.png'),
@@ -96,7 +94,9 @@ export default {
       })
     },
     jumpPage (pathName) {
-      this.$router.push({ name: pathName })
+      if (pathName) {
+        this.$router.push({ name: pathName })
+      }
     },
     handleLogout () {
       this.$dialog.confirm({

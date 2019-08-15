@@ -97,7 +97,6 @@ export default {
             return require('./../../../public/image/orderInspect/' + iconName + '.png')
         },
         choose(value, index) {
-            // debugger
             if(value.inspItemName === '其他预约' && index === this.hotList.length - 1) {
                 this.$router.push({ path: '/main/otherList' })
             } else {
