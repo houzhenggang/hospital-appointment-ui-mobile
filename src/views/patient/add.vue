@@ -50,7 +50,7 @@
         </div>
       </div>
 
-       <div class="login-input">
+       <!-- <div class="login-input">
         <div class="label">出生日期</div>
         <div class="span span-city">
           <van-field
@@ -71,7 +71,7 @@
             />
           </van-popup>
         </div>
-      </div>
+      </div> -->
 
       <div class="login-input">
         <div class="label">身份证号</div>
@@ -112,14 +112,14 @@ export default {
         applyerName: '',
         phone: '',
         sex: 1,
-        birthDate: '',
+        // birthDate: '',
         idCard: '',
         userId: undefined
       },
-      currentDate: new Date(),
+      // currentDate: new Date(),
       showPicker: false,
       sexColumns: ['男', '女'],
-      showDatePicker: false,
+      // showDatePicker: false,
       flag: false
     }
   },
@@ -151,11 +151,11 @@ export default {
       let res = await getPatientInfo(id)
       this.formData = res.data.data
     },
-    onDateConfirm(value) {
-      this.currentDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
-      this.formData.birthDate = this.timeFilter(this.currentDate.toString())
-      this.showDatePicker = false;
-    },
+    // onDateConfirm(value) {
+    //   this.currentDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
+    //   this.formData.birthDate = this.timeFilter(this.currentDate.toString())
+    //   this.showDatePicker = false;
+    // },
     timeFilter(time) {
       let result = time.split("-")
       if (result[1].length === 1) {
@@ -173,8 +173,8 @@ export default {
         cb(false, '用户名不能为空')
       } else if (!formData.phone) {
         cb(false, '请输入您的联系电话')
-      } else if (!formData.birthDate) {
-        cb(false, '请选择出生日期')
+      // } else if (!formData.birthDate) {
+      //   cb(false, '请选择出生日期')
       } else if (!formData.idCard) {
         cb(false, '身份证号不能为空')
       } else if (formData.idCard.length !== 15 && formData.idCard.length !== 18) {
@@ -206,7 +206,7 @@ export default {
                   applyerName: '',
                   phone: '',
                   sex: 1,
-                  birthDate: '',
+                  // birthDate: '',
                   idCard: ''
                 }
                 this.$router.go(-1)
