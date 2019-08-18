@@ -5,8 +5,8 @@
         :items="items"
         :main-active-index="mainActiveIndex"
         :active-id="activeId"
-        @click-nav="onClickNav"
-        @click-item="onClickItem"
+        @navclick="onClickNav"
+        @itemclick="onClickItem"
         >
         </van-tree-select>
     </div>
