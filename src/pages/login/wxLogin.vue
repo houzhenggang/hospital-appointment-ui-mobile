@@ -79,7 +79,10 @@ export default {
               })
               this.$store.dispatch('getUserInfo').then(() => {
                   this.$store.dispatch('GetDictAll').then(() => {
-                      this.$router.push({ name: 'orderInspect' })
+                      this.$store.dispatch('saveWxLoginStatus').then(()=>{
+                          this.$router.push({ name: 'orderInspect' })
+                      })
+
                   })
               }).catch(() => {
                   this.$notify({
@@ -97,7 +100,7 @@ export default {
 
   },
   created () {
-      //http://127.0.0.1:8081/wxlogin?mobile=15371019835&name=taohaibing&idcard=3405211
+      //http://127.0.0.1:8080/wxlogin?mobile=15371019835&name=taohaibing&idcard=3405211
       this.getWXLoginParam()
   }
 }

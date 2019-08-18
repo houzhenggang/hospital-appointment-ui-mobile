@@ -6,7 +6,7 @@
         <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
         <img v-else src="./../../../public/image/me/defaultAvatar@2x.png">
         <!-- <img src="./../../../public/image/me/defaultAvatar@2x.png"> -->
-        
+
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
@@ -32,7 +32,7 @@
         </div>
         <div class="icon" v-if="index === 2 || index === 3"><van-icon name="arrow" /></div>
       </div>
-      <!-- <div class="logout" @click="handleLogout">退出登录</div> -->
+      <div class="logout" @click="handleLogout" v-if=" show === true">退出登录</div>
     </div>
   </div>
 </template>
@@ -44,6 +44,8 @@ import './style.scss'
 import {
   getUserInfo
 } from '@/api/doctorpeopleinfo/index'
+
+import { getStore } from '@/utils/store'
 
 export default {
   computed: {
@@ -72,11 +74,19 @@ export default {
           pathName: '我的预约'
         }
       ],
-      formData: []
+      formData: [],
+        show: true,
     }
   },
   created() {
     this.getInfo()
+      let wxloginStatus = getStore({ name: 'wxloginStatus' })
+      if (wxloginStatus===1) {
+          this.show = false
+      } else {
+          this.show = true
+      }
+
   },
   methods: {
     getInfo() {

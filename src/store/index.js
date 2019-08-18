@@ -58,6 +58,14 @@ export default new Vuex.Store({
         content: state.dictList,
         type: 'session'
       })
+    },
+    SET_WXLOGIN_STATUS: (state, wxloginStatus) => {
+      state.wxlogin_status = wxloginStatus
+      setStore({
+        name: 'wxloginStatus',
+        content: state.wxlogin_status,
+        type: 'session'
+      })
     }
   },
   actions: {
@@ -71,6 +79,8 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         userLogin(user.username, user.password, user.code, user.randomStr).then(response => {
           const data = response.data
+
+          commit('SET_WXLOGIN_STATUS', 0)
           commit('SET_ACCESS_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           resolve()
@@ -88,6 +98,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         mobileLogin(user.mobile, user.code, user.grant_type).then(response => {
           const data = response.data
+          commit('SET_WXLOGIN_STATUS', 0)
           commit('SET_ACCESS_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           resolve()
@@ -122,6 +133,12 @@ export default new Vuex.Store({
         commit('SET_ACCESS_TOKEN', '')
         commit('SET_REFRESH_TOKEN', '')
         commit('SET_TITLE_INFO', {})
+        resolve()
+      })
+    },
+    saveWxLoginStatus({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_WXLOGIN_STATUS', 1)
         resolve()
       })
     },
