@@ -32,7 +32,7 @@
         </div>
         <div class="icon" v-if="index === 2 || index === 3"><van-icon name="arrow" /></div>
       </div>
-      <div class="logout" @click="handleLogout">退出登录</div>
+      <!-- <div class="logout" @click="handleLogout">退出登录</div> -->
     </div>
   </div>
 </template>
