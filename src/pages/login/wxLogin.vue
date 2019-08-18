@@ -39,7 +39,8 @@ export default {
               qrPassword: '',
               phone: mobile,
               name: name,
-              sex: ''
+              sex: '',
+              idCard: idcard
           }
           //1 检查用户状态
           hasUserName(name).then(({ data }) => {
@@ -78,7 +79,7 @@ export default {
               })
               this.$store.dispatch('getUserInfo').then(() => {
                   this.$store.dispatch('GetDictAll').then(() => {
-                      this.$router.push({ name: 'userinfo' })
+                      this.$router.push({ name: 'orderInspect' })
                   })
               }).catch(() => {
                   this.$notify({
