@@ -34,16 +34,19 @@ export const hasUserName = (userName) => {
 }
 
 // 用户登录 (免验证码)
-export function userLoginNoCode (code) {
-  let formData = new FormData()
-  formData.append('mobile', `OSC@${code}`)
+export function userLoginNoCode (mobile) {
+  const grant_type = 'mobile'
+  mobile = 'SMS@'.concat(mobile)
+
   return request({
-    method: 'post',
-    url: '/api/auth/mobile/token/social',
-    data: formData,
+    url: '/api/auth/mobile/token/sms',
     headers: {
+      isToken: false,
+      'TENANT_ID': '1',
       'Authorization': 'Basic dGVzdDp0ZXN0'
-    }
+    },
+    method: 'post',
+    params: { mobile, grant_type }
   })
 }
 

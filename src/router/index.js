@@ -29,6 +29,10 @@ let OLDPEPLE_ROUTER = new Router({
       name: 'login',
       component: () => import('@/pages/login/index')
     }, {
+      path: '/wxlogin',
+      name: 'wxlogin',
+      component: () => import('@/pages/login/wxLogin')
+    },{
       path: '/phoneLogin',
       name: 'phoneLogin',
       component: () => import('@/pages/login/phoneLogin')
@@ -122,9 +126,10 @@ let OLDPEPLE_ROUTER = new Router({
   ]
 })
 
-const whitePageList = ['login', 'registerFirst', 'register', 'quickLogin', 'phoneLogin']
+const whitePageList = ['login', 'registerFirst', 'register', 'quickLogin', 'phoneLogin','wxlogin']
 
 OLDPEPLE_ROUTER.beforeEach((to, from, next) => {
+
   let session_token = JSON.parse(sessionStorage.getItem('access_token'))
 
   if (whitePageList.includes(to.name)) {
@@ -134,12 +139,16 @@ OLDPEPLE_ROUTER.beforeEach((to, from, next) => {
     let tokenDate = session_token.datetime
     let currentDate = new Date().getTime()
     if (currentDate - tokenDate > 43200000) {
-      next({ name: 'login' })
+      next({
+        name: 'login'
+      })
     } else {
       next()
     }
   } else {
-    next({ name: 'login' })
+    next({
+      name: 'login'
+    })
   }
 })
 
