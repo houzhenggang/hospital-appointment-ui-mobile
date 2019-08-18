@@ -48,8 +48,8 @@ export default {
     }
   }
   .content {
-    margin-top: 46px;
-    height: calc(100vh - 46px);
+    margin-top: 60px;
+    height: calc(100vh - 60px);
   }
 }
 </style>

@@ -16,3 +16,8 @@ export const hotInspitem = () => {
 export const inspitemTips = (data) => {
   return request.get(`${baseUrl}/${data}`)
 }
+
+// 根据检查类别查询检查项目
+export const getByInspType = (inspType) => {
+  return request.get(`${baseUrl}/item/${inspType}`)
+}

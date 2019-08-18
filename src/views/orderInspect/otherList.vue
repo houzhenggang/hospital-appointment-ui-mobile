@@ -1,22 +1,14 @@
 /* eslint-disable */
 <template>
     <div id="otherList">
-        <section class="box">
-            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item)">
-                <div class="left">
-                    <img src="./../../../public/image/order/hospitalBanner.png" alt="">
-                </div>
-                <div class="right">
-                    <span class="inspItemName">{{item.inspItemName}}</span>
-                    <div class="remark">{{item.remark}}</div>
-                    <div class="r-bottom">
-                        <span class="p-text">项目费用</span>
-                        <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
-                        <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <van-tree-select
+        :items="items"
+        :main-active-index="mainActiveIndex"
+        :active-id="activeId"
+        @click-nav="onClickNav"
+        @click-item="onClickItem"
+        >
+        </van-tree-select>
     </div>
 </template>
 
@@ -24,28 +16,61 @@
 <script>
 /* eslint-disable */
 import {
-  getInslList
-} from '@/api/doctorinspectresource/index'
+    getByInspType
+} from '@/api/doctorinspectionitem/index'
+import {
+  getInspectionTypeDict
+} from '@/api/admin/dict'
+import { setTimeout } from 'timers';
 
 export default {
     data() {
         return {
-            list: []
+            items: [],
+            mainActiveIndex: 0,
+            activeId: 1
         }
     },
     async created() {
-        await this.getInslListValue()
-    },
-    watch: {
-        '$route': 'getInslListValue'
+        await this.getInspectionType()
+        await this.getDataByInspType(this.items[0].value, 0)
     },
     methods: {
-        async getInslListValue() {
-            let res = await getInslList()
-            this.list = res.data.data
+        async getInspectionType() {
+            let res = await getInspectionTypeDict()
+            let result = res.data.data.map(ele => {
+                let list = []
+                list.text = ele.label
+                list.value = ele.value
+                list.children = []
+                return list
+            })
+            this.items = result
+        },
+        async getDataByInspType(data, index) {
+            let res = await getByInspType(data)
+
+            let result = []
+            result = res.data.data.map(ele => {
+                let list = {}
+                list.text = ele.inspItemName
+                list.id = ele.inspItemId
+                return list
+            })
+            this.items[index].children = result
+        },
+        async onClickNav(index) {
+            await this.getDataByInspType(this.items[index].value, index)
+            setTimeout(() => {
+                this.mainActiveIndex = index;
+            }, 1000 / 60)
+        },
+        onClickItem(data) {
+            this.activeId = data.id;
+            this.toDetail(data.text)
         },
         toDetail(item) {
-            this.$router.push({ path: '/main/orderSearch', query: { data: item.inspItemName } })
+            this.$router.push({ path: '/main/orderSearch', query: { data: item } })
         }
     }
 }

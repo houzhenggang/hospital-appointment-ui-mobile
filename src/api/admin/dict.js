@@ -59,3 +59,8 @@ export const getDictByType = (type) => {
 export function getDictAll () {
   return request.get(`/api/admin/dict/type-all`)
 }
+
+// 获取检查类别
+export function getInspectionTypeDict () {
+  return request.get(`/api/admin/dict/type/kasoft_inspection_type`)
+}
