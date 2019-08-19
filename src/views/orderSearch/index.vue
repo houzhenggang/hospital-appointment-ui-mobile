@@ -18,7 +18,7 @@
                 <div class="middle">
                     <span class="hospital">{{item.hospitalName}}</span>
                     <span class="hospitalPhone">电话：{{item.hospitalPhone}}</span>
-                    <span class="project">{{item.inspItemType}}</span>
+                    <span class="project">{{item.inspItemName}}</span>
                 </div>
                 <div class="right">
                     <div class="r-top">
@@ -89,11 +89,11 @@
             </van-popup>
         </van-popup>
 
-        <van-pagination 
-        v-model="currentPage" 
-        :total-items="total" 
+        <van-pagination
+        v-model="currentPage"
+        :total-items="total"
         :items-per-page="10"
-        :show-page-size="3" 
+        :show-page-size="3"
         force-ellipses
         @change="change1"
         class="page"
