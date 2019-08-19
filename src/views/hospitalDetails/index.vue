@@ -79,6 +79,7 @@ import {
 import {
   getInspectionitemDict
 } from '@/api/doctorinspectionitem/index'
+import { getStore } from './../../utils/store'
 export default {
     data() {
         return {
@@ -105,10 +106,13 @@ export default {
             hospitalDict: {},
             inspectionitemDict: {},
             isLoad: true,
-            maxUnitPrice: undefined
+            maxUnitPrice: undefined,
+            period: []
         }
     },
     async created() {
+        this.period = getStore({ name: 'dictList' }).kasoft_resource_period
+        console.log(this.period)
         let value = new Date()
         this.currentTime = '今天是' + `${value.getFullYear() + '年' + (value.getMonth() + 1) + '月' + value.getDate() + '日'}` + ' 星期'+'日一二三四五六'.charAt(new Date().getDay())
         console.log(this.currentTime)
@@ -185,32 +189,11 @@ export default {
             groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId).then(res => {
                 console.log(res)
             this.timeList = res.data.data.map(item => {
-                switch(item.period) {
-                    case '1': 
-                        item.period = '8:00-9:00'
-                        break
-                    case '2': 
-                        item.period = '9:00-10:00'
-                        break
-                    case '3': 
-                        item.period = '10:00-11:00'
-                        break
-                    case '4': 
-                        item.period = '11:00-12:00'
-                        break
-                    case '5': 
-                        item.period = '13:00-14:00'
-                        break
-                    case '6': 
-                        item.period = '14:00-15:00'
-                        break
-                    case '7': 
-                        item.period = '15:00-16:00'
-                        break
-                    case '8': 
-                        item.period = '16:00-17:00'
-                        break
-                }
+                this.period.map(ele => {
+                    if (item.period === ele.value) {
+                        item.period = ele.label.replace('~', '-')
+                    }
+                })
                 return item
             })
             this.thisWeek[index].timeList = this.timeList
