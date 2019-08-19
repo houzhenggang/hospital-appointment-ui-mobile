@@ -40,7 +40,8 @@ export default {
               phone: mobile,
               name: name,
               sex: '',
-              idCard: idcard
+              idCard: idcard,
+              mynjOpenid: this.$route.query.mynjOpenid
           }
           //1 检查用户状态
           hasUserName(name).then(({ data }) => {

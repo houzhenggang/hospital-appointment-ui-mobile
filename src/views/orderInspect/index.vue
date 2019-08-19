@@ -9,9 +9,17 @@
             <div @click="onSearch" class="searchBtn">搜索</div>
         </div>
         <div class="hotBox">
+            <span class="hotTitle">检查项目分类</span>
+            <div class="hotList classList">
+                <div v-for="(item,index) in classList" :key="index" class="class" @click="choose(item.name, index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="hotBox">
             <span class="hotTitle">热门搜索</span>
             <div class="hotList">
-                <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item, index)">
+                <div v-for="(item,index) in hotList" :key="index" class="item" @click="choose(item.inspItemName, index)">
                     <div class="iconBox">
                         <img :src="item.icon" alt="" class="icon">
                     </div>
@@ -33,7 +41,20 @@ export default {
     data() {
         return {
             value: '',
-            hotList: []
+            hotList: [],
+            classList: [{
+                name: 'CT'
+            },{
+                name: '超声'
+            },{
+                name: '穿刺'
+            },{
+                name: '甲功检查'
+            },{
+                name: '核磁共振'
+            },{
+                name: '其他分类'
+            }]
         }
     },
     created() {
@@ -44,9 +65,6 @@ export default {
             hotInspitem().then(res => {
                 this.hotList = res.data.data.filter((item, i) => {
                     return i < 10
-                })
-                this.hotList.push({
-                    inspItemName: '其他预约'
                 })
                 this.hotList.map(item => {
                     item.icon = this.addIcon(item.inspItemName)
@@ -97,10 +115,10 @@ export default {
             return require('./../../../public/image/orderInspect/' + iconName + '.png')
         },
         choose(value, index) {
-            if(value.inspItemName === '其他预约' && index === this.hotList.length - 1) {
+            if(value === '其他分类' && index === this.classList.length - 1) {
                 this.$router.push({ path: '/main/otherList' })
             } else {
-                this.value = value.inspItemName
+                this.value = value
                 this.onSearch()
             }
         },
@@ -168,8 +186,10 @@ export default {
             color: #9B9B9B;
             letter-spacing: 0.79px;
             text-align: center;
+            margin: 0 15px;
             margin-top: 22px;
-            padding: 0 15px;
+            padding-left: 8px;
+            border-left: 5px solid #245EE5;
         }
         .hotList {
             display: flex;
@@ -198,6 +218,21 @@ export default {
                     text-align: center;
                 }
             }
+            .class {
+                font-family: PingFangSCRegular;
+                font-size: 13px;
+                color: #9B9B9B;
+                letter-spacing: 0.79px;
+                text-align: center;
+                border: 1px solid rgba(151, 151, 151, 0.21);
+                border-radius: 4px;
+                padding: 7px 0;
+                margin-bottom: 12px;
+                width: 30%;
+            }
+        }
+        .classList {
+            padding: 15px;
         }
 
     }
