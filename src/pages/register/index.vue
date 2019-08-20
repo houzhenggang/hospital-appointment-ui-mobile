@@ -41,7 +41,7 @@
       </div>
 
       <div class="login-input">
-        <div class="label">身份证号<span class="tag">(15位或18位数字)</span></div>
+        <div class="label">身份证号</div>
         <div class="span">
           <input
             class="input phone"
@@ -174,12 +174,16 @@ export default {
         cb(false, '身份证号不能为空')
       } else if (formData.idCard.length !== 15 && formData.idCard.length !== 18) {
         cb(false, '身份证位数不正确')
+      } else if (!(/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.exec(formData.idCard))) {
+        cb(false, '身份证号不符合规范')
       } else if (!(/^[0-9]+$/.exec(formData.idCard))) {
         cb(false, '身份证号不符合规范，仅支持数字')
       } else if (!formData.password) {
         cb(false, '密码不能为空')
       } else if (formData.password.length < 6) {
         cb(false, '密码长度不能少于6位')
+      } else if (formData.password.replace(/\s*/g,'').length < 6) {
+        cb(false, '密码不能输入空格')
       } else if (formData.password !== formData.qrPassword) {
         cb(false, '密码和确认密码不一致')
       } else if (!formData.phone) {

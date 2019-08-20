@@ -63,7 +63,8 @@ export default {
       },
       showPicker: false,
       flag: true,
-      time: 59
+      time: 59,
+      already: false
     }
   },
   watch: {
@@ -100,10 +101,31 @@ export default {
             message: '手机号未注册',
             background: '#ff4444'
           })
+        } else {
+          this.already = true
         }
       })
     },
     async toRegister () {
+      if (!/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.test(this.formData.phone)) {
+        this.$notify({
+          message: '手机号不正确',
+          background: '#ff4444'
+        })
+        return
+      } else if (!this.formData.code) {
+        this.$notify({
+          message: '缺少验证码',
+          background: '#ff4444'
+        })
+        return
+      } else if (!this.already) {
+        this.$notify({
+          message: '请先获取验证码',
+          background: '#ff4444'
+        })
+        return
+      }
       let res = await checkCode(this.formData)
       console.log(res.data)
       if (res.data.code === 0 && res.data.msg === '验证成功!') {
