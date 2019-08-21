@@ -5,8 +5,7 @@
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
         <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.avatar" class="defaultImg">
-        <!-- <img :src="'../img/register-photo-min.png'" alt="" v-if="!formData.avatar"> -->
-        <img class="img-2" v-else :src="`/api/admin/file/${formData.avatar}`">
+        <img class="img-2" v-if="formData.avatar" :src="`/api/admin/sys-file/${formData.avatar}`">
       </van-uploader>
       <div class="defaultText">点击修改头像</div>
     </div>
@@ -223,8 +222,7 @@ export default {
       let config = {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
-
-      this.axios.post('/api/admin/file/upload', file, config).then(({ data }) => {
+      this.axios.post('/api/admin/sys-file/upload', file, config).then(({ data }) => {
         this.$set(this.formData, 'avatar', `${data.data.bucketName}-${data.data.fileName}`)
         this.$toast.clear()
       })

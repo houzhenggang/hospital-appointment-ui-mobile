@@ -60,6 +60,11 @@ export const getRegisterMobileCode = (phone) => {
   return request.get(`/api/admin/mobile/register/${phone}`)
 }
 
+// 验证手机号是否注册：/admin/mobile/register/{mobile}
+export const checkRegister = (phone) => {
+  return request.get(`/api/admin/mobile/valid/${phone}`)
+}
+
 // 发送登录短息验证码/mobile/login/{mobile}
 export const getLoginMobileCode = (phone) => {
   return request.get(`/api/admin/mobile/login/${phone}`)

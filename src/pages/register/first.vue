@@ -27,8 +27,8 @@
             autocomplete="off"
             placeholder="请输入短信验证码"
             maxlength="4" />
-          <van-button slot="button" size="small" v-if="flag" class="login-code" type="info" @click="pushCode">获取验证码</van-button>
-          <van-button slot="button" size="small" v-if="!flag" class="login-code" disabled type="info" @click="pushCode">{{time}}s</van-button>
+          <van-button slot="button" size="small" v-if="flag" class="login-code" type="info" @click="checkRegisterBox">获取验证码</van-button>
+          <van-button slot="button" size="small" v-if="!flag" class="login-code" disabled type="info">{{time}}s</van-button>
         </div>
       </div>
     </div>
@@ -46,7 +46,8 @@ import {
   userRegister,
   hasUserName,
   getRegisterMobileCode,
-  checkCode
+  checkCode,
+  checkRegister
 } from '@/api/user/index'
 import { setTimeout } from 'timers'
 
@@ -75,9 +76,7 @@ export default {
       this.flag = true
       this.time = 59
     },
-    pushCode() {
-      // 置灰
-      // 倒计时60秒
+    checkRegisterBox() {
       if (!/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.test(this.formData.phone)) {
         this.$notify({
           message: '手机号不正确',
@@ -85,6 +84,16 @@ export default {
         })
         return
       }
+      checkRegister(this.formData.phone).then(res => {
+        console.log(res.data)
+        this.pushCode()
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    pushCode() {
+      // 置灰
+      // 倒计时60秒
       this.flag = false
       const val = setInterval(() => {
         if (this.time > 0) {
