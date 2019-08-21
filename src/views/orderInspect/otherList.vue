@@ -28,13 +28,16 @@ export default {
     data() {
         return {
             items: [],
-            mainActiveIndex: 0,
+            mainActiveIndex: undefined,
             activeId: 1
         }
     },
     async created() {
         await this.getInspectionType()
         await this.getDataByInspType(this.items[0].value, 0)
+        setTimeout(() => {
+            this.mainActiveIndex = 0;
+        }, 1000 / 60)
     },
     methods: {
         async getInspectionType() {

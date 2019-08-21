@@ -152,7 +152,8 @@ export default {
             if (result !== undefined) {
                 this.value = result
             }
-            let res = await getHospitalList(this.value, current)
+            let valueCopy = this.value.replace(/%/g, '-')
+            let res = await getHospitalList(valueCopy, current)
             this.list = res.data.data.records.map(item => {
                 this.hospitalDict.forEach(element => {
                     if (item.hospitalId === element.hospitalId) {
@@ -214,7 +215,8 @@ export default {
                 })
                 return
             }
-            getHospitalListWithTime(this.value, current, this.startTime, this.endTime).then((res) => {
+            let valueCopy = this.value.replace(/%/g, '-')
+            getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime).then((res) => {
                 this.list = res.data.data.records
                 console.log(this.list)
 
@@ -225,7 +227,8 @@ export default {
         change1(value) {
             this.currentPage = value
             if (this.startTime && this.endTime) {
-                getHospitalListWithTime(this.value, value, this.startTime, this.endTime).then((res) => {
+                let valueCopy = this.value.replace(/%/g, '-')
+                getHospitalListWithTime(valueCopy, value, this.startTime, this.endTime).then((res) => {
                     this.list = res.data.data.records
 
                     this.currentPage = res.data.data.current

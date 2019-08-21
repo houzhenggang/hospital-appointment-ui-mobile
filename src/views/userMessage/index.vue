@@ -5,7 +5,7 @@
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
         <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.avatar" class="defaultImg">
-        <img class="img-2" v-if="formData.avatar" :src="`/api/admin/sys-file/${formData.avatar}`">
+        <img class="img-2" v-if="formData.avatar" :src="`/api/admin/sys-file/register-${formData.avatar}?access_token=${token}`" ref='bbb'>
       </van-uploader>
       <div class="defaultText">点击修改头像</div>
     </div>
@@ -129,6 +129,7 @@ import {
   getUserInfo, userMessageUpdate
 } from '@/api/doctorpeopleinfo/index'
 import { mapGetters } from 'vuex'
+import store from '@/store'
 
 import { setTimeout } from 'timers'
 const citys = {
@@ -163,7 +164,8 @@ export default {
           className: 'column2',
           defaultIndex: 2
         }
-      ]
+      ],
+      token: ''
     }
   },
   computed: {
@@ -172,16 +174,16 @@ export default {
   watch: {
     '$route': 'getInfo'
   },
-  created() {
+  async created() {
     console.log(this.user_info)
-    this.getInfo()
+    await this.getInfo()
+    this.token = store.getters.access_token
   },
   methods: {
-    getInfo() {
-      getUserInfo(this.user_info.userId).then(res => {
-        this.formData = res.data.data
-        console.log(this.formData)
-      })
+    async getInfo() {
+      let res = await getUserInfo(this.user_info.userId)
+      this.formData = res.data.data
+      this.formData.avatar = res.data.data.headImg
     },
     sumbit () {
       userMessageUpdate(this.formData).then(({ data }) => {
@@ -223,8 +225,9 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       this.axios.post('/api/admin/sys-file/upload', file, config).then(({ data }) => {
-        this.$set(this.formData, 'avatar', `${data.data.bucketName}-${data.data.fileName}`)
+        this.$set(this.formData, 'avatar', `${data.data.fileName}`)
         this.$toast.clear()
+        this.$refs.bbb.src = `/api/admin/sys-file/register-${data.data.fileName}?access_token=${this.token}`
       })
     },
     onConfirm (value) {
