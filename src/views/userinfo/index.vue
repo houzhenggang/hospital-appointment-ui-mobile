@@ -3,10 +3,8 @@
   <div class="user-info">
     <div class="head">
       <div class="avatar">
-        <img v-if="user_info.avatar" :src="`/api/admin/file/${user_info.avatar}`">
+        <img v-if="formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`">
         <img v-else src="./../../../public/image/me/defaultAvatar@2x.png">
-        <!-- <img src="./../../../public/image/me/defaultAvatar@2x.png"> -->
-
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
@@ -44,6 +42,7 @@ import './style.scss'
 import {
   getUserInfo
 } from '@/api/doctorpeopleinfo/index'
+import store from '@/store'
 
 import { getStore } from '@/utils/store'
 
@@ -75,7 +74,8 @@ export default {
         }
       ],
       formData: [],
-        show: true,
+      show: true,
+      token: ''
     }
   },
   created() {
@@ -86,7 +86,7 @@ export default {
       } else {
           this.show = true
       }
-
+    this.token = store.getters.access_token
   },
   methods: {
     getInfo() {
@@ -97,6 +97,7 @@ export default {
           let result = this.formData.idCard.substring(4,14)
           this.formData.idCard =  this.formData.idCard.replace(result,'**********')
         }
+        this.formData.headImg = res.data.data.headImg
         // console.log(this.formData)
       })
     },

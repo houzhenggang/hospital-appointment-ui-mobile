@@ -173,14 +173,16 @@ export default {
         cb(false, '用户名不能为空')
       } else if (!formData.phone) {
         cb(false, '请输入您的联系电话')
+      } else if (!(/^[1][3-9]\d{9}$|^([6|9])\d{7}$|^[6]([8|6])\d{5}$/.exec(formData.phone))) {
+        cb(false, '联系电话不符合规范')
       // } else if (!formData.birthDate) {
       //   cb(false, '请选择出生日期')
       } else if (!formData.idCard) {
         cb(false, '身份证号不能为空')
       } else if (formData.idCard.length !== 15 && formData.idCard.length !== 18) {
         cb(false, '身份证位数不正确')
-      } else if (!(/^[0-9]+$/.exec(formData.idCard))) {
-        cb(false, '身份证号不符合规范，仅支持数字')
+      } else if (!(/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/.exec(formData.idCard))) {
+        cb(false, '身份证号不符合规范')
       } else {
         cb(true)
       }
@@ -260,28 +262,32 @@ export default {
       })
     },
     deletePatient() {
-      deletePatientInfo(this.formData.applyerId).then(({ data }) => {
-        if (data.code === 0) {
-          if (!data.data) {
+      this.$dialog.confirm({
+        title: '你确定要删除此就诊人吗？'
+      }).then(() => {
+        deletePatientInfo(this.formData.applyerId).then(({ data }) => {
+          if (data.code === 0) {
+            if (!data.data) {
+              this.$notify({
+                message: '未知异常，删除失败',
+                background: '#FF4444'
+              })
+            } else {
+              this.$toast.loading({
+                mask: true,
+                message: '删除成功',
+                duration: 2000
+              })
+              this.$router.go(-1)
+            }
+          } else {
             this.$notify({
               message: '未知异常，删除失败',
               background: '#FF4444'
             })
-          } else {
-            this.$toast.loading({
-              mask: true,
-              message: '删除成功',
-              duration: 2000
-            })
-            this.$router.go(-1)
           }
-        } else {
-          this.$notify({
-            message: '未知异常，删除失败',
-            background: '#FF4444'
-          })
-        }
-      })
+        })
+      }).catch(() => {})
     },
     onConfirm (value) {
       if (value === '男'){
