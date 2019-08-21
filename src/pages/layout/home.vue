@@ -48,6 +48,7 @@ export default {
     ...mapGetters(['tab'])
   },
   mounted () {
+    this.active = tabList[this.$route.name].value
     this.title = tabList[this.$route.name].name
   }
 }

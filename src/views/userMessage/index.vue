@@ -4,8 +4,8 @@
     <div @click="sumbit" class="saveBtn">保存</div>
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
-        <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.avatar" class="defaultImg">
-        <img class="img-2" v-if="formData.avatar" :src="`/api/admin/sys-file/register-${formData.avatar}?access_token=${token}`" ref='bbb'>
+        <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.headImg" class="defaultImg">
+        <img class="img-2" v-if="formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`" ref='bbb'>
       </van-uploader>
       <div class="defaultText">点击修改头像</div>
     </div>
@@ -142,7 +142,7 @@ export default {
   data () {
     return {
       formData: {
-        avatar: '',
+        headImg: '',
         name: '',
         phone: '',
         sex: 1,
@@ -183,7 +183,7 @@ export default {
     async getInfo() {
       let res = await getUserInfo(this.user_info.userId)
       this.formData = res.data.data
-      this.formData.avatar = res.data.data.headImg
+      this.formData.headImg = res.data.data.headImg
     },
     sumbit () {
       userMessageUpdate(this.formData).then(({ data }) => {
@@ -225,7 +225,7 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       this.axios.post('/api/admin/sys-file/upload', file, config).then(({ data }) => {
-        this.$set(this.formData, 'avatar', `${data.data.fileName}`)
+        this.$set(this.formData, 'headImg', `${data.data.fileName}`)
         this.$toast.clear()
         this.$refs.bbb.src = `/api/admin/sys-file/register-${data.data.fileName}?access_token=${this.token}`
       })

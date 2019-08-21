@@ -10,27 +10,33 @@
             <div @click="showPopup" class="filter">筛选</div>
         </section>
         <section class="box">
-            <div class="list" v-for="(item,index) in list" :key="index" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
-                <div class="left">
-                    <!-- <img :src="item.image" alt="" v-if="item.image"> -->
-                    <img src="./../../../public/image/order/hospitalBanner.png" alt="">
-                </div>
-                <div class="middle">
-                    <span class="hospital">{{item.hospitalName}}</span>
-                    <span class="hospitalPhone">电话：{{item.hospitalPhone}}</span>
-                    <span class="project">{{item.inspItemName}}</span>
-                </div>
-                <div class="right">
-                    <div class="r-top">
-                        <span class="num" :class="{gray: item.quantity === 0}">{{item.quantity}}</span>
-                        <span class="suffix">可预约</span>
-                        <van-icon name="arrow"  class="r-arrow"/>
+            <div class="list" v-for="(item,index) in list" :key="index">
+                <div class="aaa" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
+                    <div class="left">
+                        <!-- <img :src="item.image" alt="" v-if="item.image"> -->
+                        <img src="./../../../public/image/order/hospitalBanner.png" alt="">
                     </div>
-                    <div class="r-bottom">
-                        <span class="p-text">项目费用</span>
-                        <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
-                        <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
+                    <div class="middle">
+                        <span class="hospital">{{item.hospitalName}}</span>
+                        <span class="hospitalPhone">电话：{{item.hospitalPhone}}</span>
+                        <span class="project">{{item.inspItemType}}</span>
                     </div>
+                    <div class="right">
+                        <div class="r-top">
+                            <span class="num" :class="{gray: item.quantity === 0}">{{item.quantity}}</span>
+                            <span class="suffix">可预约</span>
+                            <van-icon name="arrow"  class="r-arrow"/>
+                        </div>
+                        <div class="r-bottom">
+                            <span class="p-text">项目费用</span>
+                            <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
+                            <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bbb">
+                    <div class="text" :class="{choosed: item.open === true}" ref='care'>{{item.inspItemExp}}</div>
+                    <div class="openBtn" @click="openText(item, index)" v-if="item.open">展开</div>
                 </div>
             </div>
         </section>
@@ -113,6 +119,7 @@ import {
 import {
   getInspectionitemDict
 } from '@/api/doctorinspectionitem/index'
+import { setTimeout } from 'timers';
 
 export default {
     data() {
@@ -132,6 +139,8 @@ export default {
             inspectionitemDict: {},
             currentPage: 1,
             total: 0,
+
+            copy: []
         }
     },
     async created() {
@@ -146,6 +155,11 @@ export default {
     methods: {
         async fetch() {
             await this.getHospitalLists(this.$route.query.data)
+        },
+        openText(item, index) {
+            this.list[index].open = false
+            document.getElementsByClassName('text')[index].setAttribute('class', 'text')
+            document.getElementsByClassName('openBtn')[index].style.display = 'none'
         },
         async getHospitalLists(result) {
             const current = this.currentPage
@@ -167,6 +181,19 @@ export default {
                 })
                 return item
             })
+            this.$nextTick(() => {
+                this.copy = this.list.map((ele, index) => {
+                    if (this.$refs.care[index].offsetHeight > 34) {
+                        ele.open = true
+                    } else {
+                        ele.open = false
+                    }
+                    return ele
+                })
+            })
+            setTimeout(() => {
+                this.list = this.copy
+            }, 1000 / 60)
             this.currentPage = res.data.data.current
             this.total = res.data.data.total
         },
@@ -270,85 +297,120 @@ export default {
         padding-top: 20px;
         margin-bottom: 100px;
         .list {
-            display: flex;
-            align-items: center;
             border-bottom: 1px solid rgba(151,151,151,0.11);
             padding: 15px 18px;
             position: relative;
-            .left {
-                flex: 0 0 24%;
-                width: 24%;
-                height: 18.7vw;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 6px;
+            .aaa {
+                display: flex;
+                align-items: center;
+                .left {
+                    flex: 0 0 24%;
+                    width: 24%;
+                    height: 18.7vw;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 6px;
+                    }
+                }
+                .middle {
+                    flex: 1;
+                    span {
+                        display: block;
+                        margin-left: 10px;
+                    }
+                    .hospital {
+                        font-family: PingFangSC-Medium;
+                        font-size: 14px;
+                        color: #333333;
+                        letter-spacing: 0.78px;
+                    }
+                    .hospitalPhone {
+                        font-family: PingFangSC-Regular;
+                        font-size: 11px;
+                        color: #4A4A4A;
+                        letter-spacing: 0.71px;
+                        margin-top: 4px;
+                    }
+                    .project {
+                        font-family: PingFangSC-Medium;
+                        font-size: 14px;
+                        color: #333333;
+                        letter-spacing: 0.78px;
+                        margin-top: 12px;
+                    }
+                }
+                .right {
+                    flex: 0 0 100px;
+                    text-align: right;
+                    span {
+                        font-family: PingFangSC-Regular;
+                        font-size: 11px;
+                        letter-spacing: 0.71px;
+                        text-align: center;
+                        line-height: 16px;
+                    }
+                    .r-top {
+                        margin-top: -12px;
+                        .num {
+                            color: #245EE5;
+                        }
+                        .gray {
+                            color: #9B9B9B;
+                        }
+                        .suffix {
+                            color: #000000;
+                        }
+                        .r-arrow {
+                            vertical-align: middle;
+                        }
+                    }
+                    .r-bottom {
+                        position: absolute;
+                        margin-top: 8px;
+                        right: 21px;
+                        .p-text {
+                            color: #9B9B9B;
+                            margin-right: 6px;
+                        }
+                        .unitPrice {
+                            font-size: 15px;
+                            color: #ca1249;
+                        }
+                    }
                 }
             }
-            .middle {
-                flex: 1;
-                span {
-                    display: block;
-                    margin-left: 10px;
+            .bbb {
+                margin-bottom: 5px;
+                .open {
+                    position: relative;
+                    height: 200px;
                 }
-                .hospital {
-                    font-family: PingFangSC-Medium;
-                    font-size: 14px;
-                    color: #333333;
-                    letter-spacing: 0.78px;
+                .close {
+                    position: relative;
+                    height: 100px;
                 }
-                .hospitalPhone {
+                .text {
+                    margin-top: 10px;
+                    text-align: justify;
                     font-family: PingFangSC-Regular;
-                    font-size: 11px;
+                    font-size: 12px;
                     color: #4A4A4A;
-                    letter-spacing: 0.71px;
-                    margin-top: 4px;
-                }
-                .project {
-                    font-family: PingFangSC-Medium;
-                    font-size: 14px;
-                    color: #333333;
                     letter-spacing: 0.78px;
-                    margin-top: 12px;
                 }
-            }
-            .right {
-                flex: 0 0 100px;
-                text-align: right;
-                span {
+                .choosed {
+                    height: 34px;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                }
+                .openBtn {
                     font-family: PingFangSC-Regular;
                     font-size: 11px;
-                    letter-spacing: 0.71px;
-                    text-align: center;
-                    line-height: 16px;
-                }
-                .r-top {
-                    margin-top: -12px;
-                    .num {
-                        color: #245EE5;
-                    }
-                    .gray {
-                        color: #9B9B9B;
-                    }
-                    .suffix {
-                        color: #000000;
-                    }
-                    .r-arrow {
-                        vertical-align: middle;
-                    }
-                }
-                .r-bottom {
+                    color: #235FE3;
+                    letter-spacing: 0.66px;
                     position: absolute;
-                    margin-top: 8px;
-                    right: 21px;
-                    .p-text {
-                        color: #9B9B9B;
-                        margin-right: 6px;
-                    }
-                    .unitPrice {
-                        font-size: 15px;
-                        color: #ca1249;
-                    }
+                    right: 18px;
                 }
             }
         }
