@@ -19,7 +19,7 @@
                     <div class="middle">
                         <span class="hospital">{{item.hospitalName}}</span>
                         <span class="hospitalPhone">电话：{{item.hospitalPhone}}</span>
-                        <span class="project">{{item.inspItemType}}</span>
+                        <span class="project">{{item.inspItemName}}</span>
                     </div>
                     <div class="right">
                         <div class="r-top">
