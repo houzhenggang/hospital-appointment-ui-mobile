@@ -66,7 +66,10 @@ export default new Vuex.Store({
         content: state.wxlogin_status,
         type: 'session'
       })
-    }
+    },
+    SET_HEAD_IMG: (state) => {
+      localStorage.removeItem('imgData')
+    },
   },
   actions: {
     // 根据用户名登录
@@ -133,6 +136,7 @@ export default new Vuex.Store({
         commit('SET_ACCESS_TOKEN', '')
         commit('SET_REFRESH_TOKEN', '')
         commit('SET_TITLE_INFO', {})
+        commit('SET_HEAD_IMG', '')
         resolve()
       })
     },

@@ -4,8 +4,9 @@
     <div @click="sumbit" class="saveBtn">保存</div>
     <div class="uploader">
       <van-uploader :after-read="onRead" accept="image/gif, image/jpeg, image/png">
-        <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!formData.headImg" class="defaultImg">
-        <img class="img-2" v-if="formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`" ref='bbb'>
+        <img src="" alt="" id="headImg" v-if="dataImage && flag" class="img-2">
+        <img src="./../../../public/image/me/defaultAvatar@2x.png" v-if="!dataImage && !formData.headImg" class="defaultImg">
+        <img class="img-2" v-if="!flag && formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`" ref='bbb'>
       </van-uploader>
       <div class="defaultText">点击修改头像</div>
     </div>
@@ -165,7 +166,9 @@ export default {
           defaultIndex: 2
         }
       ],
-      token: ''
+      token: '',
+      dataImage: '',
+      flag: true
     }
   },
   computed: {
@@ -175,9 +178,18 @@ export default {
     '$route': 'getInfo'
   },
   async created() {
+    this.dataImage = localStorage.getItem('imgData')
     console.log(this.user_info)
     await this.getInfo()
     this.token = store.getters.access_token
+
+    this.$nextTick(() => {
+      if (this.dataImage) {
+        this.flag = true
+        let headImg = document.getElementById('headImg')
+        headImg.src = this.dataImage
+      }
+    })
   },
   methods: {
     async getInfo() {
@@ -199,6 +211,17 @@ export default {
               message: '修改成功',
               duration: 2000
             })
+
+            if (!this.flag) {
+              let canvas = document.createElement('canvas')
+              canvas.width = 100
+              canvas.height = 100
+  
+              var ctx = canvas.getContext('2d')
+              ctx.drawImage(this.$refs.bbb, 0, 0, 100, 100)
+              let dataURL = canvas.toDataURL('image/png')
+              localStorage.setItem('imgData', dataURL)
+            }
           }
         } else {
           this.$notify({
@@ -227,7 +250,10 @@ export default {
       this.axios.post('/api/admin/sys-file/upload', file, config).then(({ data }) => {
         this.$set(this.formData, 'headImg', `${data.data.fileName}`)
         this.$toast.clear()
-        this.$refs.bbb.src = `/api/admin/sys-file/register-${data.data.fileName}?access_token=${this.token}`
+        this.flag = false
+        this.$nextTick(() => {
+          this.$refs.bbb.src = `/api/admin/sys-file/register-${data.data.fileName}?access_token=${this.token}`
+        })
       })
     },
     onConfirm (value) {

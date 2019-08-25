@@ -3,8 +3,9 @@
   <div class="user-info">
     <div class="head">
       <div class="avatar">
-        <img v-if="formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`">
-        <img v-else src="./../../../public/image/me/defaultAvatar@2x.png">
+        <img src="" alt="" id="headImg" v-if="dataImage">
+        <img v-if="!dataImage && formData.headImg" :src="`/api/admin/sys-file/register-${formData.headImg}?access_token=${token}`" id="headImg">
+        <img v-if="!dataImage && !formData.headImg" src="./../../../public/image/me/defaultAvatar@2x.png">
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
@@ -45,6 +46,7 @@ import {
 import store from '@/store'
 
 import { getStore } from '@/utils/store'
+import { setTimeout } from 'timers';
 
 export default {
   computed: {
@@ -75,7 +77,8 @@ export default {
       ],
       formData: [],
       show: true,
-      token: ''
+      token: '',
+      dataImage: ''
     }
   },
   created() {
@@ -87,6 +90,13 @@ export default {
           this.show = true
       }
     this.token = store.getters.access_token
+    this.dataImage = localStorage.getItem('imgData')
+    this.$nextTick(() => {
+      if (this.dataImage) {
+        let headImg = document.getElementById('headImg')
+        headImg.src = this.dataImage
+      }
+    })
   },
   methods: {
     getInfo() {
@@ -98,7 +108,21 @@ export default {
           this.formData.idCard =  this.formData.idCard.replace(result,'**********')
         }
         this.formData.headImg = res.data.data.headImg
-        // console.log(this.formData)
+
+        this.$nextTick(() => {
+          setTimeout(() => {
+            if (!this.dataImage) {
+              let canvas = document.createElement('canvas')
+              canvas.width = 100
+              canvas.height = 100
+  
+              var ctx = canvas.getContext('2d')
+              ctx.drawImage(document.getElementById('headImg'), 0, 0, 100, 100)
+              let dataURL = canvas.toDataURL('image/png')
+              localStorage.setItem('imgData', dataURL)
+            }
+          }, 1000)
+        })
       })
     },
     jumpPage (pathName) {
