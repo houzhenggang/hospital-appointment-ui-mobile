@@ -159,7 +159,7 @@ export default {
         openText(item, index) {
             this.list[index].open = false
             document.getElementsByClassName('text')[index].setAttribute('class', 'text')
-            document.getElementsByClassName('openBtn')[index].style.display = 'none'
+            document.getElementsByClassName('text')[1].nextSibling.style.display = 'none'
         },
         async getHospitalLists(result) {
             const current = this.currentPage
