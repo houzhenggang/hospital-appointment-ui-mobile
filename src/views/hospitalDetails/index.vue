@@ -5,7 +5,7 @@
         <div v-else>
         <div class="TopTitle">{{formData.hospitalName}}</div>
         <div class="banner">
-            <img v-if="formData.hospitalImage" :src="`/api/admin/sys-file/${formData.hospitalImage}?access_token=${token}`" id="headImg" class="bitmap">
+            <img v-if="formData.hospitalImage" :src="`/api/${formData.hospitalImage}?access_token=${token}`" id="headImg" class="bitmap">
             <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
         </div>
         <div class="message">

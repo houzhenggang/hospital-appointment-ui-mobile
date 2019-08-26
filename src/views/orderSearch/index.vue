@@ -14,7 +14,7 @@
                 <div class="aaa" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
                     <div class="left">
                         <!-- <img :src="item.image" alt="" v-if="item.image"> -->
-                        <img v-if="item.hospitalImage" :src="`/api/admin/sys-file/${item.hospitalImage}?access_token=${token}`" id="headImg">
+                        <img v-if="item.hospitalImage" :src="`/api/${item.hospitalImage}?access_token=${token}`" id="headImg">
                         <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="">
                     </div>
                     <div class="middle">
