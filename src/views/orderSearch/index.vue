@@ -14,7 +14,8 @@
                 <div class="aaa" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
                     <div class="left">
                         <!-- <img :src="item.image" alt="" v-if="item.image"> -->
-                        <img src="./../../../public/image/order/hospitalBanner.png" alt="">
+                        <img v-if="item.hospitalImage" :src="`/api/admin/sys-file/${item.hospitalImage}?access_token=${token}`" id="headImg">
+                        <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="">
                     </div>
                     <div class="middle">
                         <span class="hospital">{{item.hospitalName}}</span>
@@ -119,6 +120,7 @@ import {
 import {
   getInspectionitemDict
 } from '@/api/doctorinspectionitem/index'
+import store from '@/store'
 import { setTimeout } from 'timers';
 
 export default {
@@ -140,10 +142,12 @@ export default {
             currentPage: 1,
             total: 0,
 
-            copy: []
+            copy: [],
+            token: ''
         }
     },
     async created() {
+        this.token = store.getters.access_token
         this.value = this.$route.query.data
         await this.getHospitalDictValue()
         await this.getInspectionitemDictValue()

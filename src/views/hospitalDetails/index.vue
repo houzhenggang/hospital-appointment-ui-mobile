@@ -5,7 +5,8 @@
         <div v-else>
         <div class="TopTitle">{{formData.hospitalName}}</div>
         <div class="banner">
-            <img src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
+            <img v-if="formData.hospitalImage" :src="`/api/admin/sys-file/${formData.hospitalImage}?access_token=${token}`" id="headImg" class="bitmap">
+            <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
         </div>
         <div class="message">
                 <img src="./../../../public/image/order/map.png" alt="" class="left">
@@ -80,6 +81,7 @@ import {
   getInspectionitemDict
 } from '@/api/doctorinspectionitem/index'
 import { getStore } from './../../utils/store'
+import store from '@/store'
 export default {
     data() {
         return {
@@ -107,10 +109,12 @@ export default {
             inspectionitemDict: {},
             isLoad: true,
             maxUnitPrice: undefined,
+            token: '',
             period: []
         }
     },
     async created() {
+        this.token = store.getters.access_token
         this.period = getStore({ name: 'dictList' }).kasoft_resource_period
         console.log(this.period)
         let value = new Date()
