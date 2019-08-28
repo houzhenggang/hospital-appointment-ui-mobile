@@ -113,12 +113,6 @@
 import {
   getHospitalList, getHospitalListWithTime
 } from '@/api/doctorinspectresource/index'
-import {
-  getHospitalDict
-} from '@/api/doctorhospital/index'
-import {
-  getInspectionitemDict
-} from '@/api/doctorinspectionitem/index'
 import store from '@/store'
 import { setTimeout } from 'timers';
 
@@ -136,8 +130,6 @@ export default {
             endTimeValue: new Date(),
             startTime: '',
             endTime: '',
-            hospitalDict: {},
-            inspectionitemDict: {},
             currentPage: 1,
             total: 0,
 
@@ -148,8 +140,6 @@ export default {
     async created() {
         this.token = store.getters.access_token
         this.value = this.$route.query.data
-        await this.getHospitalDictValue()
-        await this.getInspectionitemDictValue()
         await this.getHospitalLists()
     },
     watch: {
@@ -162,7 +152,7 @@ export default {
         openText(item, index) {
             this.list[index].open = false
             document.getElementsByClassName('text')[index].setAttribute('class', 'text')
-            document.getElementsByClassName('text')[1].nextSibling.style.display = 'none'
+            document.getElementsByClassName('text')[index].nextSibling.style.display = 'none'
         },
         async getHospitalLists(result) {
             const current = this.currentPage
@@ -192,16 +182,6 @@ export default {
             }, 1000 / 60)
             this.currentPage = res.data.data.current
             this.total = res.data.data.total
-        },
-        async getHospitalDictValue() {
-            let res = await getHospitalDict()
-            this.hospitalDict = res.data.data
-            // hospitalDict
-        },
-        async getInspectionitemDictValue() {
-            let res = await getInspectionitemDict()
-            this.inspectionitemDict = res.data.data
-            // inspectionitemDict
         },
         onSearch() {
             this.getHospitalLists()
