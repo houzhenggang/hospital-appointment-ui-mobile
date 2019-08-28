@@ -13,7 +13,6 @@
             <div class="list" v-for="(item,index) in list" :key="index">
                 <div class="aaa" @click="toDetail(item.inspResourceId, item.maxUnitPrice)">
                     <div class="left">
-                        <!-- <img :src="item.image" alt="" v-if="item.image"> -->
                         <img v-if="item.hospitalImage" :src="`/api/${item.hospitalImage}?access_token=${token}`" id="headImg">
                         <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="">
                     </div>
@@ -172,18 +171,11 @@ export default {
             }
             let valueCopy = this.value.replace(/%/g, '-')
             let res = await getHospitalList(valueCopy, current)
-            this.list = res.data.data.records.map(item => {
-                this.hospitalDict.forEach(element => {
-                    if (item.hospitalId === element.hospitalId) {
-                        item.hospitalName = element.name
-                    }
-                })
-                this.inspectionitemDict.forEach(element => {
-                    if (item.inspItemId === element.inspItemId) {
-                        item.inspItemName = element.inspItemName
-                    }
-                })
-                return item
+            this.list = res.data.data.records.map(ele => {
+                if (ele.hospitalImage) {
+                    ele.hospitalImage = ele.hospitalImage.replace('sys-file/', 'sys-file/scale/')
+                }
+                return ele
             })
             this.$nextTick(() => {
                 this.copy = this.list.map((ele, index) => {
@@ -248,7 +240,12 @@ export default {
             }
             let valueCopy = this.value.replace(/%/g, '-')
             getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime).then((res) => {
-                this.list = res.data.data.records
+                this.list = res.data.data.records.map(ele => {
+                    if (ele.hospitalImage) {
+                        ele.hospitalImage = ele.hospitalImage.replace('sys-file/', 'sys-file/scale/')
+                    }
+                    return ele
+                })
                 console.log(this.list)
 
                 this.currentPage = res.data.data.current
