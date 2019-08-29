@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="addPatient">
-    <div @click="deletePatient" class="deleteBtn" v-if="$route.query.applyerId && !flag">删除</div>
+    <div v-if="$route.query.applyerId && !flag" @click="deletePatient" class="deleteBtn">删除</div>
     <div class="userMessage-form">
       <div class="login-input">
         <div class="label">姓名</div>
@@ -120,7 +120,7 @@ export default {
       showPicker: false,
       sexColumns: ['男', '女'],
       // showDatePicker: false,
-      flag: false
+      flag: true
     }
   },
   computed: {
@@ -145,6 +145,8 @@ export default {
 
       if (res.data.data.idCard === this.formData.idCard) {
         this.flag = true
+      } else {
+        this.flag = false
       }
     },
     async getPatientInfoBox(id) {

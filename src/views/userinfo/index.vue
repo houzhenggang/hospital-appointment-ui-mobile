@@ -107,11 +107,13 @@ export default {
           let result = this.formData.idCard.substring(4,14)
           this.formData.idCard =  this.formData.idCard.replace(result,'**********')
         }
-        this.formData.headImg = res.data.data.headImg
+        if (res.data.data.headImg) {
+          this.formData.headImg = res.data.data.headImg
+        }
 
         this.$nextTick(() => {
           setTimeout(() => {
-            if (!this.dataImage) {
+            if (!this.dataImage && this.formData.headImg) {
               let canvas = document.createElement('canvas')
               canvas.width = 100
               canvas.height = 100

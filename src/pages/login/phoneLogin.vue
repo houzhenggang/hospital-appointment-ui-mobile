@@ -70,6 +70,8 @@ export default {
         len: 17
       },
       flag: true,
+      now: 0,
+      last: 0,
       time: 59
     }
   },
@@ -92,6 +94,14 @@ export default {
         })
         return
       }
+      this.now = +new Date()
+      if (this.now - this.last < 1000 * 60) {
+        this.$notify({
+          message: '请勿频繁获取验证码',
+          background: '#ff4444'
+        })
+        return
+      }
       // 置灰
       // 倒计时60秒
       this.flag = false
@@ -103,6 +113,7 @@ export default {
           clearInterval(val)
         }
       }, 1000);
+      this.last = +new Date()
       getLoginMobileCode(this.formData.mobile).then(res => {
         console.log(res.data)
         // if (res.data.code === 0) {

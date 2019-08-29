@@ -111,6 +111,12 @@
 <script>
 /* eslint-disable */
 import {
+  getHospitalDict
+} from '@/api/doctorhospital/index'
+import {
+  getInspectionitemDict
+} from '@/api/doctorinspectionitem/index'
+import {
   getHospitalList, getHospitalListWithTime
 } from '@/api/doctorinspectresource/index'
 import store from '@/store'
@@ -132,6 +138,8 @@ export default {
             endTime: '',
             currentPage: 1,
             total: 0,
+            hospitalDict: {},
+            inspectionitemDict: {},
 
             copy: [],
             token: ''
@@ -140,6 +148,8 @@ export default {
     async created() {
         this.token = store.getters.access_token
         this.value = this.$route.query.data
+        await this.getHospitalDictValue()
+        await this.getInspectionitemDictValue()
         await this.getHospitalLists()
     },
     watch: {
@@ -148,6 +158,16 @@ export default {
     methods: {
         async fetch() {
             await this.getHospitalLists(this.$route.query.data)
+        },
+        async getHospitalDictValue() {
+            let res = await getHospitalDict()
+            this.hospitalDict = res.data.data
+            // hospitalDict
+        },
+        async getInspectionitemDictValue() {
+            let res = await getInspectionitemDict()
+            this.inspectionitemDict = res.data.data
+            // inspectionitemDict
         },
         openText(item, index) {
             this.list[index].open = false
@@ -161,11 +181,23 @@ export default {
             }
             let valueCopy = this.value.replace(/%/g, '-')
             let res = await getHospitalList(valueCopy, current)
-            this.list = res.data.data.records.map(ele => {
-                if (ele.hospitalImage) {
-                    ele.hospitalImage = ele.hospitalImage.replace('sys-file/', 'sys-file/scale/')
+
+            this.list = res.data.data.records.map(item => {
+                this.hospitalDict.forEach(element => {
+                    if (item.hospitalId === element.hospitalId) {
+                        item.hospitalName = element.name
+                    }
+                })
+                this.inspectionitemDict.forEach(element => {
+                    if (item.inspItemId === element.inspItemId) {
+                        item.inspItemName = element.inspItemName
+                        item.inspItemExp = element.inspItemExp
+                    }
+                })
+                if (item.hospitalImage) {
+                    item.hospitalImage = item.hospitalImage.replace('sys-file/', 'sys-file/scale/')
                 }
-                return ele
+                return item
             })
             this.$nextTick(() => {
                 this.copy = this.list.map((ele, index) => {
@@ -184,6 +216,7 @@ export default {
             this.total = res.data.data.total
         },
         onSearch() {
+            this.currentPage = 1
             this.getHospitalLists()
             console.log('搜索')
         },
@@ -220,13 +253,32 @@ export default {
             }
             let valueCopy = this.value.replace(/%/g, '-')
             getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime).then((res) => {
-                this.list = res.data.data.records.map(ele => {
-                    if (ele.hospitalImage) {
-                        ele.hospitalImage = ele.hospitalImage.replace('sys-file/', 'sys-file/scale/')
+                this.list = res.data.data.records.map(item => {
+                    this.inspectionitemDict.forEach(element => {
+                        if (item.inspItemId === element.inspItemId) {
+                            item.inspItemName = element.inspItemName
+                            item.inspItemExp = element.inspItemExp
+                        }
+                    })
+                    if (item.hospitalImage) {
+                        item.hospitalImage = item.hospitalImage.replace('sys-file/', 'sys-file/scale/')
                     }
-                    return ele
+                    return item
                 })
-                console.log(this.list)
+
+                this.$nextTick(() => {
+                    this.copy = this.list.map((ele, index) => {
+                            if (this.$refs.care[index].offsetHeight > 34) {
+                                ele.open = true
+                            } else {
+                                ele.open = false
+                            }
+                            return ele
+                        })
+                    })
+                    setTimeout(() => {
+                        this.list = this.copy
+                    }, 1000 / 60)
 
                 this.currentPage = res.data.data.current
                 this.total = res.data.data.total
