@@ -27,11 +27,11 @@
                             <span class="suffix">可预约</span>
                             <van-icon name="arrow"  class="r-arrow"/>
                         </div>
-                        <!-- <div class="r-bottom">
+                        <div class="r-bottom">
                             <span class="p-text">项目费用</span>
                             <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
                             <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="bbb">
@@ -418,11 +418,11 @@ export default {
                     }
                 }
                 .right {
-                    // flex: 0 0 100px;
-                    // text-align: right;
-                    position: absolute;
-                    right: 10px;
-                    margin-top: 10px;
+                    flex: 0 0 100px;
+                    text-align: right;
+                    //position: absolute;
+                    //right: 10px;
+                    //margin-top: 10px;
                     span {
                         font-family: PingFangSC-Regular;
                         font-size: 11px;
