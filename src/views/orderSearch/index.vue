@@ -28,7 +28,7 @@
                             <van-icon name="arrow"  class="r-arrow"/>
                         </div>
                         <div class="r-bottom">
-                            <span class="p-text">项目费用</span>
+                            <!--span class="p-text">项目费用</span-->
                             <span class="unitPrice" v-if="item.maxUnitPrice > item.unitPrice">¥{{item.unitPrice}}-{{item.maxUnitPrice}}</span>
                             <span class="unitPrice" v-else>¥{{item.unitPrice}}</span>
                         </div>
