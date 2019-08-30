@@ -11,7 +11,7 @@
         <div class="hotBox">
             <span class="hotTitle">检查项目分类</span>
             <div class="hotList classList">
-                <div v-for="(item,index) in classList" :key="index" class="class" @click="choose(item.name, index)">
+                <div v-for="(item,index) in classList" :key="index" class="class" @click="choose(item.name, index, 'inspItemType')">
                     {{item.name}}
                 </div>
             </div>
@@ -114,20 +114,24 @@ export default {
             }
             return require('./../../../public/image/orderInspect/' + iconName + '.png')
         },
-        choose(value, index) {
+        choose(value, index, type) {
             if(value === '其他分类' && index === this.classList.length - 1) {
                 this.$router.push({ path: '/main/otherList' })
             } else {
                 this.value = value
-                this.onSearch()
+                this.onSearch(type)
             }
         },
-        onSearch() {
+        onSearch(type) {
             console.log('搜索')
             if (this.value === '') {
                 this.$router.push({ path: '/main/otherList' })
             } else {
-                this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
+                if (type === 'inspItemType') {
+                    this.$router.push({ path: '/main/orderSearch', query: { data: this.value, type: 'inspItemType' } })
+                } else {
+                    this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
+                }
             }
         }
     }

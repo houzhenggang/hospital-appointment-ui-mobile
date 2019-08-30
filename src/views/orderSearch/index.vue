@@ -107,7 +107,6 @@
     </div>
 </template>
 
-
 <script>
 /* eslint-disable */
 import {
@@ -117,7 +116,7 @@ import {
   getInspectionitemDict
 } from '@/api/doctorinspectionitem/index'
 import {
-  getHospitalList, getHospitalListWithTime
+  getHospitalList, getHospitalListWithTime, getHospitalListByType, getHospitalListWithTimeByType
 } from '@/api/doctorinspectresource/index'
 import store from '@/store'
 import { setTimeout } from 'timers';
@@ -126,6 +125,7 @@ export default {
     data() {
         return {
             value: '',
+            type: '',
             show: false,
             showStartPicker: false,
             showEndPicker: false,
@@ -148,6 +148,7 @@ export default {
     async created() {
         this.token = store.getters.access_token
         this.value = this.$route.query.data
+        this.type = this.$route.query.type
         await this.getHospitalDictValue()
         await this.getInspectionitemDictValue()
         await this.getHospitalLists()
@@ -157,6 +158,7 @@ export default {
     },
     methods: {
         async fetch() {
+            this.type = this.$route.query.type
             await this.getHospitalLists(this.$route.query.data)
         },
         async getHospitalDictValue() {
@@ -180,8 +182,12 @@ export default {
                 this.value = result
             }
             let valueCopy = this.value.replace(/%/g, '-')
-            let res = await getHospitalList(valueCopy, current)
-
+            let res
+            if (this.type === 'inspItemType') {
+                res = await getHospitalListByType(valueCopy, current)
+            } else {
+                res = await getHospitalList(valueCopy, current)
+            }
             this.list = res.data.data.records.map(item => {
                 this.hospitalDict.forEach(element => {
                     if (item.hospitalId === element.hospitalId) {
@@ -240,7 +246,7 @@ export default {
             this.endTime = this.endTimeValue.toString()
             this.showEndPicker = false;
         },
-        toFilter() {
+        async toFilter() {
             this.show = false
             const current = 1
 
@@ -252,7 +258,13 @@ export default {
                 return
             }
             let valueCopy = this.value.replace(/%/g, '-')
-            getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime).then((res) => {
+            let res
+            if (this.type === 'inspItemType') {
+                res = await getHospitalListWithTimeByType(valueCopy, current, this.startTime, this.endTime)
+            } else {
+                res = await getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime)
+            }
+
                 this.list = res.data.data.records.map(item => {
                     this.inspectionitemDict.forEach(element => {
                         if (item.inspItemId === element.inspItemId) {
@@ -282,18 +294,47 @@ export default {
 
                 this.currentPage = res.data.data.current
                 this.total = res.data.data.total
-            })
         },
-        change1(value) {
+        async change1(value) {
             this.currentPage = value
             if (this.startTime && this.endTime) {
                 let valueCopy = this.value.replace(/%/g, '-')
-                getHospitalListWithTime(valueCopy, value, this.startTime, this.endTime).then((res) => {
-                    this.list = res.data.data.records
 
-                    this.currentPage = res.data.data.current
-                    this.total = res.data.data.total
+            let res
+            if (this.type === 'inspItemType') {
+                res = await getHospitalListWithTimeByType(valueCopy, value, this.startTime, this.endTime)
+            } else {
+                res = await getHospitalListWithTime(valueCopy, value, this.startTime, this.endTime)
+            }
+                this.list = res.data.data.records.map(item => {
+                    this.inspectionitemDict.forEach(element => {
+                        if (item.inspItemId === element.inspItemId) {
+                            item.inspItemName = element.inspItemName
+                            item.inspItemExp = element.inspItemExp
+                        }
+                    })
+                    if (item.hospitalImage) {
+                        item.hospitalImage = item.hospitalImage.replace('sys-file/', 'sys-file/scale/')
+                    }
+                    return item
                 })
+
+                this.$nextTick(() => {
+                    this.copy = this.list.map((ele, index) => {
+                            if (this.$refs.care[index].offsetHeight > 34) {
+                                ele.open = true
+                            } else {
+                                ele.open = false
+                            }
+                            return ele
+                        })
+                    })
+                    setTimeout(() => {
+                        this.list = this.copy
+                    }, 1000 / 60)
+
+                this.currentPage = res.data.data.current
+                this.total = res.data.data.total
             } else {
                 this.getHospitalLists()
             }

@@ -11,9 +11,17 @@ export const getHospitalListWithTime = (data, current, startTime, endTime) => {
   return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
 }
 
+export const getHospitalListByType = (data, current) => {
+  return request.get(`${baseUrl}/page/group?inspItemType=${data}&&current=${current}&&size=10`)
+}
+
+export const getHospitalListWithTimeByType = (data, current, startTime, endTime) => {
+  return request.get(`${baseUrl}/page/group?inspItemType=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
+}
+
 export const hospitalDetail = (inspResourceId) => {
-    return request.get(`${baseUrl}/${inspResourceId}`)
-  }
+  return request.get(`${baseUrl}/${inspResourceId}`)
+}
 
 // 获取可预约时间组
 export const timeGroupDetail = (startDate, endDate, hospitalId, inspItemId) => {
