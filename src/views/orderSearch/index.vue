@@ -126,6 +126,7 @@ export default {
         return {
             value: '',
             type: '',
+            nameId: '',
             show: false,
             showStartPicker: false,
             showEndPicker: false,
@@ -149,6 +150,7 @@ export default {
         this.token = store.getters.access_token
         this.value = this.$route.query.data
         this.type = this.$route.query.type
+        this.nameId = this.$route.query.nameId
         await this.getHospitalDictValue()
         await this.getInspectionitemDictValue()
         await this.getHospitalLists()
@@ -159,6 +161,7 @@ export default {
     methods: {
         async fetch() {
             this.type = this.$route.query.type
+            this.nameId = this.$route.query.nameId
             await this.getHospitalLists(this.$route.query.data)
         },
         async getHospitalDictValue() {
@@ -184,7 +187,7 @@ export default {
             let valueCopy = this.value.replace(/%/g, '-')
             let res
             if (this.type === 'inspItemType') {
-                res = await getHospitalListByType(valueCopy, current)
+                res = await getHospitalListByType(this.nameId, current)
             } else {
                 res = await getHospitalList(valueCopy, current)
             }
@@ -260,7 +263,7 @@ export default {
             let valueCopy = this.value.replace(/%/g, '-')
             let res
             if (this.type === 'inspItemType') {
-                res = await getHospitalListWithTimeByType(valueCopy, current, this.startTime, this.endTime)
+                res = await getHospitalListWithTimeByType(this.nameId, current, this.startTime, this.endTime)
             } else {
                 res = await getHospitalListWithTime(valueCopy, current, this.startTime, this.endTime)
             }
@@ -302,7 +305,7 @@ export default {
 
             let res
             if (this.type === 'inspItemType') {
-                res = await getHospitalListWithTimeByType(valueCopy, value, this.startTime, this.endTime)
+                res = await getHospitalListWithTimeByType(this.nameId, value, this.startTime, this.endTime)
             } else {
                 res = await getHospitalListWithTime(valueCopy, value, this.startTime, this.endTime)
             }

@@ -37,6 +37,7 @@
 import {
   hotInspitem
 } from '@/api/doctorinspectionitem/index'
+import { getStore } from './../../utils/store'
 export default {
     data() {
         return {
@@ -54,11 +55,14 @@ export default {
                 name: '核磁共振'
             },{
                 name: '其他分类'
-            }]
+            }],
+            aaa: [],
+            nameId: ''
         }
     },
     created() {
         this.getHotInspitem()
+        this.aaa = getStore({ name: 'dictList' }).kasoft_inspection_type
     },
     methods: {
         getHotInspitem() {
@@ -128,7 +132,12 @@ export default {
                 this.$router.push({ path: '/main/otherList' })
             } else {
                 if (type === 'inspItemType') {
-                    this.$router.push({ path: '/main/orderSearch', query: { data: this.value, type: 'inspItemType' } })
+                    this.aaa.forEach(element => {
+                        if (element.label === this.value) {
+                            this.nameId = element.value
+                        }
+                    });
+                    this.$router.push({ path: '/main/orderSearch', query: { data: this.value, type: 'inspItemType', nameId: this.nameId } })
                 } else {
                     this.$router.push({ path: '/main/orderSearch', query: { data: this.value } })
                 }
