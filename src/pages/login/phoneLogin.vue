@@ -111,6 +111,7 @@ export default {
         } else {
           this.flag = true
           clearInterval(val)
+          this.time = 59
         }
       }, 1000);
       this.last = +new Date()
