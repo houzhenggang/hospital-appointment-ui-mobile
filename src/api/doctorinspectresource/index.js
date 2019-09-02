@@ -4,19 +4,19 @@ import request from '@/router/axios'
 let baseUrl = '/api/base/doctorinspectresource'
 
 export const getHospitalList = (data, current) => {
-  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10`)
+  return request.get(`${baseUrl}/page/group/new?inspItemName=${data}&&current=${current}&&size=10`)
 }
 
 export const getHospitalListWithTime = (data, current, startTime, endTime) => {
-  return request.get(`${baseUrl}/page/group?inspItemName=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
+  return request.get(`${baseUrl}/page/group/new?inspItemName=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
 }
 
 export const getHospitalListByType = (data, current) => {
-  return request.get(`${baseUrl}/page/group?inspItemType=${data}&&current=${current}&&size=10`)
+  return request.get(`${baseUrl}/page/group/new?inspItemType=${data}&&current=${current}&&size=10`)
 }
 
 export const getHospitalListWithTimeByType = (data, current, startTime, endTime) => {
-  return request.get(`${baseUrl}/page/group?inspItemType=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
+  return request.get(`${baseUrl}/page/group/new?inspItemType=${data}&&current=${current}&&size=10&&startDate=${startTime}&&endDate=${endTime}`)
 }
 
 export const hospitalDetail = (inspResourceId) => {
