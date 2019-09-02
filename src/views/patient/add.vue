@@ -86,8 +86,8 @@
         </div>
       </div>
     </div>
-    <div class="saveBtn" @click="update" v-if="$route.query.applyerId">保存</div>
-    <div class="saveBtn" @click="submit" v-else>保存</div>
+    <div class="saveBtn" @click="update" v-if="$route.query.applyerId && !flag">保存</div>
+    <div class="saveBtn" @click="submit" v-if="!$route.query.applyerId">保存</div>
   </div>
 </template>
 
