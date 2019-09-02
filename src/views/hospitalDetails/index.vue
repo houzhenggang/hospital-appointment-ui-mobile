@@ -49,8 +49,8 @@
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
                             <div slot="title" class="v-title" @click="toGetGroupDetail(lItem,lIndex)">
                                 <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
-                                <div class="right" v-if="lItem.quantity === 0">已满</div>
-                                <div class="right exist" v-if="lItem.quantity > 0">有空缺</div>
+                                <div class="right exist" v-if="lItem.quantity > 0 || lItem.common > 0">有空缺</div>
+                                <div class="right" v-else>已满</div>
                             </div>
                             <div class="content">
                                 <div v-for="(tItem, tIndex) in timeList" :key="tIndex" class="tList">
@@ -192,16 +192,19 @@ export default {
         getGroupDetail(value, index) {
             groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId).then(res => {
                 console.log(res)
-            this.timeList = res.data.data.map(item => {
-                this.period.map(ele => {
-                    if (item.period === ele.value) {
-                        item.period = ele.label.replace('~', '-')
-                    }
+                let common = 0
+                this.timeList = res.data.data.map(item => {
+                    common = common + item.quantity
+                    this.period.map(ele => {
+                        if (item.period === ele.value) {
+                            item.period = ele.label.replace('~', '-')
+                        }
+                    })
+                    return item
                 })
-                return item
-            })
-            this.thisWeek[index].timeList = this.timeList
-            console.log(this.thisWeek)
+                this.thisWeek[index].timeList = this.timeList
+                this.thisWeek[index].common = common
+                console.log(this.thisWeek)
             })
         },
         aaa(value) {
