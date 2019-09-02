@@ -214,10 +214,24 @@ export default {
             this.getTimeGroup(name)
         },
         order(value) {
-            console.log(value)
-            console.log('预约')
-            this.$router.push({ name: '预约申请', params: { formData: this.formData, inspResourceId: this.$route.query.inspResourceId, timeDetail: value, address: this.hospitalValue.address } })
-            // this.$router.push({ path: '/main/orderApplyFor', query: { formData: this.formData } })
+            this.$router.push({ name: '预约申请', 
+                query: { 
+                    hospitalName: this.formData.hospitalName,
+                    hospitalPhone: this.formData.hospitalPhone,
+                    inspItemName: this.formData.inspItemName,
+                    unitPrice: this.formData.unitPrice,
+                    periodNum: this.formData.period,
+
+                    inspResourceId: this.$route.query.inspResourceId, 
+                    timeDetail: value, 
+                    inspItemAp: value.inspItemAp,
+                    inspItemDate: value.inspItemDate,
+                    inspItemWeek: value.inspItemWeek,
+                    period: value.period,
+                    quantity: value.quantity,
+                    address: this.hospitalValue.address
+                }
+            })
         }
     } 
 }

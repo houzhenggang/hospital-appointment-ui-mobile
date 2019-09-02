@@ -155,33 +155,23 @@ export default {
     ...mapGetters(['user_info'])
   },
   async created() {
-    const formData = this.$route.params.formData
-    if (!formData) {
-        this.$notify({
-            message: '请返回上层重新选择预约时间',
-            background: '#FF4444'
-        })
-        return
-    }
-    this.addressStreet = this.$route.params.address
+    this.addressStreet = this.$route.query.address
 
-    this.hospitalName =  formData.hospitalName
-    this.hospitalPhone =  formData.hospitalPhone
-    this.inspItemName =  formData.inspItemName
-    this.unitPrice =  formData.unitPrice
+    this.hospitalName =  this.$route.query.hospitalName
+    this.hospitalPhone =  this.$route.query.hospitalPhone
+    this.inspItemName =  this.$route.query.inspItemName
+    this.unitPrice =  this.$route.query.unitPrice
 
-    const id = this.$route.params.inspResourceId
+    const id = this.$route.query.inspResourceId
     await this.getInfo()
     await this.getHospitalDetail(id)
     await this.getInspitemTips()
     
-    const timeDetail = this.$route.params.timeDetail
-    
-    let str = timeDetail.inspItemDate
+    let str = this.$route.query.inspItemDate
     let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
-    this.apply_time = result + ' ' + timeDetail.period
+    this.apply_time = result + ' ' + this.$route.query.period
 
-    this.inspResourceId = this.$route.params.timeDetail.inspResourceId
+    this.inspResourceId = this.$route.query.inspResourceId
     this.getDetailTimeList()
     await this.getPatientList()
     if (this.$refs.care.offsetHeight > 50) {
@@ -204,9 +194,8 @@ export default {
             })
         },
         getDetailTimeList() {
-            const timeDetail = this.$route.params.timeDetail
-            this.startTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[0] + ':00'
-            this.endTime = timeDetail.inspItemDate + ' ' + timeDetail.period.split('-')[1] +  ':00'
+            this.startTime = this.$route.query.inspItemDate + ' ' + this.$route.query.period.split('-')[0] + ':00'
+            this.endTime = this.$route.query.inspItemDate + ' ' + this.$route.query.period.split('-')[1] +  ':00'
             
             this.startTime = this.timeFilter(this.startTime)
             this.endTime = this.timeFilter(this.endTime)
@@ -302,7 +291,7 @@ export default {
                 startTime: this.startTime,
                 endTime: this.endTime,
                 inspResourceId: this.inspResourceId,
-                period: this.$route.params.formData.period,
+                period: this.$route.query.periodNum,
                 inspItemTaboo: this.inspItemTaboo
             }
             addOrder(data).then((res) => {
