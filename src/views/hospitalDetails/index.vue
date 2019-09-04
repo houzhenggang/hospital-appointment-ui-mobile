@@ -47,10 +47,12 @@
                 <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
                     <van-collapse v-model="activeNames" accordion v-if="thisWeek.length > 0">
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
-                            <div slot="title" class="v-title" @click="toGetGroupDetail(lItem,lIndex)">
+                            <div slot="title" class="v-title" @click="getGroupDetail(lItem,lIndex)">
                                 <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
                                 <div class="right exist" v-if="lItem.quantity > 0 || lItem.common > 0">有空缺</div>
                                 <div class="right" v-else>已满</div>
+                            </div>
+                            <div slot="right-icon">
                             </div>
                             <div class="content">
                                 <div v-for="(tItem, tIndex) in timeList" :key="tIndex" class="tList">
@@ -104,7 +106,7 @@ export default {
                 title: '8月22日  星期四 下午',
                 num: 2
             }],
-            timeList: {},
+            timeList: [],
             hospitalDict: {},
             inspectionitemDict: {},
             isLoad: true,
@@ -186,14 +188,12 @@ export default {
             this.isLoad = false
             console.log(res)
         },
-        async toGetGroupDetail(value, index) {
-            await this.getGroupDetail(value, index)
-        },
-        getGroupDetail(value, index) {
-            groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId).then(res => {
-                console.log(res)
-                let common = 0
-                this.timeList = res.data.data.map(item => {
+        async getGroupDetail(value, index) {
+            this.timeList = []
+            let res = await groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId)
+            let common = 0
+            this.timeList = res.data.data
+            this.timeList = this.timeList.map(item => {
                     common = common + item.quantity
                     this.period.map(ele => {
                         if (item.period === ele.value) {
@@ -204,8 +204,6 @@ export default {
                 })
                 this.thisWeek[index].timeList = this.timeList
                 this.thisWeek[index].common = common
-                console.log(this.thisWeek)
-            })
         },
         aaa(value) {
             console.log(value)
