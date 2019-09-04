@@ -5,7 +5,7 @@
         <div v-else>
         <div class="TopTitle">{{formData.hospitalName}}</div>
         <div class="banner">
-            <img v-if="formData.hospitalImage" :src="`/api/${formData.hospitalImage}?access_token=${token}`" id="headImg" class="bitmap">
+            <img v-if="hospitalValue.hospitalImage" :src="`/api/${hospitalValue.hospitalImage}?access_token=${token}`" id="headImg" class="bitmap">
             <img v-else src="./../../../public/image/order/hospitalBanner.png" alt="" class="bitmap">
         </div>
         <div class="message">
@@ -169,14 +169,14 @@ export default {
             if (!name || name === 0) {
                 // 近一周
                 startDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
-                endValue = new Date(value.getTime() + 1000*60*60*24*7)
+                endValue = new Date(value.getTime() + 1000*60*60*24*6)
                 endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
             } else {
                 // 下一周
-                startValue = new Date(value.getTime() + 1000*60*60*24*8)
+                startValue = new Date(value.getTime() + 1000*60*60*24*7)
                 startDate = `${startValue.getFullYear() + '-' + (startValue.getMonth() + 1) + '-' + startValue.getDate()}`
     
-                endValue = new Date(value.getTime() + 1000*60*60*24*15)
+                endValue = new Date(value.getTime() + 1000*60*60*24*14)
                 endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
             }
             let hospitalId = this.formData.hospitalId
