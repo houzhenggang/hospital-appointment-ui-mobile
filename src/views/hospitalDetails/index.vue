@@ -45,9 +45,9 @@
 
             <van-tabs @click="onClick" color='#245EE5' :line-width=24>
                 <van-tab v-for="(item,index) in tabList" :title="item.title" :key="index">
-                    <van-collapse v-model="activeNames" accordion v-if="thisWeek.length > 0">
+                    <van-collapse v-model="activeNames" accordion v-if="thisWeek.length > 0" @change="getGroupDetail">
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
-                            <div slot="title" class="v-title" @click="getGroupDetail(lItem,lIndex)">
+                            <div slot="title" class="v-title">
                                 <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
                                 <div class="right exist" v-if="lItem.quantity > 0 || lItem.common > 0">有空缺</div>
                                 <div class="right" v-else>已满</div>
@@ -188,7 +188,11 @@ export default {
             this.isLoad = false
             console.log(res)
         },
-        async getGroupDetail(value, index) {
+        async getGroupDetail(index) {
+            if (!(/[0-9]+/.exec(index))) {
+                return
+            }
+            let value = this.thisWeek[index]
             this.timeList = []
             let res = await groupDetail(value.inspItemDate, value.inspItemAp, this.formData.hospitalId, this.formData.inspItemId)
             let common = 0
