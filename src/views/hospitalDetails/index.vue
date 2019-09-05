@@ -223,7 +223,7 @@ export default {
                     unitPrice: this.formData.unitPrice,
                     periodNum: this.formData.period,
 
-                    inspResourceId: this.$route.query.inspResourceId, 
+                    inspResourceId: value.inspResourceId, 
                     timeDetail: value, 
                     inspItemAp: value.inspItemAp,
                     inspItemDate: value.inspItemDate,
