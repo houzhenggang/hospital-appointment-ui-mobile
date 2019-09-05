@@ -170,12 +170,13 @@ export default {
             let startValue, startDate, endValue, endDate
             if (!name || name === 0) {
                 // 近一周
-                startDate = `${value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()}`
-                endValue = new Date(value.getTime() + 1000*60*60*24*6)
+                startValue = new Date(value.getTime() + (1000*60*60*24 - 1000))
+                startDate = `${startValue.getFullYear() + '-' + (startValue.getMonth() + 1) + '-' + startValue.getDate()}`
+                endValue = new Date(value.getTime() + 1000*60*60*24*7)
                 endDate = `${endValue.getFullYear() + '-' + (endValue.getMonth() + 1) + '-' + endValue.getDate()}`
             } else {
                 // 下一周
-                startValue = new Date(value.getTime() + 1000*60*60*24*7)
+                startValue = new Date(value.getTime() + 1000*60*60*24*8)
                 startDate = `${startValue.getFullYear() + '-' + (startValue.getMonth() + 1) + '-' + startValue.getDate()}`
     
                 endValue = new Date(value.getTime() + 1000*60*60*24*14)
