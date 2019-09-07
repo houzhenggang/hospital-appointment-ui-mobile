@@ -210,13 +210,12 @@ export default {
                 this.thisWeek[index].timeList = this.timeList
                 this.thisWeek[index].common = common
         },
-        aaa(value) {
-            console.log(value)
-        },
         onClick(name, title) {
             console.log(name)
             console.log(title)
             // 更改条件，显示不同的列表
+            this.timeList = []
+            this.activeNames = []
             this.getTimeGroup(name)
         },
         order(value) {
