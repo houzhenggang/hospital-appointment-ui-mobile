@@ -261,6 +261,7 @@ export default {
         color: #072E48;
         letter-spacing: 0.83px;
         text-align: center;
+        width: 100%;
     }
     .banner {
         width: 100%;

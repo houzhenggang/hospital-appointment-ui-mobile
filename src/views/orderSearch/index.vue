@@ -434,6 +434,7 @@ export default {
                         margin-top: -12px;
                         .num {
                             color: #245EE5;
+                            font-size: 13px;
                         }
                         .gray {
                             color: #9B9B9B;

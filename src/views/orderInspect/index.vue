@@ -150,7 +150,6 @@ export default {
 <style lang="scss" scoped>
 #orderInspect {
     background: #FFF;
-    height: 100%;
     .bitmap {
         width: 102px;
         height: 77.5px;
@@ -214,14 +213,14 @@ export default {
                 width: 90px;
             }
             .item {
-                padding: 15px;
+                padding: 10px;
                 .iconBox {
-                    width: 60px;
-                    height: 60px;
+                    width: 50px;
+                    height: 50px;
                 }
                 .icon {
-                    width: 60px;
-                    height: 60px;
+                    width: 50px;
+                    height: 50px;
                 }
                 .name {
                     font-family: PingFangSC-Regular;
@@ -229,15 +228,22 @@ export default {
                     color: #072E48;
                     letter-spacing: 0.67px;
                     text-align: center;
+
+                    width: 54px;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
                 }
             }
             .class {
                 font-family: PingFangSCRegular;
                 font-size: 13px;
-                color: #9B9B9B;
+                color: #072E48;
                 letter-spacing: 0.79px;
                 text-align: center;
-                border: 1px solid rgba(151, 151, 151, 0.21);
+                border: 1px solid #072e4857;
                 border-radius: 4px;
                 padding: 7px 0;
                 margin-bottom: 12px;
