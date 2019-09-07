@@ -49,7 +49,7 @@
                         <van-collapse-item :name="lIndex" v-for="(lItem, lIndex) in thisWeek" :key="lIndex" class="list">
                             <div slot="title" class="v-title">
                                 <div class="left">{{lItem.inspItemDate + ' ' + lItem.inspItemWeek + ' ' + lItem.inspItemAp}}</div>
-                                <div class="right exist" v-if="lItem.quantity > 0 || lItem.common > 0">有空缺</div>
+                                <div class="right exist" v-if="lItem.quantity > 0">有空缺</div>
                                 <div class="right" v-else>已满</div>
                             </div>
                             <div slot="right-icon">
@@ -208,7 +208,7 @@ export default {
                     return item
                 })
                 this.thisWeek[index].timeList = this.timeList
-                this.thisWeek[index].common = common
+                this.thisWeek[index].quantity = common
         },
         onClick(name, title) {
             console.log(name)
