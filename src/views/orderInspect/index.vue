@@ -150,6 +150,7 @@ export default {
 <style lang="scss" scoped>
 #orderInspect {
     background: #FFF;
+    height: 100vh;
     .bitmap {
         width: 102px;
         height: 77.5px;
