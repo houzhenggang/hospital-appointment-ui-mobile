@@ -9,7 +9,7 @@
       </div>
       <div class="info">
         <div class="name">{{user_info.username}}</div>
-        <div class="phone">{{user_info.phone}}</div>
+        <div class="phone">{{phone}}</div>
       </div>
       <div class="userMessage" @click="toUserMessage()">
         <span>个人信息</span>
@@ -78,10 +78,12 @@ export default {
       formData: [],
       show: true,
       token: '',
-      dataImage: ''
+      dataImage: '',
+      phone: ''
     }
   },
   created() {
+    this.phone = this.user_info.phone
     this.getInfo()
       let wxloginStatus = getStore({ name: 'wxloginStatus' })
       if (wxloginStatus===1) {
@@ -98,7 +100,14 @@ export default {
       }
     })
   },
+  watch: {
+    '$route': 'fecth'
+  },
   methods: {
+    fecth() {
+      let result = JSON.parse(sessionStorage.getItem('user_info')).content.phone
+      this.phone = result
+    },
     getInfo() {
       getUserInfo(this.user_info.userId).then(res => {
         this.formData = res.data.data
