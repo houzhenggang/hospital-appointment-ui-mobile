@@ -212,6 +212,10 @@ export default {
               duration: 2000
             })
 
+            let oldPhone = JSON.parse(sessionStorage.getItem('user_info')).content.phone
+            let newUserInfo = sessionStorage.getItem('user_info').replace(oldPhone, this.formData.phone)
+            sessionStorage.setItem('user_info', newUserInfo)
+
             if (!this.flag) {
               let canvas = document.createElement('canvas')
               canvas.width = 100
