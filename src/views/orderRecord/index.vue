@@ -16,7 +16,7 @@
                             </div>
                             <div class="part">
                                 <div class="left">预约机构</div>
-                                <div class="right">{{lItem.hospitalName}}</div>
+                                <div class="right other">{{lItem.hospitalName}}</div>
                             </div>
                             <div class="part">
                                 <div class="left">预约人</div>
@@ -80,7 +80,7 @@ export default {
     methods: {
         async fecth() {
             await this.getInfo()
-            await this.getOrdersList(this.peopleId, 10)
+            await this.getOrdersList(this.peopleId, this.tabList[this.tabNum].orderState)
         },
         async getOrdersList(peopleId, id) {
             let res = await getOrders(this.peopleId, id)
@@ -166,7 +166,14 @@ export default {
                     font-size: 14px;
                     color: #333333;
                     letter-spacing: 0.89px;
-                    text-align: center;
+                }
+                .other {
+                    max-width: 100%;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
                 }
             }
         }

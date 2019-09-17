@@ -147,6 +147,9 @@ export default {
         }
     },
     async created() {
+        let value = new Date()
+        this.minDate = new Date(value.getTime() + (1000*60*60*24 - 1000))
+        
         this.token = store.getters.access_token
         this.value = this.$route.query.data
         this.type = this.$route.query.type

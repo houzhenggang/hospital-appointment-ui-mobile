@@ -113,7 +113,7 @@ export default {
                     iconName = '肾'
                     break
                 default:
-                    iconName = '挂号'
+                    iconName = '预约'
                     break
             }
             return require('./../../../public/image/orderInspect/' + iconName + '.png')
@@ -207,7 +207,6 @@ export default {
         .hotList {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
             margin-top: 11px;
             &::after {
                 content: '';
@@ -215,9 +214,12 @@ export default {
             }
             .item {
                 padding: 10px;
+                width: 25%;
+                box-sizing: border-box;
                 .iconBox {
                     width: 50px;
                     height: 50px;
+                    margin: 0 auto;
                 }
                 .icon {
                     width: 50px;
@@ -230,7 +232,7 @@ export default {
                     letter-spacing: 0.67px;
                     text-align: center;
 
-                    width: 54px;
+                    width: 100%;
                     -webkit-line-clamp: 2;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -253,6 +255,7 @@ export default {
         }
         .classList {
             padding: 15px;
+            justify-content: space-between;
         }
 
     }
