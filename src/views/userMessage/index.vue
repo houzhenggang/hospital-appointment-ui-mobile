@@ -175,7 +175,11 @@ export default {
     ...mapGetters(['user_info'])
   },
   watch: {
-    '$route': 'getInfo'
+    '$route' (to, from) {
+      if (from.path === '/home/userinfo' && to.path === '/main/userMessage') {
+        this.getInfo()
+      }
+    }
   },
   async created() {
     this.dataImage = localStorage.getItem('imgData')

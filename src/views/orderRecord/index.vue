@@ -72,13 +72,17 @@ export default {
         await this.getOrdersList(this.peopleId, 10)
     },
     watch: {
-        '$route': 'fecth'
+        '$route' (to, from) {
+            if (from.path === '/home/userinfo' && to.path === '/main/orderRecord') {
+                this.fetch()
+            }
+        }
     },
     computed: {
         ...mapGetters(['user_info'])
     },
     methods: {
-        async fecth() {
+        async fetch() {
             await this.getInfo()
             await this.getOrdersList(this.peopleId, this.tabList[this.tabNum].orderState)
         },

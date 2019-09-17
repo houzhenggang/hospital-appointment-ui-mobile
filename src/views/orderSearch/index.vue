@@ -149,7 +149,7 @@ export default {
     async created() {
         let value = new Date()
         this.minDate = new Date(value.getTime() + (1000*60*60*24 - 1000))
-        
+
         this.token = store.getters.access_token
         this.value = this.$route.query.data
         this.type = this.$route.query.type
@@ -159,7 +159,11 @@ export default {
         await this.getHospitalLists()
     },
     watch: {
-        '$route': 'fetch'
+        '$route' (to, from) {
+            if (from.path === '/home/orderInspect' && to.path === '/main/orderSearch') {
+                this.fetch()
+            }
+        }
     },
     methods: {
         async fetch() {
