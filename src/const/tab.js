@@ -1,6 +1,6 @@
 export const tabList = {
   'orderInspect': {
-    name: '预约检查',
+    name: '预约',
     value: 0,
     icon: 'manager',
     imgAvtive: '../font/signing-active-min.png',

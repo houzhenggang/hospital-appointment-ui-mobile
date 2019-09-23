@@ -72,7 +72,7 @@
                             readonly
                             clickable
                             :value="detailTime"
-                            placeholder="       请选择预约检查详细时间"
+                            placeholder="       请选择预约详细时间"
                             @click="showPicker = true"
                             class="sexField"
                         />
@@ -166,7 +166,7 @@ export default {
     await this.getInfo()
     await this.getHospitalDetail(id)
     await this.getInspitemTips()
-    
+
     let str = this.$route.query.inspItemDate
     let result = str.replace(/-/,'年').replace(/-/,'月').concat('日')
     this.apply_time = result + ' ' + this.$route.query.period
@@ -188,7 +188,7 @@ export default {
         async getPatientList() {
             let res = await getPatientInfoList(this.user_info.userId)
             this.applyerinfoList = res.data.data.records
-            
+
             this.patientColumns = this.applyerinfoList.map((item,index) => {
                 return item.applyerName
             })
@@ -196,7 +196,7 @@ export default {
         getDetailTimeList() {
             this.startTime = this.$route.query.inspItemDate + ' ' + this.$route.query.period.split('-')[0] + ':00'
             this.endTime = this.$route.query.inspItemDate + ' ' + this.$route.query.period.split('-')[1] +  ':00'
-            
+
             this.startTime = this.timeFilter(this.startTime)
             this.endTime = this.timeFilter(this.endTime)
             // let res = await getDetailTime(startTime, endTime, this.hospitalValue.hospitalId, this.hospitalValue.inspItemName)
@@ -323,11 +323,11 @@ export default {
         // onConfirm (value, index) {
         //     console.log(value)
         //     this.detailTime = value
-            
+
         //     this.startTime = this.detailTimeList[index].startTime
         //     this.endTime = this.detailTimeList[index].endTime
         //     this.inspResourceId = this.detailTimeList[index].inspResourceId
-            
+
         //     this.showPicker = false
         // }
         onPatientConfirm (value, index) {

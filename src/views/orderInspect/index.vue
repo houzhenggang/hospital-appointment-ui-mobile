@@ -2,10 +2,10 @@
 <template>
     <div id="orderInspect">
         <img src="./../../../public/image/order/bitmap@2x.png" alt="" class="bitmap">
-        <!-- <div class="title">请输入您要预约检查的项目</div> -->
+        <!-- <div class="title">请输入您要预约的项目</div> -->
 
         <div class="search">
-            <van-field v-model="value" placeholder="请输入您要预约检查的项目" />
+            <van-field v-model="value" placeholder="请输入您要预约的项目" />
             <div @click="onSearch" class="searchBtn">搜索</div>
         </div>
         <div class="hotBox">
