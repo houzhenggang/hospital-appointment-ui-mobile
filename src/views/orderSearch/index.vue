@@ -40,6 +40,9 @@
                 </div>
             </div>
         </section>
+        <section class="tips" v-if="type === 'inspItemType' && list.length === 0">
+            即将上线
+        </section>
 
         <van-popup
             v-model="show"
@@ -502,6 +505,14 @@ export default {
                 }
             }
         }
+    }
+    .tips {
+        text-align: center;
+        margin-top: 30vh;
+        font-family: PingFangSC-Medium;
+        font-size: 13px;
+        color: #9B9B9B;
+        letter-spacing: 0.72px;
     }
     .van-popup {
         top: 60px;
